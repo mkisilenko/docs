@@ -1,0 +1,488 @@
+---
+title: "Platform Features"
+description: "How Anyx handles deployment, databases, and GitHub integration"
+---
+
+## Platform Overview
+
+Anyx handles all the technical complexity so you can focus on building your app.
+
+<CardGroup cols={3}>
+  <Card title="Autonomous AI Agents" icon="robot">
+    Write, test, and deploy code without supervision
+  </Card>
+  <Card title="Database Management" icon="database">
+    3 modes: We manage, you manage, or none
+  </Card>
+  <Card title="Auto Deployment" icon="rocket">
+    GitHub + production setup automatically
+  </Card>
+</CardGroup>
+
+---
+
+## Database Options
+
+Choose the approach that fits your needs:
+
+<Tabs>
+<Tab title="Anyx Managed (Easiest)">
+  ### We Handle Everything
+  
+  **What it is:**
+  - Anyx provisions a Supabase database for you
+  - Zero configuration needed
+  - Fully managed and maintained
+  - Auto-migrations when you add features
+  
+  **Best for:**
+  - Beginners
+  - Quick prototypes
+  - You don't want to manage infrastructure
+  - You want to focus on building
+  
+  **How it works:**
+  1. Mention "with database" in your prompt
+  2. Anyx provisions Supabase project (2-3 min)
+  3. Database credentials auto-configured
+  4. Start using immediately
+  
+  **What you get:**
+  - Postgres database
+  - Auto-scaling
+  - Daily backups
+  - 500MB storage (expandable)
+  - Unlimited API requests
+  
+  <Check>Best choice for 90% of users</Check>
+</Tab>
+
+<Tab title="Bring Your Own Supabase">
+  ### Connect Your Database
+  
+  **What it is:**
+  - Use your existing Supabase project
+  - You control the database
+  - Anyx handles migrations (auto or manual)
+  - Full ownership
+  
+  **Best for:**
+  - You already have a Supabase project
+  - Production apps
+  - You want full database control
+  - Team collaboration on database
+  
+  **How to connect:**
+  1. Go to project settings in Anyx
+  2. Click "Connect Database"
+  3. Choose "Bring Your Own Supabase"
+  4. Enter Supabase URL and anon key
+  5. Choose migration mode:
+     - **Automated**: Anyx applies migrations
+     - **Manual**: You review and paste SQL
+  
+  **Migration modes:**
+  
+  **Automated** (recommended):
+  - Anyx applies database changes automatically
+  - Faster iterations
+  - Safe rollback on errors
+  
+  **Manual** (safest):
+  - Anyx generates SQL for you
+  - You review and paste in Supabase dashboard
+  - Full control over every change
+  
+  <Tip>Start with manual, switch to auto once comfortable</Tip>
+</Tab>
+
+<Tab title="No Database">
+  ### Frontend Only
+  
+  **What it is:**
+  - No backend or data storage
+  - Static frontend app
+  - Fastest build time
+  
+  **Best for:**
+  - Landing pages
+  - Portfolios
+  - Marketing sites
+  - Pure frontend demos
+  - Static content sites
+  
+  **How to specify:**
+  Just don't mention database in your prompt, or say:
+  ```
+  "Create a landing page (no database needed)"
+  ```
+  
+  **What you get:**
+  - React frontend
+  - Deployed to production
+  - CDN-delivered (fast globally)
+  - Scales infinitely
+  
+  <Check>Deploys in 5-8 minutes (fastest option)</Check>
+</Tab>
+</Tabs>
+
+---
+
+## Deployment & Hosting
+
+Every app is automatically deployed to production:
+
+### What Happens
+
+<Steps>
+<Step title="GitHub Repository Created">
+  - Anyx creates repo in your GitHub account
+  - You own the code (not vendor lock-in)
+  - Full git history
+  - Can clone locally anytime
+  
+  **Repo includes:**
+  - Source code
+  - Tests
+  - GitHub Actions (CI/CD)
+  - Documentation
+</Step>
+
+<Step title="Production Deployment">
+  - Repo connected to hosting automatically
+  - Production URL generated
+  - SSL certificate (HTTPS)
+  - Global CDN
+  
+  **You get:**
+  - `https://your-app.anyx.app`
+  - Or connect custom domain
+  - Automatic deployments on changes
+</Step>
+
+<Step title="Environment Variables Set">
+  All API keys and secrets configured:
+  - Database credentials
+  - API keys (if needed)
+  - Feature flags
+  
+  **Secure:**
+  - Encrypted at rest
+  - Never in source code
+  - Environment-specific
+</Step>
+</Steps>
+
+### Custom Domains
+
+Connect your own domain in project settings:
+
+1. Add custom domain
+2. Update DNS records
+3. SSL auto-configured
+
+**Supported:**
+- `yourapp.com`
+- `app.yourcompany.com`
+- Multiple domains
+
+---
+
+## Task Management
+
+Break projects into manageable tasks:
+
+<Tabs>
+<Tab title="AI Task Suggestions">
+  **How it works:**
+  - AI analyzes your app
+  - Suggests next features to add
+  - One-click to create task
+  
+  **Example suggestions:**
+  - "Add user profile page"
+  - "Implement search functionality"
+  - "Add email notifications"
+  - "Create analytics dashboard"
+  
+  **Tier limits:**
+  - Free: 4 active tasks
+  - Builder: 8 active tasks
+  - Pro: 12 active tasks
+  - Elite: 20 active tasks
+</Tab>
+
+<Tab title="Task Workflow">
+  **Process:**
+  1. You create task (or convert suggestion)
+  2. AI agent implements it
+  3. Tests run automatically
+  4. Pull request created
+  5. Auto-merges when tests pass
+  6. Deploys to production
+  
+  **Average time:** 5-10 minutes per task
+  
+  <Tip>Break big features into smaller tasks for faster results</Tip>
+</Tab>
+
+<Tab title="Task Board">
+  **View options:**
+  - Kanban board (drag & drop)
+  - List view (with filters)
+  - Timeline (Gantt chart)
+  
+  **Status tracking:**
+  - Pending
+  - In Progress (AI working)
+  - Under Review (tests running)
+  - Completed
+  - Failed (needs attention)
+</Tab>
+</Tabs>
+
+---
+
+## GitHub Integration
+
+Full GitHub automation:
+
+<CardGroup cols={2}>
+  <Card title="Repository Management" icon="github">
+    - Repo created in your account
+    - Branch protection rules
+    - Pull request workflow
+    - Code review ready
+  </Card>
+  
+  <Card title="CI/CD Pipeline" icon="gear">
+    - Automated tests
+    - Build checks
+    - Lint checks
+    - Auto-merge on success
+  </Card>
+  
+  <Card title="Issues & PRs" icon="git-branch">
+    - Tasks become GitHub issues
+    - AI creates PRs automatically
+    - Detailed PR descriptions
+    - Code change summaries
+  </Card>
+  
+  <Card title="Full Ownership" icon="key">
+    - You own the repo
+    - Can clone locally
+    - Add collaborators
+    - Transfer to organization
+  </Card>
+</CardGroup>
+
+---
+
+## Iteration & Chat
+
+Refine your app through natural conversation:
+
+### How It Works
+
+1. **Chat with AI**
+   - Type what you want changed
+   - Be specific or general
+   - Ask questions
+
+2. **AI Implements**
+   - Updates code
+   - Tests changes
+   - Creates PR
+
+3. **Auto-Deploy**
+   - Tests pass → merges
+   - Production deploys
+   - Live in 2-5 minutes
+
+### Example Requests
+
+```
+Design changes:
+"Make the hero section bolder"
+"Change to blue color scheme"
+"Add more white space"
+
+Feature additions:
+"Add dark mode toggle"
+"Implement search"
+"Add email notifications"
+
+Content updates:
+"Change pricing to $49/mo"
+"Update testimonials"
+"Fix typo on homepage"
+
+AI adjustments:
+"Make AI assistant more casual"
+"Add voice input to AI chat"
+"Move AI widget to sidebar"
+```
+
+---
+
+## Security & Privacy
+
+Built-in best practices:
+
+<CardGroup cols={2}>
+  <Card title="Authentication" icon="shield-check">
+    - Secure password hashing
+    - Session management
+    - Email verification
+    - 2FA ready
+  </Card>
+  
+  <Card title="Data Protection" icon="lock">
+    - Encrypted at rest
+    - HTTPS only
+    - GDPR compliant
+    - Data export available
+  </Card>
+  
+  <Card title="API Security" icon="key">
+    - Rate limiting
+    - CORS configured
+    - API key rotation
+    - Webhook signatures
+  </Card>
+  
+  <Card title="Code Quality" icon="code-check">
+    - Linting enforced
+    - Type safety (TypeScript)
+    - Security scanning
+    - Dependency updates
+  </Card>
+</CardGroup>
+
+---
+
+## Performance
+
+Every app is optimized:
+
+<Tabs>
+<Tab title="Frontend">
+  **Automatic optimizations:**
+  - Code splitting
+  - Lazy loading
+  - Image optimization
+  - Font optimization
+  - CSS minification
+  
+  **Target:** < 2 second load time
+</Tab>
+
+<Tab title="Backend">
+  **Database:**
+  - Connection pooling
+  - Query optimization
+  - Caching layer
+  - Read replicas (if needed)
+  
+  **APIs:**
+  - Response compression
+  - CDN caching
+  - Rate limiting
+</Tab>
+
+<Tab title="Hosting">
+  **Production Infrastructure:**
+  - Global CDN
+  - Worldwide edge locations
+  - Automatic scaling
+  - DDoS protection
+  
+  **99.99% uptime SLA**
+</Tab>
+</Tabs>
+
+---
+
+## Support & Monitoring
+
+Stay informed about your app:
+
+<CardGroup cols={2}>
+  <Card title="Real-time Updates" icon="bell">
+    Chat notifications for:
+    - Build status
+    - Deployment success
+    - Errors detected
+    - Task completions
+  </Card>
+  
+  <Card title="Error Tracking" icon="bug">
+    Automatic monitoring:
+    - Runtime errors
+    - Failed requests
+    - Performance issues
+    - Database problems
+  </Card>
+  
+  <Card title="Analytics Ready" icon="chart-line">
+    Easy to add:
+    - Google Analytics
+    - Custom analytics
+    - Event tracking
+    - User behavior monitoring
+  </Card>
+  
+  <Card title="Help & Support" icon="question-circle">
+    - Discord community
+    - Email support
+    - Documentation
+    - Video tutorials
+  </Card>
+</CardGroup>
+
+---
+
+## Tech Stack
+
+Every app uses modern, production-ready technologies:
+
+**Frontend:**
+- React 19
+- TypeScript
+- Tailwind CSS
+- Shadcn/ui components
+
+**Backend:**
+- Next.js API routes
+- Supabase (database)
+- PostgreSQL
+
+**Hosting:**
+- Production infrastructure (frontend)
+- Supabase (database)
+- Global CDN
+
+**AI:**
+- OpenAI GPT-4
+- Anthropic Claude
+- Google Gemini
+- (Model selection optimized per feature)
+
+---
+
+## Pricing
+
+<Note>
+  Platform features included in all tiers. Differences are in task limits, build minutes, and support level.
+  
+  See [anyx.app/pricing](https://anyx.app/pricing) for current pricing.
+</Note>
+
+---
+
+<Card title="Start Building" icon="rocket" href="https://anyx.app">
+  All features included - no setup required
+</Card>
+

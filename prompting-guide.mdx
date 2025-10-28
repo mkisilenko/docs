@@ -1,0 +1,587 @@
+---
+title: "Prompting Guide"
+description: "Write prompts that get you exactly what you want"
+---
+
+## Good Prompt → Great Prompt
+
+The quality of your app depends on the quality of your prompt. Learn to write prompts that make AI agents shine.
+
+---
+
+## Anatomy of a Great Prompt
+
+<CardGroup cols={4}>
+  <Card title="Purpose" icon="bullseye">
+    What does the app do?
+  </Card>
+  <Card title="Audience" icon="users">
+    Who is it for?
+  </Card>
+  <Card title="Style" icon="palette">
+    Colors, vibe, design
+  </Card>
+  <Card title="Features" icon="list-check">
+    Must-have functionality
+  </Card>
+</CardGroup>
+
+---
+
+## Before & After Examples
+
+<Tabs>
+<Tab title="Landing Page">
+  ### ❌ Vague Prompt
+  ```
+  "Build me a website for my startup"
+  ```
+  
+  **Problems:**
+  - No context about what the startup does
+  - No style guidance
+  - No feature requirements
+  - AI has to guess everything
+  
+  **Result:** Generic template that needs tons of iteration
+  
+  ---
+  
+  ### ✅ Specific Prompt
+  ```
+  "Create a landing page for 'CloudSync', a B2B file syncing tool.
+  
+  Target audience: IT teams at mid-size companies
+  Style: Modern, professional, trust-building. Light theme with 
+        blue/white colors (like Dropbox Business)
+  
+  Sections:
+  - Hero: 'Secure File Syncing for Enterprise Teams' with demo video
+  - 3 key benefits (security, speed, compliance)
+  - Feature showcase with screenshots
+  - Pricing table (Starter $99/mo, Business $299/mo, Enterprise custom)
+  - Customer logos (Fortune 500 companies)
+  - Trust badges (SOC 2, GDPR compliant)
+  - CTA: 'Start 14-day free trial'
+  
+  Add AI lead assistant to qualify enterprise prospects."
+  ```
+  
+  **Why it works:**
+  - Clear product description
+  - Target audience defined
+  - Style reference (like Dropbox)
+  - Exact sections needed
+  - Specific copy provided
+  - AI feature requested
+  
+  **Result:** Professional landing page that matches your vision
+</Tab>
+
+<Tab title="Dashboard">
+  ### ❌ Vague Prompt
+  ```
+  "Make me a dashboard for my data"
+  ```
+  
+  **Problems:**
+  - What kind of data?
+  - What metrics matter?
+  - Who are the users?
+  
+  **Result:** Generic charts that don't match your needs
+  
+  ---
+  
+  ### ✅ Specific Prompt
+  ```
+  "Build an e-commerce analytics dashboard for online store owners.
+  
+  Users: Small business owners, non-technical
+  Style: Clean, simple, Shopify-like. Light theme, green accents
+  
+  Layout:
+  - Top: 4 metric cards (revenue, orders, customers, conversion rate)
+  - Chart: Sales over time (last 30 days, line chart)
+  - Table: Top products (name, sales, revenue, stock)
+  - Filters: Date range picker, store selector
+  
+  Features:
+  - Export to CSV
+  - Real-time updates
+  - Mobile responsive
+  
+  Add AI insights that detect unusual patterns and suggest actions
+  like 'Revenue dropped 15% - check your checkout flow'."
+  ```
+  
+  **Why it works:**
+  - Context provided (e-commerce)
+  - User persona defined
+  - Specific metrics listed
+  - Layout described
+  - AI feature with example
+  
+  **Result:** Dashboard that shows exactly what store owners need
+</Tab>
+
+<Tab title="SaaS App">
+  ### ❌ Vague Prompt
+  ```
+  "I need a project management app"
+  ```
+  
+  **Problems:**
+  - Too broad (like Jira? Trello? Notion?)
+  - No user workflows
+  - Missing key features
+  
+  **Result:** Half-baked attempt that misses the mark
+  
+  ---
+  
+  ### ✅ Specific Prompt
+  ```
+  "Create a lightweight task manager for freelancers.
+  
+  Target: Solo freelancers juggling multiple client projects
+  Style: Calm, minimal, Notion-inspired. Supports dark/light mode
+  
+  Core features:
+  - Kanban board (3 columns: To Do, In Progress, Done)
+  - Task cards with: title, client name, due date, priority
+  - Quick add via command palette (Cmd+K)
+  - List view and calendar view
+  - Filter by client or priority
+  
+  Authentication:
+  - Sign up with email
+  - Social login (Google, GitHub)
+  - Password reset
+  
+  Database: Use Anyx managed database
+  
+  Add AI command palette for natural language task creation:
+  'Schedule meeting with Sarah next Tuesday 2pm' → creates task"
+  ```
+  
+  **Why it works:**
+  - Clear niche (freelancers)
+  - Specific features listed
+  - Design inspiration provided
+  - Auth requirements clear
+  - AI feature with example
+  - Database choice stated
+  
+  **Result:** Focused tool that solves one problem well
+</Tab>
+</Tabs>
+
+---
+
+## Prompting Principles
+
+### 1. Be Specific, Not General
+
+<CardGroup cols={2}>
+  <Card title="❌ General" icon="x">
+    "Make it look modern"
+    
+    **Problem:** "Modern" means different things
+  </Card>
+  
+  <Card title="✅ Specific" icon="check">
+    "Modern = clean sans-serif fonts, lots of white space, subtle shadows, smooth animations"
+    
+    **Better:** Descriptive details
+  </Card>
+</CardGroup>
+
+### 2. Use Design References
+
+<CardGroup cols={2}>
+  <Card title="❌ Abstract" icon="x">
+    "Professional corporate design"
+    
+    **Problem:** Too subjective
+  </Card>
+  
+  <Card title="✅ Concrete" icon="check">
+    "Corporate style like stripe.com - clean, blue/white, lots of breathing room"
+    
+    **Better:** Real website reference
+  </Card>
+</CardGroup>
+
+### 3. Provide Content, Not Placeholders
+
+<CardGroup cols={2}>
+  <Card title="❌ Lazy" icon="x">
+    "Add some testimonials"
+    
+    **Problem:** Generic placeholder content
+  </Card>
+  
+  <Card title="✅ Thoughtful" icon="check">
+    "Testimonials:
+    - 'Saved us 10 hours/week' - Sarah Chen, Marketing Lead at Acme
+    - 'Game changer for our team' - John Smith, CEO of StartupCo"
+    
+    **Better:** Real quotes that sell
+  </Card>
+</CardGroup>
+
+### 4. Break Down Complex Features
+
+<CardGroup cols={2}>
+  <Card title="❌ Overwhelming" icon="x">
+    "Add complete user management with roles, permissions, team invites, billing, and admin dashboard"
+    
+    **Problem:** Too much at once
+  </Card>
+  
+  <Card title="✅ Incremental" icon="check">
+    First prompt: "Add user authentication (signup, login, logout)"
+    
+    Next: "Add team invites via email"
+    
+    Next: "Add role-based permissions (admin, member)"
+    
+    **Better:** One feature at a time
+  </Card>
+</CardGroup>
+
+---
+
+## Example Prompts You Can Copy
+
+<AccordionGroup>
+<Accordion title="Personal Portfolio">
+  ```
+  "Build a portfolio site for me, a UX designer.
+  
+  About me:
+  Name: Alex Rivera
+  Title: Senior UX Designer
+  Bio: I design products that people love. 5 years at tech startups.
+  
+  Style: Minimal, elegant, lots of white space. Light theme with 
+        black text, one accent color (coral #FF6B6B)
+  
+  Sections:
+  - Hero: My name, title, brief bio, profile photo placeholder
+  - Featured projects (3 case studies):
+    * 'FinTech Mobile App' - iOS banking app redesign
+    * 'E-learning Platform' - Course dashboard UX
+    * 'Travel Booking Site' - Search & booking flow
+  - Skills: Figma, Framer, User Research, Prototyping, Design Systems
+  - Contact form (name, email, message)
+  
+  No database needed. Make it feel premium and portfolio-quality."
+  ```
+</Accordion>
+
+<Accordion title="Waitlist Landing Page">
+  ```
+  "Create a waitlist landing page for 'MindfulAI', an AI meditation app 
+  launching in 3 months.
+  
+  Vibe: Calm, zen, peaceful. Soft gradients (purple to blue), rounded corners
+  
+  Sections:
+  - Hero: 'AI-Powered Meditation for Busy People'
+        Subheading: 'Launch Feb 2025 - Join 10,000+ on the waitlist'
+        Email signup form (large, prominent)
+  - 3 features with icons:
+    * Personalized meditation paths
+    * AI voice that adapts to your stress level
+    * 5-minute sessions that actually work
+  - Social proof: '10,000+ people waiting' counter
+  - Simple FAQ (4 questions)
+  
+  Add AI chatbot that answers questions about the app and collects emails."
+  ```
+</Accordion>
+
+<Accordion title="Recipe Finder">
+  ```
+  "Build a recipe discovery app for home cooks.
+  
+  Style: Warm, inviting, food-magazine aesthetic. Lots of food imagery
+  
+  Features:
+  - Search bar: 'What ingredients do you have?'
+  - Recipe cards: photo, title, cook time, difficulty
+  - Filter by: dietary needs (vegan, gluten-free), cuisine, cook time
+  - Recipe detail page: ingredients list, step-by-step, nutrition info
+  - Save favorites (requires login)
+  
+  Authentication: Simple email/password
+  
+  Database: Anyx managed (to store user favorites)
+  
+  Add AI assistant that suggests recipes based on what's in your fridge:
+  'I have chicken, broccoli, and rice' → Shows 5 recipe options"
+  ```
+</Accordion>
+
+<Accordion title="Event Registration">
+  ```
+  "Create registration page for 'DevConf 2025', a developer conference.
+  
+  Event details:
+  - Date: March 15-17, 2025
+  - Location: San Francisco Convention Center
+  - Expected: 500 attendees
+  
+  Style: Tech-forward, high energy. Dark theme with electric blue accents
+  
+  Sections:
+  - Hero with countdown timer to event
+  - Speaker lineup (8 speakers with headshots and bios):
+    * Sarah Chen - 'Building AI Products'
+    * John Smith - 'Future of Web Development'
+    * [... 6 more]
+  - Schedule grid (3 days, 6 sessions per day)
+  - Pricing:
+    * Early Bird: $299 (ends Jan 15)
+    * Regular: $399
+    * Student: $199 (with verification)
+  - Sponsor logos (Gold, Silver, Bronze tiers)
+  - Registration form with Stripe payment
+  
+  Database: Anyx managed (store registrations)
+  
+  Add AI session recommender: Asks about interests, suggests personalized schedule"
+  ```
+</Accordion>
+
+<Accordion title="Habit Tracker">
+  ```
+  "Build a habit tracking app for people building new routines.
+  
+  Target: Young professionals trying to be healthier
+  Style: Motivational, colorful, gamified. Notion-like interface
+  
+  Features:
+  - Add habits (name, frequency, icon)
+  - Daily checklist with checkboxes
+  - Streak counter (days in a row completed)
+  - Calendar heatmap (GitHub-style)
+  - Stats dashboard (completion rate, best streak)
+  - Reminders (optional push notifications)
+  
+  Authentication: Google or email signup
+  
+  Database: Anyx managed
+  
+  Add AI coach that sends encouraging messages and notices patterns:
+  'You always skip Monday workouts - try setting a Sunday reminder?'"
+  ```
+</Accordion>
+
+<Accordion title="Product Showcase">
+  ```
+  "Create an e-commerce showcase for 'Luna Candles', handmade soy candles.
+  
+  Brand vibe: Elegant, natural, high-end. Earth tones (cream, sage green, terracotta)
+  
+  Pages:
+  - Home: Hero image, brand story, featured products
+  - Shop: Product grid with filters (scent, size, price)
+  - Product detail: Large images, description, 'Add to Cart'
+  - Cart: Review items, checkout with Stripe
+  - About: Brand story, our process, sustainability
+  
+  Products (add 8 sample products):
+  - 'Lavender Dreams' - $28
+  - 'Citrus Sunrise' - $28
+  - 'Cozy Cabin' - $32
+  - [... 5 more]
+  
+  Database: Anyx managed (products, orders)
+  
+  Add AI shopping assistant:
+  - Visual search: 'Find candles similar to this photo'
+  - Gift finder: 'Help me pick a gift for my mom'
+  - Scent quiz: 'What scent matches my vibe?'"
+  ```
+</Accordion>
+</AccordionGroup>
+
+---
+
+## Iteration Prompts
+
+Once your app is built, refine it with specific requests:
+
+### Design Adjustments
+
+```
+"Make the hero section more bold - larger heading, brighter colors"
+"Add more white space between sections"
+"Change font to something more playful"
+"Make the CTA button bigger and more prominent"
+"Add subtle hover effects to all cards"
+```
+
+### Feature Additions
+
+```
+"Add a search bar in the navigation"
+"Implement dark mode toggle"
+"Add testimonials section with 3 quotes"
+"Create a pricing FAQ accordion"
+"Add 'Share on Twitter' button to blog posts"
+```
+
+### Content Updates
+
+```
+"Change pricing: Free, $29/mo, $99/mo"
+"Update hero tagline to 'Ship apps in minutes, not months'"
+"Add testimonial: 'Amazing tool!' - Jane Doe, CEO of StartupCo"
+"Replace 'Contact Us' with 'Book a Demo'"
+```
+
+### AI Customization
+
+```
+"Make AI assistant more casual and friendly"
+"Add voice input to AI chat"
+"Let AI generate images based on text descriptions"
+"Make AI widget smaller and less intrusive"
+"Add 'Ask AI' button on every product page"
+```
+
+---
+
+## Common Mistakes
+
+<Warning>
+  **Avoid these pitfalls**
+</Warning>
+
+<AccordionGroup>
+<Accordion title="Too vague about style">
+  ❌ "Make it look good"  
+  ❌ "Modern design"  
+  ❌ "Professional appearance"
+  
+  ✅ "Clean sans-serif, blue/white, lots of white space, like stripe.com"  
+  ✅ "Playful, colorful, rounded corners, like mailchimp.com"
+</Accordion>
+
+<Accordion title="No content provided">
+  ❌ "Add some features"  
+  ❌ "Put testimonials"  
+  ❌ "List the benefits"
+  
+  ✅ Provide actual copy, names, and details  
+  ✅ The more real content, the better the result
+</Accordion>
+
+<Accordion title="Trying to build everything at once">
+  ❌ "Build a full CRM with projects, clients, invoicing, time tracking, team management, reports..."
+  
+  ✅ Start with MVP: "Build a simple project tracker with tasks and deadlines"  
+  ✅ Then iterate: Add features one by one through chat
+</Accordion>
+
+<Accordion title="Forgetting about mobile">
+  ❌ Only describing desktop layout
+  
+  ✅ Mention "mobile responsive" or "mobile-first"  
+  ✅ AI will ensure it works on all devices
+</Accordion>
+</AccordionGroup>
+
+---
+
+## Pro Tips
+
+<CardGroup cols={2}>
+  <Card title="Use Comparisons" icon="code-compare">
+    "Like Notion but for recipes"
+    
+    "Stripe-style landing page"
+    
+    AI understands popular site references
+  </Card>
+  
+  <Card title="Specify User Actions" icon="hand-pointer">
+    "When user clicks 'Sign Up', show modal with email/password form"
+    
+    Describe workflows, not just features
+  </Card>
+  
+  <Card title="Mention Performance" icon="gauge-high">
+    "Fast loading, optimized images"
+    
+    "Lazy load images below fold"
+    
+    AI will implement best practices
+  </Card>
+  
+  <Card title="Request Accessibility" icon="universal-access">
+    "WCAG AA compliant"
+    
+    "Keyboard navigation support"
+    
+    AI will add proper ARIA labels
+  </Card>
+</CardGroup>
+
+---
+
+## Getting Unstuck
+
+<Tabs>
+<Tab title="AI misunderstood me">
+  **What to do:**
+  - Rephrase with more details
+  - Provide a visual reference (link to similar site)
+  - Break request into smaller parts
+  
+  **Example:**
+  Instead of "Make it more modern", try:
+  "Update to use: larger font sizes, more white space, subtle shadows, smooth scroll animations"
+</Tab>
+
+<Tab title="Not happy with the design">
+  **What to try:**
+  - Share a link: "Make it look more like stripe.com"
+  - Be specific: "Increase heading size by 50%, add blue gradient to hero"
+  - Try a new direction: "Let's pivot to a darker, more mysterious vibe"
+</Tab>
+
+<Tab title="Feature isn't working">
+  **Steps:**
+  1. Describe the issue: "The contact form doesn't send emails"
+  2. AI will debug and fix
+  3. If stuck, break it down: "First, let's just get the form to submit"
+</Tab>
+</Tabs>
+
+---
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Browse Use Cases" icon="book-open" href="/use-cases/overview">
+    See detailed examples for specific app types
+  </Card>
+  
+  <Card title="Learn About AI Features" icon="sparkles" href="/ai-features">
+    Understand the intelligent capabilities Anyx adds
+  </Card>
+  
+  <Card title="Start Building" icon="rocket" href="https://anyx.app">
+    Try one of the example prompts above
+  </Card>
+  
+  <Card title="Join Community" icon="discord" href="https://discord.gg/anyx">
+    Get prompt feedback from other builders
+  </Card>
+</CardGroup>
+
