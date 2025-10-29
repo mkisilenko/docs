@@ -1,62 +1,79 @@
 {
   "$schema": "https://mintlify.com/docs.json",
-  "theme": "mint",
   "name": "Anyx",
+  "theme": "quill",
   "colors": {
     "primary": "#6366F1",
     "light": "#818CF8",
     "dark": "#4F46E5"
   },
   "favicon": "https://anyx.app/logo.png",
-  "navigation": {
-    "tabs": [
-      {
-        "tab": "Guides",
-        "groups": [
-          {
-            "group": "Getting started",
-            "pages": ["index", "quickstart", "prompting-guide"]
-          },
-          {
-            "group": "AI Features",
-            "pages": ["ai-features"]
-          },
-          {
-            "group": "Use Cases",
-            "pages": ["use-cases/overview", "use-cases/landing-pages", "use-cases/dashboards", "use-cases/saas-apps", "use-cases/e-commerce", "use-cases/games"]
-          },
-          {
-            "group": "Platform",
-            "pages": ["features", "lovable-migration"]
-          }
-        ]
-      }
-    ],
-    "global": {
-      "anchors": [
-        {"anchor": "Dashboard", "href": "https://anyx.app", "icon": "rocket"},
-        {"anchor": "Community", "href": "https://discord.com/invite/2JP8geEPy7", "icon": "discord"},
-        {"anchor": "GitHub", "href": "https://github.com/anyx-app", "icon": "github"}
-      ]
-    }
-  },
   "logo": {
     "light": "/logo/light.svg",
     "dark": "/logo/dark.svg",
-    "href": "https://anyx.app",
-    "height": 50
+    "href": "https://anyx.app"
   },
-  "navbar": {
-    "links": [{"label": "Support", "href": "mailto:support@anyx.app"}],
-    "primary": {"type": "button", "label": "Start Building", "href": "https://anyx.app"}
-  },
-  "search": {"prompt": "Ask Anyx AI Assistant..."},
-  "ai": {"enabled": true},
-  "contextual": {"options": ["copy", "view", "chatgpt", "claude", "cursor"]},
-  "footer": {
-    "socials": {
-      "linkedin": "https://www.linkedin.com/company/anyx-ai",
-      "github": "https://github.com/anyx-app"
+  "topbarLinks": [
+    {
+      "name": "Support",
+      "url": "mailto:support@anyx.app"
     }
+  ],
+  "topbarCtaButton": {
+    "type": "button",
+    "name": "Start Building",
+    "url": "https://anyx.app"
+  },
+  "anchors": [
+    {
+      "name": "Dashboard",
+      "icon": "rocket",
+      "url": "https://anyx.app"
+    },
+    {
+      "name": "Community",
+      "icon": "discord",
+      "url": "https://discord.com/invite/2JP8geEPy7"
+    },
+    {
+      "name": "GitHub",
+      "icon": "github",
+      "url": "https://github.com/anyx-app"
+    }
+  ],
+  "navigation": [
+    {
+      "group": "Getting Started",
+      "pages": ["index", "quickstart", "prompting-guide"]
+    },
+    {
+      "group": "AI Features",
+      "pages": ["ai-features"]
+    },
+    {
+      "group": "Use Cases",
+      "pages": [
+        "use-cases/overview",
+        "use-cases/landing-pages",
+        "use-cases/dashboards",
+        "use-cases/saas-apps",
+        "use-cases/e-commerce",
+        "use-cases/games"
+      ]
+    },
+    {
+      "group": "Platform",
+      "pages": ["features", "lovable-migration"]
+    }
+  ],
+  "search": {
+    "prompt": "Ask Anyx AI Assistant..."
+  },
+  "ai": {
+    "enabled": true
+  },
+  "footerSocials": {
+    "linkedin": "https://www.linkedin.com/company/anyx-ai",
+    "github": "https://github.com/anyx-app"
   }
 }
