@@ -17,13 +17,12 @@
     {
       "name": "Support",
       "url": "mailto:support@anyx.app"
+    },
+    {
+      "name": "Start Building",
+      "url": "https://anyx.app"
     }
   ],
-  "topbarCtaButton": {
-    "type": "link",
-    "url": "https://anyx.app",
-    "label": "Start Building"
-  },
   "anchors": [
     {
       "name": "Dashboard",
