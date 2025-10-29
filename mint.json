@@ -20,9 +20,9 @@
     }
   ],
   "topbarCtaButton": {
-    "type": "button",
-    "name": "Start Building",
-    "url": "https://anyx.app"
+    "type": "link",
+    "url": "https://anyx.app",
+    "label": "Start Building"
   },
   "anchors": [
     {
