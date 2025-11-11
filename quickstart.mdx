@@ -10,156 +10,146 @@ Get from idea to deployed app faster than you thought possible.
 ---
 
 <Steps>
-<Step title="Describe your app">
-  Go to [anyx.app](https://anyx.app) and sign in with GitHub.
-  
-  Type what you want to build. Be specific about:
-  - **Purpose**: What does the app do?
-  - **Audience**: Who is it for?
-  - **Style**: Colors, vibe, design inspiration
-  - **Key features**: Must-have functionality
-  
-  ### Example Prompts
-  
-  <Tabs>
-  <Tab title="Landing Page">
-    ```
-    "Create a landing page for my AI writing assistant called 'WriteFlow'.
-    
-    Target audience: Content marketers and bloggers
-    Style: Modern, dark mode, purple/blue gradient
-    
-    Sections:
-    - Hero with demo video placeholder
-    - 3 key benefits (save time, better quality, SEO optimization)
-    - Pricing tiers (Free, Pro $29/mo, Team $99/mo)
-    - Customer testimonials section
-    - FAQ section
-    - Email signup form
-    
-    Add AI lead assistant that qualifies visitors."
-    ```
-  </Tab>
-  
-  <Tab title="Dashboard">
-    ```
-    "Build a social media analytics dashboard.
-    
-    Target: Marketing teams
-    Style: Clean, light theme, sidebar navigation
-    
-    Features:
-    - Follower growth chart (last 30 days)
-    - Engagement metrics cards (likes, comments, shares)
-    - Top posts table with thumbnails
-    - Date range filter
-    - Export to CSV button
-    
-    Add AI insights that detect unusual patterns and suggest actions."
-    ```
-  </Tab>
-  
-  <Tab title="SaaS App">
-    ```
-    "Create a task management tool for remote teams.
-    
-    Style: Modern, Notion-like, supports dark/light mode
-    
-    Features:
-    - Kanban board with drag-and-drop
-    - Task cards with assignee, due date, priority
-    - List view and calendar view
-    - User authentication (sign up, login)
-    - Team collaboration (invite members)
-    
-    Add AI command palette for natural language task creation."
-    ```
-  </Tab>
-  </Tabs>
-  
-  <Tip>
-    **Pro tip:** Mention specific design inspiration ("like Stripe", "Notion-style") to guide the AI's design choices
-  </Tip>
-</Step>
+  <Step title="Describe your app">
+    Go to [anyx.app](https://anyx.app) and sign in.
 
-<Step title="Watch AI build it">
-  Once you submit your prompt, Anyx AI agents spring into action:
-  
-  <AccordionGroup>
-  <Accordion title="What's happening behind the scenes?">
-    1. **Planning** (30 seconds)
-       - AI analyzes your prompt
-       - Creates project structure
-       - Selects tech stack
-       - Plans AI features
-    
-    2. **Development** (5-10 minutes)
-       - Writes React components
-       - Designs UI with Tailwind CSS
-       - Implements AI features
-       - Sets up database (if needed)
-       - Configures authentication
-    
-    3. **Deployment** (2-3 minutes)
-       - Creates GitHub repository
-       - Runs tests
-       - Deploys to production
-       - Sets up environment variables
-  </Accordion>
-  
-  <Accordion title="Live progress updates">
-    You'll see real-time updates in the chat:
-    - "Setting up project structure..."
-    - "Creating homepage component..."
-    - "Implementing AI insights engine..."
-    - "Running tests..."
-    - "Deploying to production..."
-  </Accordion>
-  </AccordionGroup>
-  
-  <Frame>
-    <img src="/images/checks-passed.png" alt="AI agent progress in chat" />
-  </Frame>
-  
-  <Check>
-    **Average build time:** 10-15 minutes from prompt to live URL
-  </Check>
-</Step>
+    Type what you want to build. Be specific about:
 
-<Step title="Your app is live!">
-  When the AI finishes, you'll get:
-  
-  <CardGroup cols={2}>
-    <Card title="Live Preview" icon="globe">
-      Production URL
-      
-      `https://your-app.anyx.app`
-      
-      Share it immediately!
-    </Card>
-    
-    <Card title="GitHub Repo" icon="github">
-      Full source code in your account
-      
-      `github.com/you/your-app`
-      
-      You own the code
-    </Card>
-  </CardGroup>
-  
-  ### What you'll find
-  
-  ✅ **Modern UI** - Responsive design, smooth animations  
-  ✅ **AI features** - Intelligent capabilities built-in  
-  ✅ **Production code** - TypeScript, React, Tailwind CSS  
-  ✅ **Database** - Supabase set up (if requested)  
-  ✅ **Auth** - User login/signup (for SaaS apps)  
-  ✅ **Tests** - Basic test suite included
-  
-  <Note>
-    All environment variables (API keys, database URLs) are automatically configured
-  </Note>
-</Step>
+    - **Purpose**: What does the app do?
+    - **Audience**: Who is it for?
+    - **Style**: Colors, vibe, design inspiration
+    - **Key features**: Must-have functionality
+
+    ### Example Prompts
+
+    <Tabs>
+      <Tab title="Landing Page">
+        ```
+        "Create a landing page for my AI writing assistant called 'WriteFlow'.
+        
+        Target audience: Content marketers and bloggers
+        Style: Modern, dark mode, purple/blue gradient
+        
+        Sections:
+        - Hero with demo video placeholder
+        - 3 key benefits (save time, better quality, SEO optimization)
+        - Pricing tiers (Free, Pro $29/mo, Team $99/mo)
+        - Customer testimonials section
+        - FAQ section
+        - Email signup form
+        
+        Add AI lead assistant that qualifies visitors."
+        ```
+      </Tab>
+      <Tab title="Dashboard">
+        ```
+        "Build a social media analytics dashboard.
+        
+        Target: Marketing teams
+        Style: Clean, light theme, sidebar navigation
+        
+        Features:
+        - Follower growth chart (last 30 days)
+        - Engagement metrics cards (likes, comments, shares)
+        - Top posts table with thumbnails
+        - Date range filter
+        - Export to CSV button
+        
+        Add AI insights that detect unusual patterns and suggest actions."
+        ```
+      </Tab>
+      <Tab title="SaaS App">
+        ```
+        "Create a task management tool for remote teams.
+        
+        Style: Modern, Notion-like, supports dark/light mode
+        
+        Features:
+        - Kanban board with drag-and-drop
+        - Task cards with assignee, due date, priority
+        - List view and calendar view
+        - User authentication (sign up, login)
+        - Team collaboration (invite members)
+        
+        Add AI command palette for natural language task creation."
+        ```
+      </Tab>
+    </Tabs>
+    <Tip>
+      **Pro tip:** Mention specific design inspiration ("like Stripe", "Notion-style") to guide the AI's design choices
+    </Tip>
+  </Step>
+  <Step title="Watch AI build it">
+    Once you submit your prompt, Anyx AI agents spring into action:
+
+    <AccordionGroup>
+      <Accordion title="What's happening behind the scenes?">
+        1. **Planning** (30 seconds)
+           - AI analyzes your prompt
+           - Creates project structure
+           - Selects tech stack
+           - Plans AI features
+        2. **Development** (5-10 minutes)
+           - Writes React components
+           - Designs UI with Tailwind CSS
+           - Implements AI features
+           - Sets up database (if needed)
+           - Configures authentication
+        3. **Deployment** (2-3 minutes)
+           - Creates GitHub repository
+           - Runs tests
+           - Deploys to production
+           - Sets up environment variables
+      </Accordion>
+      <Accordion title="Live progress updates">
+        You'll see real-time updates in the chat:
+
+        - "Setting up project structure..."
+        - "Creating homepage component..."
+        - "Implementing AI insights engine..."
+        - "Running tests..."
+        - "Deploying to production..."
+      </Accordion>
+    </AccordionGroup>
+    <Frame>
+      ![AI agent progress in chat](/images/checks-passed.png)
+    </Frame>
+    <Check>
+      **Average build time:** 10-15 minutes from prompt to live URL
+    </Check>
+  </Step>
+  <Step title="Your app is live!">
+    When the AI finishes, you'll get:
+
+    <CardGroup cols={2}>
+      <Card title="Live Preview" icon="globe">
+        Production URL
+
+        `https://your-app.anyx.dev`
+
+        Share it immediately!
+      </Card>
+      <Card title="GitHub Repo" icon="github">
+        Full source code in your account
+
+        `github.com/anyx-apps/your-app`
+
+        You own the code
+      </Card>
+    </CardGroup>
+    ### What you'll find
+
+    ✅ **Modern UI** - Responsive design, smooth animations\
+    ✅ **AI features** - Intelligent capabilities built-in\
+    ✅ **Production code** - TypeScript, React, Tailwind CSS\
+    ✅ **Database** - Supabase set up (if requested)\
+    ✅ **Auth** - User login/signup (for SaaS apps)\
+    ✅ **Tests** - Basic test suite included
+
+    <Note>
+      All environment variables (API keys, database URLs) are automatically configured
+    </Note>
+  </Step>
 </Steps>
 
 ---
@@ -169,70 +159,70 @@ Get from idea to deployed app faster than you thought possible.
 Not perfect? Just chat to make changes:
 
 <Tabs>
-<Tab title="Design Changes">
-  **Example requests:**
-  
-  - "Make the hero section more bold and eye-catching"
-  - "Change the color scheme to blue instead of purple"
-  - "Add more white space between sections"
-  - "Make the font sizes larger"
-  - "Add subtle animations to the cards"
-  
-  <Tip>Be specific about what you want changed</Tip>
-</Tab>
+  <Tab title="Design Changes">
+    **Example requests:**
 
-<Tab title="Feature Additions">
-  **Example requests:**
-  
-  - "Add a pricing calculator"
-  - "Create a blog section with 3 example posts"
-  - "Add a contact form with email notifications"
-  - "Implement dark mode toggle"
-  - "Add a demo video section"
-  
-  <Tip>Break big features into smaller tasks for faster results</Tip>
-</Tab>
+    - "Make the hero section more bold and eye-catching"
+    - "Change the color scheme to blue instead of purple"
+    - "Add more white space between sections"
+    - "Make the font sizes larger"
+    - "Add subtle animations to the cards"
 
-<Tab title="AI Customization">
-  **Example requests:**
-  
-  - "Make the AI assistant more playful and casual"
-  - "Add voice input to the AI chat"
-  - "Move the AI widget to the left sidebar"
-  - "Let AI generate images based on descriptions"
-  - "Change AI responses to be more technical"
-</Tab>
+    <Tip>
+      Be specific about what you want changed
+    </Tip>
+  </Tab>
+  <Tab title="Feature Additions">
+    **Example requests:**
 
-<Tab title="Content Updates">
-  **Example requests:**
-  
-  - "Change the tagline to 'Build smarter, ship faster'"
-  - "Update pricing: Free, $49/mo, $199/mo"
-  - "Add testimonial from 'Sarah Chen, Product Manager at Acme'"
-  - "Replace placeholder images with descriptions for Unsplash"
-</Tab>
+    - "Add a pricing calculator"
+    - "Create a blog section with 3 example posts"
+    - "Add a contact form with email notifications"
+    - "Implement dark mode toggle"
+    - "Add a demo video section"
+
+    <Tip>
+      Break big features into smaller tasks for faster results
+    </Tip>
+  </Tab>
+  <Tab title="AI Customization">
+    **Example requests:**
+
+    - "Make the AI assistant more playful and casual"
+    - "Add voice input to the AI chat"
+    - "Move the AI widget to the left sidebar"
+    - "Let AI generate images based on descriptions"
+    - "Change AI responses to be more technical"
+  </Tab>
+  <Tab title="Content Updates">
+    **Example requests:**
+
+    - "Change the tagline to 'Build smarter, ship faster'"
+    - "Update pricing: Free, $49/mo, $199/mo"
+    - "Add testimonial from 'Sarah Chen, Product Manager at Acme'"
+    - "Replace placeholder images with descriptions for Unsplash"
+  </Tab>
 </Tabs>
 
 ### How Iterations Work
 
 <Steps>
-<Step title="Send a message">
-  Type your change request in the chat
-</Step>
+  <Step title="Send a message">
+    Type your change request in the chat
+  </Step>
+  <Step title="AI implements it">
+    The agent:
 
-<Step title="AI implements it">
-  The agent:
-  - Updates the code
-  - Tests the changes
-  - Creates a pull request
-  - Auto-merges after tests pass
-</Step>
+    - Updates the code
+    - Tests the changes
+    - Creates a pull request
+    - Auto-merges after tests pass
+  </Step>
+  <Step title="Auto-redeploys">
+    Production automatically deploys the updated version
 
-<Step title="Auto-redeploys">
-  Production automatically deploys the updated version
-  
-  **Live in 2-5 minutes**
-</Step>
+    **Live in 2-5 minutes**
+  </Step>
 </Steps>
 
 ---
@@ -242,66 +232,76 @@ Not perfect? Just chat to make changes:
 If your app needs to store data, choose a database option:
 
 <Tabs>
-<Tab title="Anyx Managed (Easiest)">
-  **What it is:**
-  - We provision a Supabase database for you
-  - Zero configuration
-  - Fully managed by Anyx
-  
-  **Best for:**
-  - Beginners
-  - Quick prototypes
-  - You don't want to manage infrastructure
-  
-  **How to use:**
-  Just mention "with database" in your prompt:
-  
-  ```
-  "Create a task manager with user accounts and database"
-  ```
-  
-  <Check>Database is provisioned and connected automatically</Check>
-</Tab>
+  <Tab title="Anyx Managed (Easiest)">
+    **What it is:**
 
-<Tab title="Bring Your Own Supabase">
-  **What it is:**
-  - Connect your existing Supabase project
-  - You control the database
-  - Anyx handles migrations
-  
-  **Best for:**
-  - You already have a Supabase project
-  - You want full database control
-  - Production apps
-  
-  **How to connect:**
-  1. Go to project settings
-  2. Click "Connect Database"
-  3. Select "Bring Your Own Supabase"
-  4. Enter your Supabase URL and keys
-  
-  <Tip>Anyx can auto-apply migrations or give you SQL to paste manually</Tip>
-</Tab>
+    - We provision a Supabase database for you
+    - Zero configuration
+    - Fully managed by Anyx
 
-<Tab title="No Database">
-  **What it is:**
-  - Frontend-only app
-  - No backend or data storage
-  
-  **Best for:**
-  - Landing pages
-  - Portfolios
-  - Static marketing sites
-  - Pure frontend demos
-  
-  **How to specify:**
-  
-  ```
-  "Create a landing page (no database needed)"
-  ```
-  
-  <Check>Fastest option - deploys in 5-8 minutes</Check>
-</Tab>
+    **Best for:**
+
+    - Beginners
+    - Quick prototypes
+    - You don't want to manage infrastructure
+
+    **How to use:** Just mention "with database" in your prompt:
+
+    ```
+    "Create a task manager with user accounts and database"
+    ```
+
+    <Check>
+      Database is provisioned and connected automatically
+    </Check>
+  </Tab>
+  <Tab title="Bring Your Own Supabase">
+    **What it is:**
+
+    - Connect your existing Supabase project
+    - You control the database
+    - Anyx handles migrations
+
+    **Best for:**
+
+    - You already have a Supabase project
+    - You want full database control
+    - Production apps
+
+    **How to connect:**
+
+    1. Go to project settings
+    2. Click "Connect Database"
+    3. Select "Bring Your Own Supabase"
+    4. Enter your Supabase URL and keys
+
+    <Tip>
+      Anyx can auto-apply migrations or give you SQL to paste manually
+    </Tip>
+  </Tab>
+  <Tab title="No Database">
+    **What it is:**
+
+    - Frontend-only app
+    - No backend or data storage
+
+    **Best for:**
+
+    - Landing pages
+    - Portfolios
+    - Static marketing sites
+    - Pure frontend demos
+
+    **How to specify:**
+
+    ```
+    "Create a landing page (no database needed)"
+    ```
+
+    <Check>
+      Fastest option - deploys in 5-8 minutes
+    </Check>
+  </Tab>
 </Tabs>
 
 ---
@@ -313,19 +313,19 @@ Break big projects into tasks for better control:
 <CardGroup cols={2}>
   <Card title="AI Suggests Tasks" icon="lightbulb">
     Based on your app, AI recommends next features to build
-    
+
     Example: "Add user profiles", "Implement search", "Add analytics"
   </Card>
-  
   <Card title="One-Click Creation" icon="check">
     Convert suggestions to real tasks with one click
-    
+
     AI automatically implements and deploys each task
   </Card>
 </CardGroup>
 
 <Note>
   **Task limits by tier:**
+
   - Free: 4 active tasks
   - Builder: 8 active tasks
   - Pro: 12 active tasks
@@ -340,15 +340,12 @@ Break big projects into tasks for better control:
   <Card title="Learn Prompting" icon="pen" href="/prompting-guide">
     Write prompts that get you exactly what you want
   </Card>
-  
   <Card title="Explore Use Cases" icon="book-open" href="/use-cases/overview">
     See detailed examples for different app types
   </Card>
-  
   <Card title="Understand AI Features" icon="sparkles" href="/ai-features">
     Learn about the intelligent capabilities Anyx adds
   </Card>
-  
   <Card title="Platform Features" icon="rocket" href="/features">
     Deep dive into deployment, GitHub, and database options
   </Card>
@@ -359,47 +356,50 @@ Break big projects into tasks for better control:
 ## Troubleshooting
 
 <AccordionGroup>
-<Accordion title="Build is taking longer than 15 minutes">
-  **Possible causes:**
-  - Complex app with many features
-  - Database provisioning (adds 2-3 min)
-  - First-time setup
-  
-  **What to do:**
-  - Check the chat for progress updates
-  - If stuck for 20+ minutes, contact support
-  - Most builds complete in 10-15 min
-</Accordion>
+  <Accordion title="Build is taking longer than 15 minutes">
+    **Possible causes:**
 
-<Accordion title="App doesn't look as expected">
-  **What to try:**
-  - Be more specific in your next message
-  - Share a link to design inspiration: "Make it look like stripe.com"
-  - Request specific changes: "Make the hero section bolder"
-  
-  **Remember:** AI improves with feedback!
-</Accordion>
+    - Complex app with many features
+    - Database provisioning (adds 2-3 min)
+    - First-time setup
 
-<Accordion title="Feature is missing">
-  **What to do:**
-  - Chat: "Add [feature name]"
-  - Check task suggestions (AI might recommend it)
-  - Break complex features into smaller tasks
-  
-  **Example:** Instead of "Add complete user dashboard", try:
-  1. "Add user profile page"
-  2. "Add settings page"
-  3. "Add activity feed"
-</Accordion>
+    **What to do:**
 
-<Accordion title="Can't connect my own Supabase">
-  **Common issues:**
-  1. Wrong URL format (should be `https://xxx.supabase.co`)
-  2. Wrong API key (use anon key, not service role)
-  3. RLS policies blocking access
-  
-  **Solution:** Follow the [database connection guide](/features#database-options)
-</Accordion>
+    - Check the chat for progress updates
+    - If stuck for 20+ minutes, contact support
+    - Most builds complete in 10-15 min
+  </Accordion>
+  <Accordion title="App doesn't look as expected">
+    **What to try:**
+
+    - Be more specific in your next message
+    - Share a link to design inspiration: "Make it look like stripe.com"
+    - Request specific changes: "Make the hero section bolder"
+
+    **Remember:** AI improves with feedback!
+  </Accordion>
+  <Accordion title="Feature is missing">
+    **What to do:**
+
+    - Chat: "Add [feature name]"
+    - Check task suggestions (AI might recommend it)
+    - Break complex features into smaller tasks
+
+    **Example:** Instead of "Add complete user dashboard", try:
+
+    1. "Add user profile page"
+    2. "Add settings page"
+    3. "Add activity feed"
+  </Accordion>
+  <Accordion title="Can't connect my own Supabase">
+    **Common issues:**
+
+    1. Wrong URL format (should be `https://xxx.supabase.co`)
+    2. Wrong API key (use anon key, not service role)
+    3. RLS policies blocking access
+
+    **Solution:** Follow the [database connection guide](/features#database-options)
+  </Accordion>
 </AccordionGroup>
 
 ---
