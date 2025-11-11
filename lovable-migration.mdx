@@ -17,44 +17,39 @@ Migrate your project to Anyx and continue building with autonomous AI agents, ad
 
 <CardGroup cols={2}>
   <Card title="Autonomous AI Agents" icon="robot">
-    **Lovable:** Manual task creation  
+    **Lovable:** Manual task creation\
     **Anyx:** AI works independently
-    
+
     Agents plan, implement, test, and deploy without constant supervision
   </Card>
-  
   <Card title="Advanced Task Management" icon="list-check">
-    **Lovable:** Basic to-do list  
+    **Lovable:** Basic to-do list\
     **Anyx:** Full project board
-    
+
     Kanban, timeline views, AI suggestions, one-click task creation
   </Card>
-  
   <Card title="Flexible Database Options" icon="database">
-    **Lovable:** Manual migrations only  
+    **Lovable:** Manual migrations only\
     **Anyx:** 3 modes
-    
+
     We manage, you manage (auto or manual), or no database
   </Card>
-  
   <Card title="Faster Iterations" icon="bolt">
-    **Lovable:** 10-15 min per change  
+    **Lovable:** 10-15 min per change\
     **Anyx:** 5-8 min per change
-    
+
     Autonomous agents work faster with less back-and-forth
   </Card>
-  
   <Card title="GitHub Automation" icon="github">
-    **Lovable:** Basic repo creation  
+    **Lovable:** Basic repo creation\
     **Anyx:** Complete CI/CD
-    
+
     Auto-PRs, automated tests, smart merging, issue tracking
   </Card>
-  
   <Card title="AI Features Built-in" icon="sparkles">
-    **Lovable:** Static generation  
+    **Lovable:** Static generation\
     **Anyx:** Intelligent apps
-    
+
     Every app gets context-aware AI capabilities automatically
   </Card>
 </CardGroup>
@@ -63,99 +58,102 @@ Migrate your project to Anyx and continue building with autonomous AI agents, ad
 
 ## Feature Comparison
 
-| Feature | Lovable | Anyx |
-|---------|---------|------|
-| **AI Agent** | Chat-based | Autonomous |
-| **Task Management** | Basic list | Full board + AI suggestions |
-| **Database Setup** | Manual only | 3 modes (managed, BYOD, none) |
-| **Migrations** | Manual SQL paste | Auto or manual |
-| **Iteration Speed** | 10-15 min | 5-8 min |
-| **GitHub** | Repo creation | Full CI/CD automation |
-| **AI Features** | None | Built into every app |
-| **Multi-page Apps** | Yes | Yes |
-| **Custom Domains** | Yes | Yes |
-| **Deployment** | Automatic | Automatic |
+| Feature             | Lovable          | Anyx                          |
+| ------------------- | ---------------- | ----------------------------- |
+| **AI Agent**        | Chat-based       | Autonomous                    |
+| **Task Management** | Basic list       | Full board + AI suggestions   |
+| **Database Setup**  | Manual only      | 3 modes (managed, BYOD, none) |
+| **Migrations**      | Manual SQL paste | Auto or manual                |
+| **Iteration Speed** | 10-15 min        | 5-8 min                       |
+| **GitHub**          | Repo creation    | Full CI/CD automation         |
+| **AI Features**     | None             | Built into every app          |
+| **Multi-page Apps** | Yes              | Yes                           |
+| **Custom Domains**  | Yes              | Yes                           |
+| **Deployment**      | Automatic        | Automatic                     |
 
 ---
 
 ## Migration Process
 
 <Steps>
-<Step title="Connect GitHub">
-  1. Sign in to Anyx with your GitHub account
-  2. Grant repository access
-  3. Anyx detects your Lovable projects automatically
-  
-  <Tip>Anyx recognizes Lovable projects via package.json signatures</Tip>
-</Step>
+  <Step title="Connect GitHub">
+    1. Sign in to Anyx 
+    1. Connect your GitHub
+    2. Grant repository access
+    3. Anyx detects your Lovable projects automatically
+    4. A few clicks and you're all set up
+  </Step>
+  <Step title="Select Project">
+    1. Choose which Lovable project to migrate
+    2. Anyx analyzes:
+       - Database migrations (if any)
+       - Supabase edge functions
+       - Dependencies
+       - Project complexity
 
-<Step title="Select Project">
-  1. Choose which Lovable project to migrate
-  2. Anyx analyzes:
-     - Database migrations (if any)
-     - Supabase edge functions
-     - Dependencies
-     - Project complexity
-  
-  **Analysis takes:** 30-60 seconds
-  
-  <Frame>
-    <img src="/images/checks-passed.png" alt="Project analysis screen" />
-  </Frame>
-</Step>
+    **Analysis takes:** 30-60 seconds
 
-<Step title="Choose Database Option">
-  Select how to handle your database:
-  
-  <Tabs>
-  <Tab title="Keep Your Supabase">
-    **If you already have Supabase connected:**
-    
-    1. Anyx connects to your existing Supabase
-    2. Choose migration mode:
-       - **Auto**: Anyx applies migrations
-       - **Manual**: You paste SQL (like Lovable)
-    3. All data preserved
-    
-    <Check>Recommended for production projects</Check>
-  </Tab>
-  
-  <Tab title="Switch to Anyx Managed">
-    **If you want easier database management:**
-    
-    1. Anyx provisions new Supabase
-    2. Optionally migrate data from old database
-    3. Fully managed going forward
-    
-    <Check>Easiest option - zero maintenance</Check>
-  </Tab>
-  
-  <Tab title="No Database">
-    **If your project is frontend-only:**
-    
-    1. No database setup needed
-    2. Fastest migration
-    3. Deploy immediately
-    
-    <Check>Perfect for landing pages, portfolios</Check>
-  </Tab>
-  </Tabs>
-</Step>
+    <Frame>
+      ![Project analysis screen](/images/checks-passed.png)
+    </Frame>
+  </Step>
+  <Step title="Choose Database Option">
+    Select how to handle your database:
 
-<Step title="Complete Migration">
-  Anyx finalizes the setup:
-  
-  - ✅ Imports your codebase
-  - ✅ Connects database (if chosen)
-  - ✅ Applies migrations (if needed)
-  - ✅ Sets up production deployment
-  - ✅ Configures environment variables
-  - ✅ Runs initial tests
-  
-  **Time:** 2-3 minutes
-  
-  <Check>Your project is now ready to continue building in Anyx!</Check>
-</Step>
+    <Tabs>
+      <Tab title="Keep Your Supabase">
+        **If you already have Supabase connected:**
+
+        1. Anyx connects to your existing Supabase
+        2. Choose migration mode:
+           - **Auto**: Anyx applies migrations
+           - **Manual**: You paste SQL (like Lovable)
+        3. All data preserved
+
+        <Check>
+          Recommended for production projects
+        </Check>
+      </Tab>
+      <Tab title="Switch to Anyx Managed">
+        **If you want easier database management:**
+
+        1. Anyx provisions new Supabase
+        2. Optionally migrate data from the old database
+        3. Fully managed going forward
+
+        <Check>
+          Easiest option - zero maintenance
+        </Check>
+      </Tab>
+      <Tab title="No Database">
+        **If your project is frontend-only:**
+
+        1. No database setup needed
+        2. Fastest migration
+        3. Deploy immediately
+
+        <Check>
+          Perfect for landing pages, portfolios
+        </Check>
+      </Tab>
+    </Tabs>
+  </Step>
+  <Step title="Complete Migration">
+    Anyx finalizes the setup:
+
+    - ✅ Imports your codebase
+    - ✅ Connects database (if chosen)
+    - ✅ Applies migrations (if needed)
+    - ✅ Sets up production deployment
+    - ✅ Configures environment variables
+    - ✅ Runs initial tests
+
+    **Time:** 2-3 minutes
+
+    <Check>
+      Your project is now ready to continue building in Anyx!
+    </Check>
+  </Step>
 </Steps>
 
 ---
@@ -163,46 +161,48 @@ Migrate your project to Anyx and continue building with autonomous AI agents, ad
 ## What Happens to Your Code?
 
 <AccordionGroup>
-<Accordion title="GitHub Repository">
-  **Your repo stays yours:**
-  - Code remains in your GitHub account
-  - All git history preserved
-  - Existing branches kept
-  - Collaborators maintained
-  
-  **Anyx adds:**
-  - GitHub Actions for CI/CD
-  - Pull request automation
-  - Issue templates
-</Accordion>
+  <Accordion title="GitHub Repository">
+    **Your repo stays yours:**
 
-<Accordion title="Production Deployment">
-  **Your deployment:**
-  - Existing deployment can be maintained
-  - Anyx handles new production setup
-  - Custom domain transfers easily
-  - Environment variables migrated
-  
-  **No downtime during migration**
-</Accordion>
+    - Code remains in your GitHub account
+    - All git history preserved
+    - Existing branches kept
+    - Collaborators maintained
 
-<Accordion title="Database & Data">
-  **Your database:**
-  - Existing Supabase project stays active
-  - No data moved unless you choose to
-  - Connections updated automatically
-  - Migrations applied safely
-  
-  **100% data integrity**
-</Accordion>
+    **Anyx adds:**
 
-<Accordion title="Dependencies">
-  **All preserved:**
-  - `package.json` maintained
-  - Custom dependencies kept
-  - npm scripts work as before
-  - Build configuration intact
-</Accordion>
+    - GitHub Actions for CI/CD
+    - Pull request automation
+    - Issue templates
+  </Accordion>
+  <Accordion title="Production Deployment">
+    **Your deployment:**
+
+    - Existing deployment can be maintained
+    - Anyx handles new production setup
+    - Custom domain transfers easily
+    - Environment variables migrated
+
+    **No downtime during migration**
+  </Accordion>
+  <Accordion title="Database & Data">
+    **Your database:**
+
+    - Existing Supabase project stays active
+    - No data moved unless you choose to
+    - Connections updated automatically
+    - Migrations applied safely
+
+    **100% data integrity**
+  </Accordion>
+  <Accordion title="Dependencies">
+    **All preserved:**
+
+    - `package.json` maintained
+    - Custom dependencies kept
+    - npm scripts work as before
+    - Build configuration intact
+  </Accordion>
 </AccordionGroup>
 
 ---
@@ -215,15 +215,12 @@ Once migrated, you can:
   <Card title="Continue Building" icon="hammer">
     Chat with AI to add features, just like before - but faster
   </Card>
-  
   <Card title="Use Task System" icon="list-check">
     Break big features into tasks, let AI suggest next steps
   </Card>
-  
   <Card title="Leverage AI Features" icon="sparkles">
     Add intelligent capabilities to your app automatically
   </Card>
-  
   <Card title="Manage Database" icon="database">
     Choose auto-migrations or keep manual control
   </Card>
@@ -234,46 +231,47 @@ Once migrated, you can:
 ## Migration Examples
 
 <Tabs>
-<Tab title="Simple Landing Page">
-  **Project:** Marketing site, no database
-  
-  **Migration steps:**
-  1. Connect GitHub → Select repo
-  2. Choose "No database"
-  3. Complete migration
-  
-  **Time:** 2 minutes
-  
-  **After:** Continue adding pages, refining design
-</Tab>
+  <Tab title="Simple Landing Page">
+    **Project:** Marketing site, no database
 
-<Tab title="SaaS App with Supabase">
-  **Project:** Task manager with auth + database
-  
-  **Migration steps:**
-  1. Connect GitHub → Select repo
-  2. Connect existing Supabase
-  3. Choose "Auto migrations"
-  4. Complete migration
-  
-  **Time:** 4 minutes
-  
-  **After:** AI agents handle migrations automatically
-</Tab>
+    **Migration steps:**
 
-<Tab title="Multi-page Site">
-  **Project:** Blog with CMS, using Supabase
-  
-  **Migration steps:**
-  1. Connect GitHub → Select repo
-  2. Switch to Anyx managed database
-  3. Opt to migrate data
-  4. Complete migration
-  
-  **Time:** 5 minutes
-  
-  **After:** Zero database maintenance, faster iterations
-</Tab>
+    1. Connect GitHub → Select repo
+    2. Choose "No database"
+    3. Complete migration
+
+    **Time:** 2 minutes
+
+    **After:** Continue adding pages, refining design
+  </Tab>
+  <Tab title="SaaS App with Supabase">
+    **Project:** Task manager with auth + database
+
+    **Migration steps:**
+
+    1. Connect GitHub → Select repo
+    2. Connect existing Supabase
+    3. Choose "Auto migrations"
+    4. Complete migration
+
+    **Time:** 4 minutes
+
+    **After:** AI agents handle migrations automatically
+  </Tab>
+  <Tab title="Multi-page Site">
+    **Project:** Blog with CMS, using Supabase
+
+    **Migration steps:**
+
+    1. Connect GitHub → Select repo
+    2. Switch to Anyx managed database
+    3. Opt to migrate data
+    4. Complete migration
+
+    **Time:** 5 minutes
+
+    **After:** Zero database maintenance, faster iterations
+  </Tab>
 </Tabs>
 
 ---
@@ -281,60 +279,60 @@ Once migrated, you can:
 ## Common Questions
 
 <AccordionGroup>
-<Accordion title="Will my app stay live during migration?">
-  **Yes!** Migration is non-destructive:
-  - Your current deployment stays active
-  - Anyx sets up in parallel
-  - You control when to switch
-  - Can test before going live
-</Accordion>
+  <Accordion title="Will my app stay live during migration?">
+    **Yes!** Migration is non-destructive:
 
-<Accordion title="What if I have custom code?">
-  **All custom code is preserved:**
-  - Custom components kept
-  - Manual code edits maintained
-  - npm dependencies unchanged
-  - Build scripts work as before
-  
-  Anyx works with your customizations
-</Accordion>
+    - Your current deployment stays active
+    - Anyx sets up in parallel
+    - You control when to switch
+    - Can test before going live
+  </Accordion>
+  <Accordion title="What if I have custom code?">
+    **All custom code is preserved:**
 
-<Accordion title="Can I migrate back to Lovable?">
-  **Yes!** Your code stays in your GitHub:
-  - You own the repository
-  - Can point Lovable back to it
-  - No vendor lock-in
-  - Export anytime
-  
-  But you probably won't want to :)
-</Accordion>
+    - Custom components kept
+    - Manual code edits maintained
+    - npm dependencies unchanged
+    - Build scripts work as before
 
-<Accordion title="What happens to my deployment?">
-  **Two options:**
-  1. **Maintain existing:** Keep your current hosting setup
-  2. **Fresh deploy:** Anyx sets up new production environment
-  
-  Your custom domain can be transferred easily
-</Accordion>
+    Anyx works with your customizations
+  </Accordion>
+  <Accordion title="Can I migrate back to Lovable?">
+    **Yes!** Your code stays in your GitHub:
 
-<Accordion title="Is my data safe?">
-  **Absolutely:**
-  - No data deleted
-  - Optional data migration (you control)
-  - Encrypted transfers
-  - Rollback available
-  
-  We never access your data without permission
-</Accordion>
+    - You own the repository
+    - Can point Lovable back to it
+    - No vendor lock-in
+    - Export anytime
 
-<Accordion title="How long does migration take?">
-  **Typical times:**
-  - Simple site: 2-3 minutes
-  - App with database: 4-5 minutes
-  - Complex multi-page: 5-7 minutes
-  
-  Most of this is automated analysis and setup
-</Accordion>
+    But you probably won't want to :)
+  </Accordion>
+  <Accordion title="What happens to my deployment?">
+    **Two options:**
+
+    1. **Maintain existing:** Keep your current hosting setup
+    2. **Fresh deploy:** Anyx sets up new production environment
+
+    Your custom domain can be transferred easily
+  </Accordion>
+  <Accordion title="Is my data safe?">
+    **Absolutely:**
+
+    - Optional data migration (you control)
+    - Encrypted transfers
+    - Rollback available
+
+    We never access your data without permission
+  </Accordion>
+  <Accordion title="How long does migration take?">
+    **Typical times:**
+
+    - Simple site: 2-3 minutes
+    - App with database: 4-5 minutes
+    - Complex multi-page: 5-7 minutes
+
+    Most of this is automated analysis and setup
+  </Accordion>
 </AccordionGroup>
 
 ---
@@ -342,35 +340,33 @@ Once migrated, you can:
 ## Real Migration Stories
 
 <Tabs>
-<Tab title="Sarah's Portfolio">
-  **Before:** Lovable landing page
-  
-  **Why migrated:** Wanted AI reading assistant for blog
-  
-  **Migration:** 2 minutes
-  
-  **After:** "The AI features make my portfolio feel way more interactive. Visitors engage 2x longer."
-</Tab>
+  <Tab title="Sarah's Portfolio">
+    **Before:** Lovable landing page
 
-<Tab title="TechCo Dashboard">
-  **Before:** Lovable analytics dashboard
-  
-  **Why migrated:** Needed faster iterations for customer requests
-  
-  **Migration:** 4 minutes
-  
-  **After:** "We ship features 2x faster now. The autonomous agents don't need hand-holding like Lovable's chat."
-</Tab>
+    **Why migrated:** Wanted AI reading assistant for blog
 
-<Tab title="Luna Candles Store">
-  **Before:** Lovable e-commerce site
-  
-  **Why migrated:** Wanted AI shopping assistant
-  
-  **Migration:** 5 minutes (including database)
-  
-  **After:** "The AI recommendations increased our average order value by 30%. Best decision we made."
-</Tab>
+    **Migration:** 2 minutes
+
+    **After:** "The AI features make my portfolio feel way more interactive. Visitors engage 2x longer."
+  </Tab>
+  <Tab title="TechCo Dashboard">
+    **Before:** Lovable analytics dashboard
+
+    **Why migrated:** Needed faster iterations for customer requests
+
+    **Migration:** 4 minutes
+
+    **After:** "We ship features 2x faster now. The autonomous agents don't need hand-holding like Lovable's chat."
+  </Tab>
+  <Tab title="Luna Candles Store">
+    **Before:** Lovable e-commerce site
+
+    **Why migrated:** Wanted AI shopping assistant
+
+    **Migration:** 5 minutes (including database)
+
+    **After:** "The AI recommendations increased our average order value by 30%. Best decision we made."
+  </Tab>
 </Tabs>
 
 ---
@@ -380,25 +376,22 @@ Once migrated, you can:
 <CardGroup cols={2}>
   <Card title="Migration Guide" icon="book">
     Detailed step-by-step in our docs
-    
+
     [Read migration guide →](/quickstart)
   </Card>
-  
   <Card title="Live Support" icon="headset">
     Chat with our team during migration
-    
+
     [Discord community →](https://discord.gg/anyx)
   </Card>
-  
   <Card title="Video Tutorial" icon="video">
     Watch actual migration walkthrough
-    
+
     [YouTube playlist →](#)
   </Card>
-  
   <Card title="Book a Call" icon="calendar">
     Schedule guided migration session
-    
+
     [Cal.com booking →](https://cal.com/anyx)
   </Card>
 </CardGroup>
@@ -409,12 +402,12 @@ Once migrated, you can:
 
 <Card title="Start Migration Now" icon="rocket" href="https://anyx.app">
   **Takes 5 minutes** • All code and data preserved • No downtime
-  
+
   1. Sign in with GitHub
   2. Select your Lovable project
   3. Choose database option
   4. Complete setup
-  
+
   **Continue building with better tools immediately**
 </Card>
 
@@ -422,8 +415,7 @@ Once migrated, you can:
 
 <Note>
   **Still have questions?**
+
   - Email: [support@anyx.app](mailto:support@anyx.app)
   - Discord: [discord.gg/anyx](https://discord.gg/anyx)
-  - Live chat: Available in app
 </Note>
-
