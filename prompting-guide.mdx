@@ -189,6 +189,190 @@ The quality of your app depends on the quality of your prompt. Learn to write pr
 
 ---
 
+## UI/UX Prompting (Get the Look You Want)
+
+The visual style of your app is just as important as its functionality. Here's how to describe what you want.
+
+### ✅ What Works: Visual References
+
+<CardGroup cols={2}>
+  <Card title="Site Comparisons" icon="link">
+    "Similar to stripe.com - clean, professional, blue/white"
+
+    "Like airbnb.com - image-heavy, trust-building"
+    
+    **Why it works:** AI understands popular sites
+  </Card>
+  <Card title="Style Keywords" icon="palette">
+    "Modern and bold" → Strong shadows, large whitespace
+
+    "Playful and fun" → Rounded corners, vibrant colors
+    
+    **Why it works:** Clear visual personality
+  </Card>
+</CardGroup>
+
+### UI/UX Examples You Can Copy
+
+<Tabs>
+  <Tab title="Analytics Dashboard">
+    ```
+    Create a real estate analytics dashboard similar to Zillow's agent portal.
+    
+    Style: Modern and professional with bold data visualization.
+    
+    Key features:
+    - Property performance metrics
+    - Market trends
+    - Lead tracking
+    
+    UI/UX: Card-based layout with prominent stats, interactive charts, 
+           and quick-action buttons for adding listings.
+    ```
+
+    **Why it works:**
+    - Clear reference (Zillow agent portal)
+    - Specific style keywords (modern, professional, bold)
+    - Layout hint (card-based)
+    - Priority clear (stats prominent)
+  </Tab>
+  <Tab title="SaaS Landing">
+    ```
+    Build a project management tool landing page inspired by Linear.app.
+    
+    Style: Minimalist and sleek with strong visual hierarchy.
+    
+    Sections:
+    - Hero with animated product demo
+    - 3 core features
+    - Pricing tiers
+    - Customer logos
+    
+    UI/UX: Large hero CTA, clean typography, subtle gradients, 
+           focus on speed/performance messaging.
+    ```
+
+    **Why it works:**
+    - Reference site with clear aesthetic (Linear)
+    - Structure defined (hero, features, pricing)
+    - Style goals (minimalist, sleek, subtle gradients)
+    - Brand messaging hint (speed/performance)
+  </Tab>
+  <Tab title="E-commerce">
+    ```
+    Design a handmade jewelry store like Etsy's product pages.
+    
+    Style: Warm and inviting with artisan feel.
+    
+    Layout:
+    - Large product images with zoom
+    - Story section
+    - Reviews
+    - Related items
+    
+    UI/UX: Trust signals prominent (reviews, secure checkout), 
+           mobile-optimized image gallery.
+    
+    Colors: Earthy tones with gold accents.
+    ```
+
+    **Why it works:**
+    - Clear reference (Etsy)
+    - Visual mood (warm, artisan)
+    - Trust elements specified
+    - Color direction without hex codes
+  </Tab>
+  <Tab title="Booking App">
+    ```
+    Create a fitness class booking app similar to ClassPass.
+    
+    Style: Energetic and bold with vibrant colors.
+    
+    Features:
+    - Class calendar view
+    - Instructor profiles
+    - Booking flow
+    - User dashboard
+    
+    UI/UX: Make the calendar the hero element, one-click booking, 
+           clear pricing display.
+    ```
+
+    **Why it works:**
+    - Workflow clear (booking focus)
+    - Priority element (calendar hero)
+    - UX goal (one-click booking)
+    - Brand personality (energetic, bold)
+  </Tab>
+</Tabs>
+
+### ❌ What to Avoid
+
+<AccordionGroup>
+  <Accordion title="Too vague">
+    ❌ "Make a beautiful website for my business"
+
+    **Problems:** No style direction, no features, no reference
+
+    ✅ **Better:** "Create a consulting firm website similar to McKinsey.com.
+    Style: Professional and trustworthy with case study showcases."
+  </Accordion>
+  <Accordion title="Over-specified">
+    ❌ "Use #FF5733 for all buttons, #3357FF for headers, 18px Helvetica, 
+    shadow: 0px 4px 6px rgba(0,0,0,0.1)"
+
+    **Problems:** Too prescriptive, conflicts with design system
+
+    ✅ **Better:** "Style: Bold and modern with vibrant orange primary color, 
+    cool blue accents. Professional tech feel."
+  </Accordion>
+  <Accordion title="Conflicting references">
+    ❌ "Make it look like Apple's website but also like Netflix 
+    and add animations like Stripe"
+
+    **Problems:** Conflicting references, unclear direction
+
+    ✅ **Better:** "Premium and minimalist like Apple.com with dark theme option.
+    Focus on product imagery and clean typography."
+  </Accordion>
+</AccordionGroup>
+
+### Quick UI/UX Template
+
+```
+Create a [TYPE] for [DOMAIN] similar to [REFERENCE_SITE].
+
+Style: [1-2 keywords: modern/professional/playful/minimalist/bold]
+
+Key Features:
+- [Feature 1]
+- [Feature 2]
+- [Feature 3]
+
+UI/UX Priority: [What should stand out: CTA/stats/search/images]
+
+Optional: [Colors: warm/cool/vibrant, Images: product/people/abstract]
+```
+
+**Example filled:**
+
+```
+Create a landing page for a meditation app similar to Calm.com.
+
+Style: Calming and minimalist
+
+Key Features:
+- Meditation library with categories
+- Progress tracking dashboard  
+- Audio player with ambient backgrounds
+
+UI/UX Priority: Make starting a session one-click from homepage
+
+Optional: Soft purple/blue palette, nature imagery
+```
+
+---
+
 ## Prompting Principles
 
 ### 1. Be Specific, Not General
