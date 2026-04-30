@@ -1,0 +1,42 @@
+---
+title: "Security & Data Privacy"
+description: "How we protect your operational data from LLM leaks."
+---
+
+## The Zero-Knowledge Imperative
+
+When you use Anyx WorkOS as the brain for your daily operations, it inevitably processes sensitive emails, CRM contacts, and internal documents. Securing this data is our only priority.
+
+Anyx is designed around **Zero-Knowledge Architecture**.
+
+### 1. Stateless Inference Processing
+We use enterprise-grade LLM APIs (OpenAI Private Networks, Anthropic VPC endpoints) with explicit Zero Data Retention agreements. 
+- The LLMs do **not** train on your data.
+- Once a request is processed, the memory buffer in the LLM is instantly wiped.
+
+### 2. Isolated Context Environments
+Data cross-contamination is impossible.
+- **RawBot Isolation:** Your 1-on-1 chat history is mathematically isolated via Row-Level Security (RLS) in our database.
+- **Groopy Isolation:** A Groopy agent in a specific WhatsApp group only has access to the messages *within that specific group ID*. It cannot pull context from other groups, even if they share the same organizational members.
+
+### 3. PII Scrubbing (Intermediary Layer)
+Before raw data (like emails or documents) is sent to the LLM for summarization or analysis, it passes through our PII scrubbing gateway. Credit card numbers, Social Security numbers, and specific sensitive tokens can be masked into `[REDACTED_FINANCIAL]` automatically, ensuring the LLM never sees the raw string.
+
+---
+
+## Compliance & Certifications
+
+<CardGroup cols={2}>
+  <Card title="SOC 2 Type II" icon="shield-check">
+    Anyx operates within SOC 2 Type II compliant infrastructure (AWS/Supabase), ensuring strict access controls on all production nodes.
+  </Card>
+  <Card title="GDPR & Right to be Forgotten" icon="globe">
+    Execute a `/purge` command at any point to cryptographically delete your Mem0 clusters and chat histories permanently.
+  </Card>
+</CardGroup>
+
+---
+
+## Custom Deployments
+
+For advanced enterprise security, the entire Anyx system can be deployed directly into your own infrastructure. Please refer to our [Anyx for Business](/business/team-deployment) documentation for custom VPC and BYOK (Bring Your Own Key) solutions.

@@ -1,0 +1,39 @@
+---
+title: "Architecture & Engines"
+description: "How the Anyx WorkOS is built for autonomous execution."
+---
+
+## The Tri-Engine Architecture
+
+To enable autonomous delegation via WhatsApp, Anyx utilizes a highly complex, multi-layered architecture known as the **Tri-Engine**.
+
+Traditional chatbots use a single Large Language Model (LLM) loop. The Anyx Tri-Engine decouples memory, decision-making, and execution into three distinct services.
+
+<Frame>
+  ![Anyx Tri-Engine Architecture](/images/hero-dark.png)
+</Frame>
+
+### 1. The Interaction Engine (Agentic Loop)
+This is the "Brain" you speak to (RawBot/Groopy). It leverages advanced LLMs (like GPT-4o or Claude 3.5 Sonnet) to perform Natural Language Processing on your WhatsApp messages. 
+- It determines **intent** (Is this a chat? A task? A background rule?).
+- It plans the execution steps and fires API calls to the connected Integration Hub.
+
+### 2. The Stateful Memory Engine (Mem0 & Dynamic States)
+A standard LLM loses context immediately. Anyx maintains persistent state mapping.
+- **Mem0:** Extracts unstructured facts from your conversation ("My wife's name is Sarah") and stores it in encrypted vector databases for semantic retrieval months later.
+- **Dynamic States:** Maintains structured JSON objects representing long-running tasks. If you ask RawBot to "Buy plane tickets," the Dynamic State tracks the status from `flight_search` to `awaiting_approval` to `booked`, even if the conversation spans multiple days.
+
+### 3. The Proactive Lifecycle Engine (Bizy & Cron)
+This engine runs entirely behind the scenes. It manages the `processor-proactive.ts` queue.
+When you ask for a recurring task, the Interaction Engine communicates with the Proactive Engine to register a cron job. The Proactive Engine wakes up on schedule, boots an isolated LLM context, executes the checks, and only contacts you if the conditions are met.
+
+---
+
+## The OpenClaw Gateway
+
+WhatsApp does not natively support complex agentic workflows or rapid API polling. To bridge this gap, we built **OpenClaw**.
+
+OpenClaw is an open-source (internally managed) Node.js/Baileys gateway that maintains stable WebSocket connections to WhatsApp devices.
+- It translates raw WhatsApp binary buffers into clean JSON.
+- It manages session multi-device syncing.
+- It intercepts backend commands to render the "FILE GENERATION ILLUSION". When RawBot outputs structured CSV data, OpenClaw intercepts the payload, compiles a physical `.csv` file in memory, and transmits it as a native WhatsApp document attachment.

@@ -1,0 +1,52 @@
+---
+title: "Frequently Asked Questions"
+description: "Answers to technical questions, billing inquiries, and troubleshooting."
+---
+
+## Connecting & Setup
+
+<AccordionGroup>
+  <Accordion title="Does RawBot read all my personal WhatsApp messages?">
+    **No.** Anyx operates on a dedicated WhatsApp Business number. We do not have access to your private WhatsApp chats with family or friends. We only see the messages you explicitly send directly to RawBot or Groopy in their specific chat windows.
+  </Accordion>
+  <Accordion title="Can I use Anyx on WhatsApp Web?">
+    **Yes.** Because Anyx interacts with you standard WhatsApp messages, it works seamlessly on your iPhone, Android phone, iPad, WhatsApp Web, and WhatsApp Desktop apps.
+  </Accordion>
+  <Accordion title="I sent a message but didn't get a response.">
+    1. Check your Anyx account to ensure your WhatsApp connection is active.
+    2. Ensure you haven't exceeded your monthly interaction limits (Billing tab).
+    3. If the AI is compiling a complex report or scraping multiple websites, it may take 1-2 minutes to gather data before replying.
+  </Accordion>
+</AccordionGroup>
+
+## Troubleshooting Operations
+
+<AccordionGroup>
+  <Accordion title="My agent is confused or stuck in a loop. How do I fix it?">
+    Anyx agents possess **Stateful Memory**, meaning they remember everything you've discussed. Sometimes, if a workflow gets too complex or changing rapidly, they can accumulate conflicting context.
+
+    **The Fix:** Simply type `/new` in the WhatsApp chat.
+    
+    This executes a surgical context reset. It clears the immediate short-term conversation history, allowing you to start fresh, while retaining your integrations, core memory (Mem0), and proactive rules.
+  </Accordion>
+
+  <Accordion title="How do I view or cancel a Proactive Rule (Background Task)?">
+    Ask your agent for a status report!
+    
+    `"Show me all the automated background tasks you are currently running for me."`
+    
+    The agent will list your proactive rules. You can then say:
+    
+    `"Cancel task #2."`
+  </Accordion>
+  
+  <Accordion title="Why did my integration (e.g. Gmail) disconnect?">
+    For security reasons, OAuth providers like Google may expire access tokens if you change your password, update security settings, or after a long period of inactivity. 
+    
+    To fix this, simply visit the **Integration Hub** on your Anyx Dashboard, disconnect the service, and reconnect it.
+  </Accordion>
+</AccordionGroup>
+
+<Card title="Still need help?" icon="whatsapp" href="https://chat.whatsapp.com/I2Jkst2mslu6A8YnataP2I">
+  Join the Anyx Builders community on WhatsApp to ask questions directly to the engineering team and other founders.
+</Card>

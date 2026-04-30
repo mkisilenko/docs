@@ -3,9 +3,9 @@
   "name": "Anyx",
   "theme": "quill",
   "colors": {
-    "primary": "#6366F1",
+    "primary": "#4F46E5",
     "light": "#818CF8",
-    "dark": "#4F46E5"
+    "dark": "#312E81"
   },
   "favicon": "https://anyx.app/logo.png",
   "logo": {
@@ -19,50 +19,46 @@
       "url": "mailto:support@anyx.app"
     },
     {
-      "name": "Start Building",
-      "url": "https://anyx.app"
+      "name": "Anyx for Business",
+      "url": "https://anyx.app/enterprise"
     }
   ],
   "anchors": [
     {
-      "name": "Dashboard",
+      "name": "Workspace",
       "icon": "rocket",
       "url": "https://anyx.app"
     },
     {
       "name": "Community",
-      "icon": "discord",
-      "url": "https://discord.com/invite/2JP8geEPy7"
-    },
-    {
-      "name": "GitHub",
-      "icon": "github",
-      "url": "https://github.com/anyx-app"
+      "icon": "whatsapp",
+      "url": "https://chat.whatsapp.com/I2Jkst2mslu6A8YnataP2I"
     }
   ],
   "navigation": [
     {
-      "group": "Getting Started",
-      "pages": ["index", "quickstart", "prompting-guide"]
+      "group": "Quick Start Guides",
+      "pages": ["index", "quickstart"]
     },
     {
-      "group": "AI Features",
-      "pages": ["ai-features"]
+      "group": "Delegation Handbooks",
+      "pages": ["handbooks/rawbot", "handbooks/groopy"]
     },
     {
-      "group": "Use Cases",
-      "pages": [
-        "use-cases/overview",
-        "use-cases/landing-pages",
-        "use-cases/dashboards",
-        "use-cases/saas-apps",
-        "use-cases/e-commerce",
-        "use-cases/games"
-      ]
+      "group": "Anyx for Business",
+      "pages": ["business/team-deployment"]
     },
     {
-      "group": "Platform",
-      "pages": ["features", "lovable-migration"]
+      "group": "Natural Workflows",
+      "pages": ["workflows/integrations", "workflows/proactive"]
+    },
+    {
+      "group": "Security & Architecture",
+      "pages": ["security/architecture", "security/data-privacy"]
+    },
+    {
+      "group": "Knowledge Base & FAQ",
+      "pages": ["faq"]
     }
   ],
   "search": {
@@ -73,6 +69,6 @@
   },
   "footerSocials": {
     "linkedin": "https://www.linkedin.com/company/anyx-ai",
-    "github": "https://github.com/anyx-app"
+    "x": "https://twitter.com/anyx_app"
   }
 }

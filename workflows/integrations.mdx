@@ -1,0 +1,57 @@
+---
+title: "App Integrations"
+description: "How to command your daily tools using plain English."
+---
+
+## Connecting Your Tech Stack
+
+Operating a WorkOS requires connecting the tools you already use. Anyx doesn't aim to replace Gmail, Slack, Notion, or Jira—it aims to be the unified natural-language interface *for* them.
+
+You do this via the **Integration Hub** on the Anyx Dashboard. 
+
+Once an integration is connected, you never need to open its UI again. You simply tell RawBot or Groopy what you want to achieve.
+
+---
+
+## 📧 Email (Gmail / Outlook)
+
+**The Problem:** Reading 100 emails to find 3 important ones.
+
+**The Natural Workflow:**
+```
+"Scan my inbox for the last 4 hours. Specifically look for an email from 'Investor Partners LLC'. 
+If they emailed me, summarize the body and draft a very polite and enthusiastic reply saying I am available to meet next Tuesday."
+```
+Once drafted, RawBot will send you the draft in WhatsApp for your final approval before executing the send.
+
+---
+
+## 📅 Calendar & Scheduling
+
+**The Problem:** The back-and-forth email ping-pong of finding a meeting time.
+
+**The Natural Workflow:**
+```
+"I have a cold email from a developer named John. His email is john@dev.io.
+Check my Google Calendar for next week, find three 30-minute slots where I am free in the afternoons, and email him those options for a meeting."
+```
+
+---
+
+## 📋 Project Management (Notion / Jira)
+
+**The Problem:** Updating ticket statuses manually.
+
+**The Natural Workflow:**
+```
+"Go into our Engineering Jira board. Find the 'Stripe Backend Integration' ticket. 
+Update its status to 'Review', assign it to David, and post a comment saying: 'David, the API is returning 200 OK, but check the webhook payload just in case.'"
+```
+
+---
+
+## Best Practices for Agent Commands
+
+1. **Be Specific on Conditions:** "If X happens, do Y. Otherwise, do Z."
+2. **Always Require Approval (For Sensitive Tasks):** "Draft the response, but ask for my approval before sending."
+3. **Use Names:** The agent has access to your contacts; "Email Sarah" works if they are connected.

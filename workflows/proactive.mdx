@@ -1,0 +1,53 @@
+---
+title: "Proactive Workflows (Bizy)"
+description: "How to set background rules that run without your input."
+---
+
+## Stop Setting Timers. Set Conditions.
+
+Interactive agents (like RawBot) wait for your command. 
+**Proactive agents (like Bizy)** run exclusively in the background on your behalf. They don't wait for your instructions—they wait for the world to trigger their conditions.
+
+Using our Background Cron Engine, you can deploy Bizy to constantly poll APIs, check emails, or manage CRM states. 
+
+---
+
+## ⚡ Plug-and-Play Proactive Recipes
+
+You don't need to know how to code. Just **Copy and Paste** these exact messages into your RawBot WhatsApp chat to deploy an autonomous background worker.
+
+### Recipe 1: The Automated Lead Follow-up
+Tired of forgetting to follow up with cold prospects?
+```text
+Deploy a background rule: Every Monday at 10:00 AM, check my Pipedrive CRM. 
+Find any leads in the "Initial Contact" stage that haven't been updated in 7 days. 
+Draft a friendly check-in email for each of them via my connected Gmail, and send me the drafts here in WhatsApp for approval.
+```
+
+### Recipe 2: The Social Listening Alert
+Don't check Twitter. Let the agent check it for you.
+```text
+Deploy a background rule: Every 6 hours, perform a web search for mentions of our competitor "Acme Corp". 
+If they release a new product or have a major PR event, send me an immediate alert in this chat summarizing the news. If nothing happens, stay silent.
+```
+
+### Recipe 3: The SLA Enforcer
+Keep your customer support team on their toes.
+```text
+Deploy a background rule: Every hour, check our connected Zendesk. 
+If there are any "High Priority" tickets that have been unassigned for more than 45 minutes, ping our #support channel in Slack and tag the on-call manager.
+```
+
+---
+
+## Managing Your Background Rules
+
+Because these rules run autonomously, you need to know how to control them.
+
+- **Check Status:** `"Show me my active proactive rules."`
+- **Modify a Rule:** `"Update rule #2. Instead of every hour, make it check every 3 hours."`
+- **Delete a Rule:** `"Cancel the Zendesk SLA rule."`
+
+<Note>
+  Background rules execute silently. If their conditions are not met (e.g. no new emails, no SLA breaches), the agent will explicitly **stay silent** to protect you from notification fatigue.
+</Note>
