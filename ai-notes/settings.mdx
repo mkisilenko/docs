@@ -1,0 +1,72 @@
+---
+title: "Schedule, language and recipients"
+description: "Change how often AI Notes arrive, the language they are written in and who receives them by email. You can also pause notes, create a note for any past date range, or import older messages from a WhatsApp chat export."
+---
+
+Every connected group has its own AI Notes settings. To open them, go to [anyx.app](https://anyx.app), open **Settings**, then **AI Brain**, then **WhatsApp Groups**, choose the group, and open the **Notes** tab.
+
+## How often notes arrive
+
+Choose an interval: every **6, 12, 24 or 48 hours**, or once a **week**. The default is every 24 hours.
+
+After you turn notes on, the next note is processed on an upcoming scheduled run. If there were no messages in the group during an interval, no note is created and no email is sent.
+
+## Language
+
+By default, notes are written in the same language as the chat. You can also choose a fixed language for the group:
+
+English, Hebrew, Arabic, Spanish, Portuguese, French, German, Russian, Ukrainian, Hindi, Bengali, Urdu, Chinese, Japanese, Korean, Italian, Turkish, Indonesian, Vietnamese or Thai.
+
+The note itself follows your choice. The headings of the email are in English or Hebrew.
+
+## Email recipients
+
+Notes are emailed to your account address unless you add recipients. You can add up to **5 email addresses** per group. They receive both the automatic notes and any note you email manually. Once you add recipients, notes go to them instead of your account address, so add your own address too if you want a copy.
+
+<Warning>
+  Recipients see the whole note, including the **Worth checking** section. Choose recipients who should see what is discussed in that group. Being on the email list does not give anyone access to your Anyx account.
+</Warning>
+
+## Turn automatic email on or off
+
+Turn off automatic email if you prefer to read notes only in your account. Notes are still created and saved.
+
+## Worth checking
+
+**Include Worth checking** adds a few grounded questions about decisions, assumptions, missing owners and risks. It is on by default. Turn it off if you only want the facts.
+
+## Pause notes
+
+Turn off **Generate notes for this group** to stop new notes. Pausing does not delete anything: your existing notes stay available, and you can turn notes back on at any time.
+
+If your plan ends, existing notes remain available to read, but new notes are not created or sent.
+
+## Create a note for a past period
+
+Use **Generate notes for a date range** to review any period, for example the last week before a meeting. Pick a start and an end (the end cannot be later than now) and choose **Generate**. It starts right away and the page updates by itself.
+
+Follow-ups are assessed as of the moment the note is created. If messages from after that period show that something was done, Anyx takes them into account where it has them.
+
+## Import older messages
+
+Anyx only sees messages sent after it joined the group. To include older conversations, import a WhatsApp chat export.
+
+<Steps>
+  <Step title="Export the chat from WhatsApp">
+    Open the group, tap its name, and choose **Export chat**, then **Without media**. On iPhone the export is a `.zip` file: open it and use the `_chat.txt` file inside.
+  </Step>
+  <Step title="Upload it to Anyx">
+    In the group's settings, open **History Import** and upload the `.txt` or `.md` file.
+  </Step>
+  <Step title="Check the time zone and date format">
+    Choose the time zone the export was made in (Israel Time, Eastern Time or UTC). If the export is short, set the date format yourself (day/month or month/day) instead of auto-detect.
+  </Step>
+  <Step title="Tell Anyx who &quot;You&quot; is">
+    WhatsApp labels the person who made the export as "You". Pick your name so Anyx knows who that is.
+  </Step>
+  <Step title="Review and confirm">
+    Anyx shows how many messages it found and for which dates, then imports only the messages it does not already have. Duplicates are skipped.
+  </Step>
+</Steps>
+
+When the import is done, use **Generate notes for a date range** to get a note for that period. Only text is imported; photos, voice notes and files in the export are not.

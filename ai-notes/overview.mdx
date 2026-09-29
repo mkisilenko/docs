@@ -1,0 +1,74 @@
+---
+title: "How AI Notes work"
+description: "AI Notes turns the messages in a WhatsApp group into a short briefing: decisions, unanswered questions, action items, opportunities and what needs you. Briefings go to your email and are never posted to the group."
+---
+
+AI Notes is the part of Anyx that reads the WhatsApp groups you connect and writes you a short briefing of what matters. One note per group, written like a good assistant would write it, not like a chat log. Notes are sent to your email and are never posted in the group.
+
+<Info>
+  AI Notes is included in Starter, Pro and Max. In groups linked to a paid plan, notes and email delivery are on by default.
+</Info>
+
+## What a note contains
+
+Each note is organized into sections. Empty sections are left out.
+
+| Section | What it tells you |
+| --- | --- |
+| Needs your attention | The few items to look at first. |
+| Decisions | What was agreed, by whom and when. |
+| Unanswered | Questions that were asked and got no reply, with the name of who was asked. |
+| Open questions | Topics that are still being discussed. |
+| Action items | Who committed to what, and the due date if someone said one. |
+| Opportunities | A customer hinting at a bigger order, a supplier offering a discount, a good idea worth a follow-up. |
+| Forgotten / no follow-up | Things promised earlier that nobody followed up on. |
+| Worth checking | Grounded questions about assumptions, missing owners and risks. You can turn this section off. |
+| Reported resolved | Items the group says are done. |
+
+Items can include the person involved, a due date, why it matters and a suggested next step. Open questions and action items from the previous note carry forward until the group resolves them.
+
+## When notes arrive
+
+Anyx processes notes on a regular schedule. After you connect a group, its first note is processed on an upcoming scheduled run. It covers only messages from after Anyx joined, so it may be short, or there may be nothing to send yet if the group has been quiet.
+
+After that, a new note is created at the interval you choose: every 24 hours by default, or every 6, 12 or 48 hours, or once a week. See [Schedule, language and recipients](/ai-notes/settings). Delivery depends on activity and processing, so a note can arrive some time after an interval ends.
+
+If there were no messages in a group during an interval, no note is created and no email is sent. Paused groups stay silent too.
+
+In your account, you can also create a note for any past date range, for example last Sunday to Thursday. It starts right away.
+
+## Where notes go
+
+- **Email.** Each new note is emailed to your account address, or to up to 5 recipients you choose for that group.
+- **Your Anyx account.** All notes are saved in your account, so you can reread older ones.
+- **Your WhatsApp, on request.** Every note in your account has a **Send to my WhatsApp** button that sends it to your private chat with Anyx. Notes are not sent to WhatsApp automatically.
+
+Notes are **never** posted to the group itself.
+
+You can also copy a note as Markdown, download it as a `.md` or CSV file, or print it and save it as a PDF.
+
+## Languages
+
+By default a note is written in the language the group uses, so Hebrew, English and mixed groups all work. You can also pick a fixed language for each group. There are 20 to choose from, including English, Hebrew, Arabic, Russian, Spanish, French and more.
+
+## Voice notes, files and media
+
+Voice notes are transcribed so their content can appear in a note. For images, documents and videos, Anyx uses what it can read, such as captions, descriptions and extracted text. It does not promise to understand every file.
+
+## What AI Notes does not do
+
+- It only sees groups where you added Anyx, from the moment it joined. To include older messages, [import a chat export](/ai-notes/settings#import-older-messages).
+- It cannot see anything said by phone, in person or in other chats. A note reflects the messages it captured.
+- When a deadline has passed and no message says the task was done, Anyx asks you to confirm whether it was completed, instead of declaring it unfinished.
+- It does not post notes in the group. In a group, Anyx only speaks when someone tags it, or when you set up a [routine](/assistant/routines) for that group.
+
+## Next steps
+
+<CardGroup cols={2}>
+  <Card title="Connect a WhatsApp group" icon="users" href="/ai-notes/connect-a-group">
+    Add Anyx to a group you manage and get your first note.
+  </Card>
+  <Card title="Schedule, language and recipients" icon="sliders" href="/ai-notes/settings">
+    Choose how often notes arrive, in which language, and who gets them.
+  </Card>
+</CardGroup>

@@ -1,0 +1,135 @@
+{
+  "$schema": "https://mintlify.com/docs.json",
+  "theme": "willow",
+  "name": "Anyx",
+  "colors": {
+    "primary": "#4F46E5",
+    "light": "#818CF8",
+    "dark": "#312E81"
+  },
+  "favicon": "https://anyx.app/logo.png",
+  "navigation": {
+    "anchors": [
+      {
+        "anchor": "Documentation",
+        "icon": "book-open",
+        "groups": [
+          {
+            "group": "Get started",
+            "pages": [
+              "index",
+              "quickstart",
+              "plans"
+            ]
+          },
+          {
+            "group": "AI Notes for groups",
+            "pages": [
+              "ai-notes/overview",
+              "ai-notes/connect-a-group",
+              "ai-notes/settings"
+            ]
+          },
+          {
+            "group": "Private assistant",
+            "pages": [
+              "assistant/overview",
+              "assistant/routines",
+              "assistant/integrations"
+            ]
+          },
+          {
+            "group": "Trust and help",
+            "pages": [
+              "security",
+              "faq",
+              "troubleshooting",
+              "changelog"
+            ]
+          }
+        ]
+      }
+    ],
+    "global": {
+      "anchors": [
+        {
+          "anchor": "Open Anyx",
+          "href": "https://anyx.app",
+          "icon": "arrow-up-right-from-square"
+        },
+        {
+          "anchor": "Pricing",
+          "href": "https://anyx.app/pricing",
+          "icon": "tag"
+        }
+      ]
+    }
+  },
+  "logo": {
+    "light": "/logo/light.svg",
+    "dark": "/logo/dark.svg",
+    "href": "https://anyx.app"
+  },
+  "navbar": {
+    "links": [
+      {
+        "label": "Support",
+        "href": "mailto:support@anyx.app"
+      },
+      {
+        "label": "Start free trial",
+        "href": "https://anyx.app/pricing"
+      }
+    ]
+  },
+  "search": {
+    "prompt": "Search the Anyx docs"
+  },
+  "footer": {
+    "socials": {
+      "linkedin": "https://www.linkedin.com/company/anyx-ai"
+    }
+  },
+  "redirects": [
+    {
+      "source": "/handbooks/rawbot",
+      "destination": "/assistant/overview"
+    },
+    {
+      "source": "/handbooks/groopy",
+      "destination": "/ai-notes/overview"
+    },
+    {
+      "source": "/business/team-deployment",
+      "destination": "/ai-notes/overview"
+    },
+    {
+      "source": "/workflows/integrations",
+      "destination": "/assistant/integrations"
+    },
+    {
+      "source": "/workflows/proactive",
+      "destination": "/assistant/routines"
+    },
+    {
+      "source": "/security/architecture",
+      "destination": "/security"
+    },
+    {
+      "source": "/security/data-privacy",
+      "destination": "/security"
+    },
+    {
+      "source": "/api-reference/:slug*",
+      "destination": "/"
+    },
+    {
+      "source": "/ai-tools/:slug*",
+      "destination": "/"
+    },
+    {
+      "source": "/essentials/:slug*",
+      "destination": "/"
+    }
+  ]
+}
