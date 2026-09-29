@@ -1,52 +1,91 @@
 ---
-title: "Frequently Asked Questions"
-description: "Answers to technical questions, billing inquiries, and troubleshooting."
+title: "FAQ"
+description: "Short answers about Anyx: what it is, what it can see, how AI Notes work, languages, pricing, the free trial and how to stop it."
 ---
 
-## Connecting & Setup
+## About Anyx
 
 <AccordionGroup>
-  <Accordion title="Does RawBot read all my personal WhatsApp messages?">
-    **No.** Anyx operates on a dedicated WhatsApp Business number. We do not have access to your private WhatsApp chats with family or friends. We only see the messages you explicitly send directly to RawBot or Groopy in their specific chat windows.
+  <Accordion title="What is Anyx?">
+    Anyx is an AI agent that works inside WhatsApp. Add it to your WhatsApp groups and it emails you a short briefing of each group: decisions, unanswered questions, action items and what needs you. In a private chat, it is your personal assistant for reminders, routines and your connected apps. See [What is Anyx?](/)
   </Accordion>
-  <Accordion title="Can I use Anyx on WhatsApp Web?">
-    **Yes.** Because Anyx interacts with you standard WhatsApp messages, it works seamlessly on your iPhone, Android phone, iPad, WhatsApp Web, and WhatsApp Desktop apps.
+  <Accordion title="Is Anyx made by WhatsApp?">
+    No. Anyx, Inc. is not affiliated with WhatsApp or Meta. Anyx is a separate WhatsApp contact that you chat with and add to groups.
   </Accordion>
-  <Accordion title="I sent a message but didn't get a response.">
-    1. Check your Anyx account to ensure your WhatsApp connection is active.
-    2. Ensure you haven't exceeded your monthly interaction limits (Billing tab).
-    3. If the AI is compiling a complex report or scraping multiple websites, it may take 1-2 minutes to gather data before replying.
+  <Accordion title="Does it work on iPhone, Android and WhatsApp Web?">
+    Yes. Anyx is a regular WhatsApp contact, so it works in any WhatsApp app: iPhone, Android, WhatsApp Web and WhatsApp Desktop. There is nothing to install.
+  </Accordion>
+  <Accordion title="Does it work in Hebrew?">
+    Yes. Anyx understands Hebrew, English and mixed chats. Notes are written in the language of the chat by default, or in one of 20 languages you choose.
   </Accordion>
 </AccordionGroup>
 
-## Troubleshooting Operations
+## Privacy
 
 <AccordionGroup>
-  <Accordion title="My agent is confused or stuck in a loop. How do I fix it?">
-    Anyx agents possess **Stateful Memory**, meaning they remember everything you've discussed. Sometimes, if a workflow gets too complex or changing rapidly, they can accumulate conflicting context.
-
-    **The Fix:** Simply type `/new` in the WhatsApp chat.
-    
-    This executes a surgical context reset. It clears the immediate short-term conversation history, allowing you to start fresh, while retaining your integrations, core memory (Mem0), and proactive rules.
+  <Accordion title="Can Anyx read all my WhatsApp chats?">
+    No. Anyx is not connected to your WhatsApp account. It only sees your private chat with it and the groups you add it to. See [Privacy and security](/security).
   </Accordion>
-
-  <Accordion title="How do I view or cancel a Proactive Rule (Background Task)?">
-    Ask your agent for a status report!
-    
-    `"Show me all the automated background tasks you are currently running for me."`
-    
-    The agent will list your proactive rules. You can then say:
-    
-    `"Cancel task #2."`
+  <Accordion title="Do group members see my notes?">
+    No. Notes go to your email and your Anyx account, and to any email recipients you add. They are never posted in the group.
   </Accordion>
-  
-  <Accordion title="Why did my integration (e.g. Gmail) disconnect?">
-    For security reasons, OAuth providers like Google may expire access tokens if you change your password, update security settings, or after a long period of inactivity. 
-    
-    To fix this, simply visit the **Integration Hub** on your Anyx Dashboard, disconnect the service, and reconnect it.
+  <Accordion title="Does Anyx use my data to train AI models?">
+    No. Your data is used only to provide the service to you. It is never sold and never used to train AI models.
+  </Accordion>
+  <Accordion title="Should I tell the group that I added Anyx?">
+    Yes. Only connect groups you administer, and let the members know Anyx is there. There is a ready-made message in [Connect a WhatsApp group](/ai-notes/connect-a-group).
   </Accordion>
 </AccordionGroup>
 
-<Card title="Still need help?" icon="whatsapp" href="https://chat.whatsapp.com/I2Jkst2mslu6A8YnataP2I">
-  Join the Anyx Builders community on WhatsApp to ask questions directly to the engineering team and other founders.
-</Card>
+## AI Notes
+
+<AccordionGroup>
+  <Accordion title="Will Anyx talk in my group?">
+    Only when someone tags it, for example `@Anyx`. Otherwise it stays quiet. On Pro and Max you can also set up a routine that runs for a group.
+  </Accordion>
+  <Accordion title="How often do notes arrive?">
+    Every 24 hours by default. You can choose every 6, 12 or 48 hours, or once a week. If nothing meaningful happened, no email is sent.
+  </Accordion>
+  <Accordion title="Can I get notes on WhatsApp instead of email?">
+    Automatic notes go by email. Every note in your account has a **Send to my WhatsApp** button that sends it to your private chat with Anyx.
+  </Accordion>
+  <Accordion title="Can Anyx summarize messages from before it joined?">
+    Yes, if you import a WhatsApp chat export. Then ask for a note for that date range. See [Import older messages](/ai-notes/settings#import-older-messages).
+  </Accordion>
+  <Accordion title="Does it understand voice notes?">
+    Yes. Voice notes are transcribed, so their content can appear in notes and in answers.
+  </Accordion>
+</AccordionGroup>
+
+## Plans and billing
+
+<AccordionGroup>
+  <Accordion title="How much does Anyx cost?">
+    Starter is $35 a month (up to 4 groups), Pro is $60 (up to 30 groups) and Max is $120 (up to 120 groups). Yearly billing is 20% cheaper. See [Plans and free trial](/plans) and the [pricing page](https://anyx.app/pricing).
+  </Accordion>
+  <Accordion title="Is there a free trial?">
+    Yes. Every plan starts with a 7-day free trial. If you cancel before it ends, you pay nothing.
+  </Accordion>
+  <Accordion title="Is there a free plan?">
+    Groups, AI Notes and connected apps need Starter, Pro or Max. Every plan starts with a 7-day free trial.
+  </Accordion>
+  <Accordion title="How do I cancel?">
+    On [anyx.app](https://anyx.app), open **Settings**, then **Usage & Plans**, then **Manage Subscription**.
+  </Accordion>
+</AccordionGroup>
+
+## Stopping Anyx
+
+<AccordionGroup>
+  <Accordion title="How do I stop notes for a group?">
+    Turn off **Generate notes for this group** in the group's **Notes** tab. Your existing notes stay available.
+  </Accordion>
+  <Accordion title="How do I stop reminders?">
+    Reply `STOP` (or `הפסק`) in your private chat with Anyx. Reply `START` (or `המשך`) to turn them back on.
+  </Accordion>
+  <Accordion title="How do I delete my data?">
+    Delete single memories in **Settings**, under **AI Brain**. To delete everything, email [support@anyx.app](mailto:support@anyx.app) from the address on your account.
+  </Accordion>
+</AccordionGroup>
+
+Didn't find your answer? See [Troubleshooting](/troubleshooting) or email [support@anyx.app](mailto:support@anyx.app).
