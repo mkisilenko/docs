@@ -25,13 +25,15 @@ Each note is organized into sections. Empty sections are left out.
 | Worth checking | Grounded questions about assumptions, missing owners and risks. You can turn this section off. |
 | Reported resolved | Items the group says are done. |
 
-Items can include the person involved, a due date, why it matters and a suggested next step.
+Items can include the person involved, a due date, why it matters and a suggested next step. Open questions and action items from the previous note carry forward until the group resolves them.
 
 ## When notes arrive
 
-Anyx writes a new note for each group at a regular interval. The default is every 24 hours. You can change it to every 6, 12 or 48 hours, or once a week. See [Schedule, language and recipients](/ai-notes/settings).
+Anyx processes notes on a regular schedule. After you connect a group, its first note is processed on an upcoming scheduled run. It covers only messages from after Anyx joined, so it may be short, or there may be nothing to send yet if the group has been quiet.
 
-If nothing meaningful happened in a group during that time, no email is sent. Paused groups stay silent too.
+After that, a new note is created at the interval you choose: every 24 hours by default, or every 6, 12 or 48 hours, or once a week. See [Schedule, language and recipients](/ai-notes/settings). Delivery depends on activity and processing, so a note can arrive some time after an interval ends.
+
+If there were no messages in a group during an interval, no note is created and no email is sent. Paused groups stay silent too.
 
 In your account, you can also create a note for any past date range, for example last Sunday to Thursday. It starts right away.
 
@@ -57,7 +59,7 @@ Voice notes are transcribed so their content can appear in a note. For images, d
 
 - It only sees groups where you added Anyx, from the moment it joined. To include older messages, [import a chat export](/ai-notes/settings#import-older-messages).
 - It cannot see anything said by phone, in person or in other chats. A note reflects the messages it captured.
-- A past deadline without a message saying it was done is flagged as **worth checking**, not declared unfinished.
+- When a deadline has passed and no message says the task was done, Anyx asks you to confirm whether it was completed, instead of declaring it unfinished.
 - It does not post notes in the group. In a group, Anyx only speaks when someone tags it, or when you set up a [routine](/assistant/routines) for that group.
 
 ## Next steps

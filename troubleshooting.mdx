@@ -24,8 +24,8 @@ See [Connect a WhatsApp group](/ai-notes/connect-a-group).
 
 ## I did not get a note
 
-- **Too early.** The first note arrives at the end of the first interval, 24 hours by default.
-- **The group was quiet.** If nothing meaningful happened, no email is sent.
+- **Too early.** The first note is processed on an upcoming scheduled run and covers only messages from after Anyx joined. Delivery depends on activity and processing.
+- **No messages.** If there were no messages in the group during the interval, no note is created and no email is sent.
 - **Notes or email are off** for that group. Check the group's **Notes** tab.
 - **Recipients.** If you added recipients, notes go to them instead of your account email.
 - **Spam folder.** Check spam and mark the email as not spam.
