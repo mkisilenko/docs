@@ -31,6 +31,21 @@
             ]
           },
           {
+            "group": "Use Notes with your AI assistant",
+            "pages": [
+              "ai-notes/assistants/overview",
+              "ai-notes/assistants/chatgpt",
+              "ai-notes/assistants/claude",
+              "ai-notes/assistants/gemini",
+              "ai-notes/assistants/grok",
+              "ai-notes/assistants/instinct",
+              "ai-notes/assistants/muse",
+              "ai-notes/assistants/openclaw",
+              "ai-notes/assistants/nanoclaw",
+              "ai-notes/assistants/hermes"
+            ]
+          },
+          {
             "group": "Private assistant",
             "pages": [
               "assistant/overview",
