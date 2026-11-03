@@ -1,0 +1,86 @@
+---
+title: "Use your Notes with an AI assistant"
+sidebarTitle: "Overview"
+description: "Anyx emails your WhatsApp group Notes. Use that email with ChatGPT, Claude, Gemini, Grok, Instinct, Meta Muse, OpenClaw, NanoClaw or Hermes Agent to build a work brief. An email handoff, not live access to your groups."
+---
+
+AI Notes already arrive by email. If you work in an AI assistant, you can let it read that email, turn it into a short work brief and, where your assistant supports it, repeat the brief on a schedule. There is one guide for each assistant below.
+
+<Note>
+  This is an email handoff. Anyx captures the group conversation and emails you the Notes. Your assistant reads the permitted email, or you paste a selected note. These guides do not give an assistant live access to your WhatsApp groups, and they are not native Anyx connectors.
+</Note>
+
+## Choose your assistant
+
+| Assistant | What you need |
+| --- | --- |
+| [ChatGPT and Codex](/ai-notes/assistants/chatgpt) | A Gmail plugin or an available Outlook Email plugin in ChatGPT Work, and Scheduled for recurring runs. Plans and workspace settings vary. |
+| [Claude and Claude Code](/ai-notes/assistants/claude) | The Gmail connector in Claude, and Cowork scheduled tasks on an eligible paid account. Claude Code is optional. |
+| [Gemini](/ai-notes/assistants/gemini) | The Google Workspace connector in Gemini with Gmail selected, and Keep Activity and Gmail smart features on. Schedules depend on your account. |
+| [Grok and Grok Bot](/ai-notes/assistants/grok) | Grok: the Gmail connector and Automations. Grok Bot: the Gmail app connection and routines, which need an eligible paid plan or linked subscription. |
+| [Instinct](/ai-notes/assistants/instinct) | Your own Instinct Mailbox address, added to your Anyx Notes recipients. |
+| [Meta Muse](/ai-notes/assistants/muse) | A Muse account with an available email connector. Availability depends on your country, features and subscription. Israel is not named in the sources checked. |
+| [OpenClaw](/ai-notes/assistants/openclaw) | Your own OpenClaw instance, with a verified email input or a pasted note. |
+| [NanoClaw](/ai-notes/assistants/nanoclaw) | Your own NanoClaw agent. Paste a note, or use an email route you have verified. |
+| [Hermes Agent](/ai-notes/assistants/hermes) | Your own Hermes Agent: the Nous connector, the Google Workspace skill or the Email gateway, or a pasted note. |
+
+Using another assistant? Paste a note you are allowed to share into it, or add the mailbox it reads under **Email recipients**, as described below.
+
+## Before you start
+
+<Steps>
+  <Step title="Connect a group to Anyx">
+    With an active Anyx subscription, add Anyx to the WhatsApp group from the group info: tap **Add** and choose the Anyx contact. Group admins, or anyone the group allows to add participants, can do this. Tell the members it is there. Once Anyx has joined, tag `@Anyx` once from your own WhatsApp number, the one connected to your Anyx account, to connect the group. Full steps: [Connect a WhatsApp group](/ai-notes/connect-a-group).
+  </Step>
+  <Step title="Know when Notes arrive">
+    For newly connected groups on an active plan with an email on the account, Notes and automatic email are already on. Notes go to that account address, with a default interval of 24 hours. No configuration is needed to start. An interval with no new messages produces no email.
+  </Step>
+  <Step title="Check one delivered note">
+    Open one delivered note. Check the group, the reporting period, the actual sender and the subject. The subject starts with the literal prefix `[Anyx]`. The group name can be in the subject or inside a combined email. Use the relevant group section and do not mix groups. When you schedule anything, choose a time after the note normally arrives, in your own time zone.
+  </Step>
+</Steps>
+
+## Optional: change recipients or frequency
+
+To send Notes to additional or different email addresses, or to change the interval, open **Settings**, then **AI Brain**, then **WhatsApp Groups**, choose your group and open its **Notes** tab. See [Schedule, language and recipients](/ai-notes/settings).
+
+Use this when your assistant reads a different mailbox, including Instinct's dedicated address. A configured **Email recipients** list replaces the default account address, so include your own address too if you want a copy. You can list up to five addresses in total.
+
+If your account has no email, or an older group is paused or sends no Notes email, check that group's Notes and email settings. Previously saved settings are not reset automatically.
+
+## Test first, then schedule
+
+<Steps>
+  <Step title="Run one test">
+    Ask your assistant to find one delivered note by its actual sender, subject and group, and to show the covered period and the source. Every guide has a ready request for this.
+  </Step>
+  <Step title="Compare the answer with the email">
+    Open the email the assistant cites and check the group and period. If the expected note is missing, the assistant should say so instead of silently using an older one.
+  </Step>
+  <Step title="Save a recurring request">
+    Only after the test works, save the recurring request from the guide, then inspect the first unattended result.
+  </Step>
+</Steps>
+
+## Check the first recurring result
+
+- During its first reporting interval, a newly connected group may wait for more messages before producing its first note. A missing first email alone does not prove setup failed.
+- Does it identify the correct group, newest email and covered period? If the expected note is missing, it should say so instead of silently using an older one.
+- Are owners and dates actually stated in the note? Suggestions should be labelled, and missing facts should remain unknown.
+- Are messages, tickets, bookings and calendar changes still awaiting your review? A prompt is an instruction, not a technical permission lock. Review connector permissions and approval settings too.
+
+## If email access or scheduling is unavailable
+
+Paste the relevant note into the assistant and ask for the same brief without the mailbox or scheduling instruction. A recurring reminder can remind you to paste a fresh note; it does not read your mailbox or update an old paste.
+
+## Keep the scope clear
+
+Share only notes you are allowed to share with that assistant. Email recipients can see the whole note. Anyx notes cover captured messages after it joined, plus any history you explicitly imported. They do not guarantee complete group history. This email workflow does not give the other assistant live WhatsApp access. See [Privacy and security](/security).
+
+## Guides in Hebrew
+
+Each guide also exists in Hebrew on anyx.app: [ChatGPT](https://anyx.app/he/connect-whatsapp-notes/chatgpt), [Claude](https://anyx.app/he/connect-whatsapp-notes/claude), [Gemini](https://anyx.app/he/connect-whatsapp-notes/gemini), [Grok](https://anyx.app/he/connect-whatsapp-notes/grok), [Instinct](https://anyx.app/he/connect-whatsapp-notes/instinct), [Meta Muse](https://anyx.app/he/connect-whatsapp-notes/muse), [OpenClaw](https://anyx.app/he/connect-whatsapp-notes/openclaw), [NanoClaw](https://anyx.app/he/connect-whatsapp-notes/nanoclaw) and [Hermes Agent](https://anyx.app/he/connect-whatsapp-notes/hermes).
+
+<Info>
+  Checked against the vendor documentation on 2 November 2026. These are documentation-based recipes, not end-to-end tests of your account. Features, plans and workspace permissions can vary. The assistants named here are products of their respective owners, and Anyx, Inc. is not affiliated with them.
+</Info>
