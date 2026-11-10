@@ -4,11 +4,9 @@ sidebarTitle: "API reference"
 description: "Read-only group listing and message endpoints, authentication, pagination, history windows and errors."
 ---
 
-<Warning>
-  Authenticated production API reads, pagination and replay have been verified on one owner account. That test did not cover a live message longer than 2,000 characters. Test your own account connection and downstream integration before production use.
-</Warning>
-
 Use the personal key from [the API quickstart](/developers/api-quickstart) with `Authorization: Bearer`. Requests must come from a trusted backend over HTTPS. Only GET is supported. HEAD, POST, PUT, PATCH, DELETE and OPTIONS return 405. Unknown or duplicate query parameters are rejected.
+
+Test your account connection and integration before production use. See [Validation notes](#validation-notes).
 
 Download the [OpenAPI 3.1 contract](/openapi/whatsapp-v1.json) for machine-readable schemas. The version is the documentation revision, not a promise of client compatibility. Browser Try-It is intentionally disabled; keep keys in your backend.
 
@@ -150,3 +148,7 @@ Errors contain an `error` code. A 401 response includes `WWW-Authenticate`; a 42
 API calls share IP and account quota buckets with MCP and have an additional limit of 30 API requests per account per minute across both routes. The shared quota configuration can vary. Using both transports does not double your allowance.
 
 Rotating or revoking the personal key, or disabling access, affects future requests across both MCP and API clients. It cannot recall data already sent to an integration.
+
+## Validation notes
+
+Authenticated production API reads, pagination and replay have been verified on one owner account. That test did not cover a live message longer than 2,000 characters. Test your own account connection and downstream integration before production use.

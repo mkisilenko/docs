@@ -4,11 +4,9 @@ sidebarTitle: "API quickstart"
 description: "Use your Anyx personal key from a trusted backend to list eligible groups and read captured messages with pagination."
 ---
 
-<Warning>
-  Authenticated production API reads, pagination and replay have been verified on one owner account. That test did not cover a live message longer than 2,000 characters. Test your own account connection and downstream integration before production use.
-</Warning>
-
 The Anyx API gives your backend read-only access to eligible active WhatsApp groups owned by your Anyx account. Use it when your integration needs ordinary HTTP requests rather than MCP tool calls.
+
+Test your account connection and integration before production use. See [Validation notes](#validation-notes).
 
 For a URL and prompt you can give a coding agent, start with [Build an Anyx reader with an agent](/developers/agent-start).
 
@@ -50,3 +48,7 @@ node anyx-read.mjs messages YOUR_GROUP_ID 2026-11-10T08:00:00Z
 ```
 
 Keep message content separate from the instructions controlling your agent. The API's read permission does not authorize CRM writes, outbound messages or changes to another service.
+
+## Validation notes
+
+Authenticated production API reads, pagination and replay have been verified on one owner account. That test did not cover a live message longer than 2,000 characters. Test your own account connection and downstream integration before production use.
