@@ -1,0 +1,53 @@
+---
+title: "Read WhatsApp group context with MCP"
+sidebarTitle: "Overview"
+description: "Connect a compatible AI app to captured WhatsApp group messages with Anyx MCP. Understand account access, history windows and read-only limits."
+---
+
+Anyx MCP lets a compatible AI app list your active WhatsApp groups and read messages Anyx captured. Your assistant can use those messages to explain decisions, identify open questions and prepare follow-ups.
+
+Building a backend with an agent? Use the [agent entry page and prompt](/developers/agent-start).
+
+Start with the [MCP quickstart](/developers/mcp-quickstart), then use the [tool reference](/developers/mcp-tools) to build or troubleshoot a client.
+
+## What the connection can read
+
+- Active WhatsApp groups registered to the connected Anyx account.
+- Group names and captured message text within the account's current history window.
+- Message identifiers, timestamps and available sender names.
+
+<Warning>
+  A connected app can read all eligible active groups owned by your Anyx account, including groups that become eligible later. Asking an assistant to use only one group does not restrict its credential. Connect only an app you trust with that scope.
+</Warning>
+
+## History and content limits
+
+The history window looks back from each request. Starter includes 7 days, Pro 14 days and Max 28 days. Free and the legacy Builder plan are not included by default. Account access and the current plan are checked on the server. Use `get_status` to check your account.
+
+Messages include full stored text after link redaction. Pages may contain fewer messages than the requested limit to keep responses manageable. This is still not a complete WhatsApp archive.
+
+Credential-bearing links and Anyx private access links can be redacted. This is not general removal of personal information. Anyx may not have captured every message.
+
+## What is outside this connection
+
+- Direct messages, emailed Notes and imported or backfilled history.
+- Attachment files and a complete WhatsApp archive.
+- Sending WhatsApp messages, changing a group or writing to your CRM.
+- A separate server-side search or summary tool. Your AI app analyzes the messages it retrieves.
+
+An assistant's other tools may still be able to take actions. Review that assistant's permissions separately and require approval for changes you do not want it to make automatically.
+
+## Choose how to connect
+
+- **Personal key:** use a client that supports Streamable HTTP and an `Authorization` header. See the [quickstart](/developers/mcp-quickstart).
+- **Anyx sign-in:** use the sign-in and consent flow offered by a compatible OAuth client. Review the account and read scope before connecting. Compatibility depends on the specific app and its available features.
+- **Backend API:** use the same personal key with the [read-only API](/developers/api-quickstart) for a server-side reader or CRM integration. OAuth access tokens do not authenticate this API.
+- **Emailed Notes:** keep using the [email guides](/ai-notes/assistants/overview) when you want to work with a delivered note. Those guides remain a separate workflow.
+
+The WhatsApp MCP endpoint shown in Anyx Settings is separate from the documentation-search service at `docs.anyx.app/mcp`. Documentation search does not provide access to your groups.
+
+## Stay in control
+
+In **Settings > Connect your AI (MCP)**, you can replace or revoke a personal key, disconnect a connected app, or turn off MCP access. A replacement key invalidates the old key for every client using it. Disconnecting an OAuth app and revoking a personal key are separate controls.
+
+Revocation stops future authorized access; it cannot remove information an app has already received. See [Privacy and security](/security) and [MCP troubleshooting](/developers/mcp-troubleshooting).

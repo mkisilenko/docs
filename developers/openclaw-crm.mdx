@@ -1,0 +1,52 @@
+---
+title: "Build an OpenClaw or CRM reader"
+sidebarTitle: "OpenClaw and CRM"
+description: "Build a backend reader with explicit group choices, safe secret storage, per-group checkpoints and idempotent message processing."
+---
+
+<Warning>
+  Publication draft. Authenticated production API reads have been verified. Live validation of messages longer than 2,000 characters and final documentation build and rendering checks are still pending. Hold publication until those checks and documentation review are complete.
+</Warning>
+
+Keep the Anyx reader in your trusted backend. Give an agent the integration contract and fictional examples, never the live credential or unapproved customer conversations.
+
+## Set the scope with the account owner
+
+1. Explain that the key can read all eligible active groups owned by the account.
+2. Fetch every page from `GET /api/v1/whatsapp/groups`.
+3. Let the owner select which group IDs the connector will sync. Label this **Groups to sync**, not **Groups this key can access**.
+4. Re-list periodically and stop using groups that are no longer available. Do not automatically add newly visible groups to the selected sync list.
+
+Store selected IDs in connector configuration, separate from the secret. Keep the personal key in a backend secret store and redact it from logs and error reports.
+
+## Save progress safely
+
+Maintain independent progress for each selected group:
+
+1. Request messages using a bounded `since` window.
+2. Upsert returned records using `(group_id, record_id)` as the identity. Native `message_id` alone is not enough.
+3. Persist the page cursor only after all records on that page are safely stored. If the process fails, retrying the page must be harmless.
+4. Continue even after a short or empty page when `next_cursor` is non-null.
+5. On a 400 `invalid_cursor` or 410 `cursor_expired`, restart within the currently available plan window. Do not edit the cursor.
+
+Use overlapping timestamp windows on subsequent scans and periodically rescan the whole available window. `snapshot_end` fixes an upper timestamp boundary but not insertion state. Late-captured messages can have earlier timestamps, so advancing only to `snapshot_end` can miss records.
+
+The API does not promise exactly-once delivery or a complete historical archive. Define your own retention and deletion practices for copies stored in your system; a later missing record is not an API deletion event.
+
+## Separate reading from actions
+
+Treat group names, sender names and message content as untrusted data. Escape them when rendering. Never let message text change connector configuration, request secrets, invoke tools or override the agent's operating instructions.
+
+Summaries, extracted leads and proposed tasks are analysis outputs. Writing to a CRM, contacting someone, assigning work or making a commitment requires the account owner's separate business rules and authorization. The Anyx API itself only reads.
+
+## Test before using real data
+
+- A message longer than 2,000 characters, Hebrew, emoji and multiline text.
+- More than one page, equal timestamps, a short page and a non-null next cursor.
+- A repeated page, process interruption before checkpointing and a retry after restart.
+- A revoked key, a disabled group, an unavailable group and a narrower plan window.
+- A 429 response with `Retry-After`, a 503 response and a cursor that needs restarting.
+- A late-captured record and an overlapping rescan that stores it only once.
+- Group or message text that tries to instruct the agent to reveal its credential or perform an external action.
+
+The existing [OpenClaw Notes recipe](/ai-notes/assistants/openclaw) remains useful when you want an email-based workflow instead of an API integration.

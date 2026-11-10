@@ -1,0 +1,52 @@
+---
+title: "Read group messages with the Anyx API"
+sidebarTitle: "API quickstart"
+description: "Use your Anyx personal key from a trusted backend to list eligible groups and read captured messages with pagination."
+---
+
+<Warning>
+  Publication draft. Authenticated production API reads have been verified. Live validation of messages longer than 2,000 characters and final documentation build and rendering checks are still pending. Hold publication until those checks and documentation review are complete.
+</Warning>
+
+The Anyx API gives your backend read-only access to eligible active WhatsApp groups owned by your Anyx account. Use it when your integration needs ordinary HTTP requests rather than MCP tool calls.
+
+For a URL and prompt you can give a coding agent, start with [Build an Anyx reader with an agent](/developers/agent-start).
+
+## 1. Prepare access
+
+Open **Settings > Connect your AI (MCP)** and enable access if available to your account. The personal key used by MCP also authenticates this API. You do not need a second key. Store it as `ANYX_MCP_KEY` in your backend's secret store.
+
+The backend origin is `https://anyx.dev`. Set `ANYX_API_ORIGIN` to this HTTPS origin. It is separate from the documentation website and frontend.
+
+Send the key only in the `Authorization: Bearer` header. OAuth access tokens, application sessions and bot credentials do not authenticate this personal-key API. Never put the key in a URL, browser bundle, repository, log or AI prompt.
+
+<Warning>
+  The key can read all eligible active groups owned by the account, including groups that become eligible later. Selecting groups in your connector controls what you sync; it does not limit what the key can access. Replacing or revoking the key affects every MCP and API client using it. Turning off MCP access disables this API too.
+</Warning>
+
+## 2. List groups
+
+Send `GET /api/v1/whatsapp/groups`. Follow `next_cursor` until it is `null`, then let the account owner choose the groups the connector should sync. Save the selected `group_id` values in your own configuration.
+
+Do not make browser requests. Requests carrying an `Origin` header are refused, including requests from Anyx's own browser app. This is a backend integration.
+
+## 3. Read a selected group
+
+Send `GET /api/v1/whatsapp/messages` with a returned `group_id`. Optionally set `since` to an ISO timestamp with a timezone. Follow all pages with the returned cursor.
+
+The result contains full stored message text after link redaction, within the account's current plan window. It does not provide attachments, direct messages, imported history or emailed Notes, and capture may be incomplete.
+
+Use the [API reference](/developers/api-reference) for parameters and results and the [OpenClaw/CRM guide](/developers/openclaw-crm) for durable synchronization.
+
+## 4. Test with a small, approved dataset
+
+Use a test account and fictional group messages first. Check a message longer than 2,000 characters, Hebrew, emoji, pagination and access revocation. Do not forward real customer conversations to a new service just to test a connection.
+
+The [complete Node.js reader example](/developers/reader-example) reads the key from its environment and makes GET requests only. It prints returned data to the local terminal. Run it only in a private environment; it does not create CRM records or provide durable sync storage.
+
+```bash
+node anyx-read.mjs groups
+node anyx-read.mjs messages YOUR_GROUP_ID 2026-11-10T08:00:00Z
+```
+
+Keep message content separate from the instructions controlling your agent. The API's read permission does not authorize CRM writes, outbound messages or changes to another service.
