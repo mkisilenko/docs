@@ -5,7 +5,7 @@ description: "Read-only group listing and message endpoints, authentication, pag
 ---
 
 <Warning>
-  Publication draft. Authenticated production API reads have been verified. Live validation of messages longer than 2,000 characters and final documentation build and rendering checks are still pending. Hold publication until those checks and documentation review are complete.
+  Authenticated production API reads, pagination and replay have been verified on one owner account. That test did not cover a live message longer than 2,000 characters. Test your own account connection and downstream integration before production use.
 </Warning>
 
 Use the personal key from [the API quickstart](/developers/api-quickstart) with `Authorization: Bearer`. Requests must come from a trusted backend over HTTPS. Only GET is supported. HEAD, POST, PUT, PATCH, DELETE and OPTIONS return 405. Unknown or duplicate query parameters are rejected.

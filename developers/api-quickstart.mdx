@@ -5,7 +5,7 @@ description: "Use your Anyx personal key from a trusted backend to list eligible
 ---
 
 <Warning>
-  Publication draft. Authenticated production API reads have been verified. Live validation of messages longer than 2,000 characters and final documentation build and rendering checks are still pending. Hold publication until those checks and documentation review are complete.
+  Authenticated production API reads, pagination and replay have been verified on one owner account. That test did not cover a live message longer than 2,000 characters. Test your own account connection and downstream integration before production use.
 </Warning>
 
 The Anyx API gives your backend read-only access to eligible active WhatsApp groups owned by your Anyx account. Use it when your integration needs ordinary HTTP requests rather than MCP tool calls.

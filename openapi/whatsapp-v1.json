@@ -3,7 +3,7 @@
   "info": {
     "title": "Anyx WhatsApp read-only API",
     "version": "2026-11-10",
-    "description": "REST v1 contract revision. Read-only personal-key access to live group messages captured by Anyx. Starter 7 days, Pro 14, Max 28; eligibility checked each request. Imported/backfilled history, direct messages, Notes and attachment files excluded. Credential-bearing/private links redacted. Account-wide eligible-group scope. API calls share MCP/IP/account quotas and an additional 30 API requests per account per minute. No browser use, sends, CRM writes, complete-history or exactly-once guarantee. Publication draft: deployed and owner-account REST pagination/replay validated; live >2000-character fixture and documentation build/render checks pending."
+    "description": "REST v1 contract revision. Read-only personal-key access to live group messages captured by Anyx. Starter 7 days, Pro 14, Max 28; eligibility checked each request. Imported/backfilled history, direct messages, Notes and attachment files excluded. Credential-bearing/private links redacted. Account-wide eligible-group scope. API calls share MCP/IP/account quotas and an additional 30 API requests per account per minute. No browser use, sends, CRM writes, complete-history or exactly-once guarantee. Deployed API; owner-account authenticated REST pagination and replay validated. That test did not cover a live message longer than 2000 characters. Validate each account connection and downstream integration."
   },
   "servers": [
     {
@@ -624,7 +624,7 @@
     "deployment": "deployed",
     "authenticated_rest": "owner_account_pagination_and_replay_validated",
     "live_message_over_2000": "not_yet_covered",
-    "documentation_publication": "draft_pending_approval",
+    "documentation_publication": "published",
     "customer_connection_and_crm": "verify_per_integration"
   },
   "x-reviewed-backend-revision": "d5c933de"
