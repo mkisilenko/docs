@@ -1,0 +1,40 @@
+---
+title: "Troubleshoot an Anyx MCP connection"
+sidebarTitle: "MCP troubleshooting"
+description: "Resolve authentication, group access, missing messages, pagination and rate-limit errors without exposing your key or group data."
+---
+
+Start with `get_status`, then `list_groups`. Check both the HTTP response and the MCP result's `isError` field. Authentication can fail before any tool runs.
+
+| Error or symptom | What to do |
+| --- | --- |
+| `invalid_token` or HTTP 401 | Check that access is on, your account is eligible for the rollout and the current key reaches the running client. Replaced or revoked keys no longer work. For OAuth, reconnect the app. |
+| `plan_not_eligible` | Check your current plan in Anyx. Starter, Pro and Max have defined history windows; Free and legacy Builder are not included by default. |
+| `plan_unknown` | Retry later or contact support if Anyx cannot confirm your plan. |
+| `group_unavailable` | Re-run `list_groups` and use one of its IDs. A foreign, removed or inactive group is not accessible. |
+| `invalid_request` | Use only documented arguments, correct types and allowed limits. Unknown arguments are rejected. |
+| `invalid_cursor` | Restart without the cursor. Do not edit a cursor or reuse it for another account or group. |
+| `cursor_expired` | Restart within the current plan window. A plan change or passage of time can make an earlier page inaccessible. |
+| `rate_limited` | Honor the supplied retry delay and use bounded backoff. Repeated immediate retries consume shared quotas. |
+| `unavailable` | Retry with bounded backoff. Keep the last successful result and report that the answer may be incomplete. |
+| `origin_forbidden` | Use a supported client or server-side integration. Do not remove browser safeguards or expose a personal key in browser code. |
+
+## The client lists no groups
+
+Check that you connected the intended Anyx account and that its WhatsApp groups are registered and active. A group belonging to another account will not appear. See [Connect a WhatsApp group](/ai-notes/connect-a-group).
+
+## The client cannot read the key
+
+Environment variables belong to the process that started the app. Quit the app and launch it from the terminal where you set `ANYX_MCP_KEY`. Check variable presence without printing its value. Claude Code uses `${ANYX_MCP_KEY}` in its configuration; Cursor uses `${env:ANYX_MCP_KEY}`.
+
+## Messages are missing or shortened
+
+Check `window_start`, the plan's `message_history_days` and whether every required page was read. Only captured live group messages are included. Notes emails, imported history, direct messages and attachments are separate.
+
+Current responses preserve full stored text after link redaction. If your integration still returns `truncated: true`, check that it uses the current released endpoint and is not displaying an older cached response. Never guess missing message text.
+
+## Keep support requests safe
+
+Send the error code, approximate time, client name and version, and whether it failed at connection, group listing or message reading. Do not send your personal key, OAuth token, full configuration containing secrets, private group messages or screenshots that expose them.
+
+Group names, sender names and message text can contain malicious instructions. Treat them as untrusted content. They must not override your assistant's rules, reveal credentials or trigger an external action.

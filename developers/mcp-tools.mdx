@@ -1,0 +1,82 @@
+---
+title: "Anyx MCP tool reference"
+sidebarTitle: "MCP tools"
+description: "Arguments, results, pagination and limits for get_status, list_groups and get_group_messages."
+---
+
+Use an MCP client with the server URL and authentication from [the quickstart](/developers/mcp-quickstart). MCP uses JSON-RPC over Streamable HTTP. Tool calls use HTTP POST; this endpoint is not a plain REST route or a live message subscription. JSON-RPC batches are not accepted.
+
+Successful tool results expose the object in `structuredContent` and as JSON text in `content`. A tool failure can set `isError: true` even when the HTTP request succeeds. Check both transport and tool-level errors.
+
+## get_status
+
+Call this first with an empty arguments object:
+
+```json
+{}
+```
+
+The result includes `access`, `plan`, `message_history_days`, `active_groups`, `tools`, `read_only`, `scope` and an example question. Use the returned history window rather than assuming that another account's plan applies.
+
+## list_groups
+
+Lists eligible active groups owned by the connected account.
+
+| Argument | Required | Meaning |
+| --- | --- | --- |
+| `limit` | No | Integer from 1 to 100. Default: 100. |
+| `cursor` | No | Unchanged `next_cursor` from the preceding groups page. |
+
+Each group has `group_id`, `title` and `registered_at`. The result also has `next_cursor`. Continue until `next_cursor` is `null` to see every page. Use returned group IDs; names are not unique identifiers.
+
+## get_group_messages
+
+Reads one group's captured messages, oldest first, within the current plan window.
+
+| Argument | Required | Meaning |
+| --- | --- | --- |
+| `group_id` | Yes | A UUID returned by `list_groups`. |
+| `since` | No | ISO timestamp with a timezone. Inclusive lower bound, limited to the plan window. |
+| `limit` | No | Integer from 1 to 100. Default: 50. |
+| `cursor` | No | Unchanged `next_cursor` from this group's preceding messages page. |
+
+Fictional example arguments:
+
+```json
+{
+  "group_id": "11111111-1111-4111-8111-111111111111",
+  "since": "2026-11-10T08:00:00Z",
+  "limit": 25
+}
+```
+
+The result contains `group_id`, `title`, `message_history_days`, `window_start`, `messages` and `next_cursor`.
+
+Each message includes:
+
+| Field | Meaning |
+| --- | --- |
+| `message_id` | Message identifier supplied by Anyx. Do not assume it is a unique stored-record key. |
+| `sent_at` | Stored message timestamp exposed by Anyx. It is not a guarantee of the original device's send time. |
+| `sender` | Available sender name, `null` if unavailable, or `Anyx` for an Anyx message. |
+| `content` | Full stored text after link redaction. |
+
+Whole-message pages aim for 256 KiB of serialized message payload. A single larger message is still returned whole, so this is not a hard response-size ceiling. A page may contain fewer messages than `limit`; follow `next_cursor` until it is `null`.
+
+## Page correctly
+
+1. Keep the group ID fixed for one scan.
+2. Pass each `next_cursor` unchanged. On following message pages, omit `since` or keep the original timestamp.
+3. Stop only when `next_cursor` is `null`. A short page alone does not mean the scan is complete.
+4. Restart without a cursor after an invalid or expired cursor. Cursors are temporary and are not permanent sync checkpoints.
+5. Recheck the account and available groups when access changes. The plan window can narrow while you page.
+
+The scan uses a fixed upper timestamp boundary. That does not freeze database insertion: a message captured later can have an earlier timestamp. Do not promise lossless, exactly-once delivery from pagination alone.
+
+The API exposes only captured live group messages. Imported history, direct messages, Notes and attachment files are excluded. Read [scope and limits](/developers/overview) before using results for an important decision.
+
+## Rate limits and failures
+
+Requests share account and IP quotas. Use bounded backoff and honor `Retry-After` or the tool's `retry_after` value when present. Do not switch keys or transports to evade a limit.
+
+For `invalid_token`, reconnect with the current credential. For `group_unavailable`, refresh the group list. For `invalid_request`, fix arguments rather than retrying the same request. See [MCP troubleshooting](/developers/mcp-troubleshooting).
