@@ -6,9 +6,7 @@ description: "Give OpenClaw or another coding agent one URL and a safe prompt fo
 
 Use this page as the entry point for an agent helping you connect your own backend or CRM reader to Anyx. It is an implementation brief, not a built-in OpenClaw integration or a claim that your agent's configuration has been tested.
 
-<Warning>
-  The API is deployed, and authenticated REST pagination and replay checks passed on one owner account. That test did not cover a live message longer than 2,000 characters. Test your own connection and integration, and report these limits when describing readiness.
-</Warning>
+Test your account connection and integration before production use. See [Validation notes](#validation-notes).
 
 ## Contract at a glance
 
@@ -64,3 +62,7 @@ Use a trusted local fixture or approved test group for a long-message test. Do n
 - The next step would create a CRM record, contact someone, change permissions, or publish/deploy.
 
 Documented read access does not grant authority for those downstream actions.
+
+## Validation notes
+
+The API is deployed, and authenticated REST pagination and replay checks passed on one owner account. That test did not cover a live message longer than 2,000 characters. Test your own connection and integration, and report these limits when describing readiness.

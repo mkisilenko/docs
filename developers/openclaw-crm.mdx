@@ -4,11 +4,9 @@ sidebarTitle: "OpenClaw and CRM"
 description: "Build a backend reader with explicit group choices, safe secret storage, per-group checkpoints and idempotent message processing."
 ---
 
-<Warning>
-  Authenticated production API reads, pagination and replay have been verified on one owner account. That test did not cover a live message longer than 2,000 characters. Test your own account connection and downstream integration before production use.
-</Warning>
-
 Keep the Anyx reader in your trusted backend. Give an agent the integration contract and fictional examples, never the live credential or unapproved customer conversations.
+
+Test your account connection and integration before production use. See [Validation notes](#validation-notes).
 
 ## Set the scope with the account owner
 
@@ -50,3 +48,7 @@ Summaries, extracted leads and proposed tasks are analysis outputs. Writing to a
 - Group or message text that tries to instruct the agent to reveal its credential or perform an external action.
 
 The existing [OpenClaw Notes recipe](/ai-notes/assistants/openclaw) remains useful when you want an email-based workflow instead of an API integration.
+
+## Validation notes
+
+Authenticated production API reads, pagination and replay have been verified on one owner account. That test did not cover a live message longer than 2,000 characters. Test your own account connection and downstream integration before production use.
