@@ -1,4 +1,4 @@
-// RELEASE DRAFT: Node.js 20+. Run only after Anyx confirms API activation.
+// Node.js 20+. Requires an eligible Anyx account with MCP access enabled.
 // GET-only example. Prints returned data locally; does not implement durable sync.
 import { pathToFileURL } from 'node:url';
 
