@@ -155,3 +155,13 @@ test('bounded body reader cancels a pathological response before JSON parsing', 
   })) });
   await assert.rejects(reader.status(), /reader safety bound/); assert.equal(cancelled, true);
 });
+
+test('upgrade admission-off is a visible nonretryable failure, not a credential problem or empty dataset', async () => {
+  let count = 0;
+  const reader = createCandidateReader({ ...options, fetchImpl: async () => {
+    count++; return reply({ error: 'feature_not_enabled', private: options.key }, 403);
+  } });
+  await assert.rejects(collect(reader.messages(bounds)), error => error.code === 'feature_not_enabled'
+    && error.status === 403 && !error.message.includes(options.key));
+  assert.equal(count, 1);
+});

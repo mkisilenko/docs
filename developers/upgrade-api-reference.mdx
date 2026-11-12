@@ -39,6 +39,8 @@ Page until `next_cursor:null`, including after empty filtered pages. Group membe
 
 Existing requests retain their old defaults and cursor path. A new frozen option or frozen cursor selects the candidate path. Do not mix a legacy cursor with new options.
 
+Search input has two bounds: raw input is 2 to 200 UTF-16 code units, then NFC normalization and trimming must produce 2 to 200 UTF-8 bytes. Character counts alone are insufficient for non-ASCII text. The candidate OpenAPI records both constraints as extensions; a generic `maxLength` check alone does not enforce the byte limit.
+
 Candidate results preserve message `record_id`, native `message_id`, stored timestamp, sender/direction and full post-redaction text by default. New fields identify the frozen snapshot, expiry, effective bounds, total selected records, source coverage and `scan_complete`. Follow its cursor until complete; a short page is not enough.
 
 Original and generated fields remain distinct. Reference mode only omits large text: use `content_reference` for omitted original text and `text_reference` for omitted stored extraction. Small values remain inline. The media `access` metadata is a lookup instruction, not proof that an original file is available.
@@ -89,6 +91,8 @@ The key cannot grant itself broader file access. New and existing text credentia
 | 400 `invalid_cursor` | Restart a correctly bound scan/reference. Do not edit or transfer cursors. |
 | 401 `invalid_token` | Stop and resolve the credential/account state. Do not rotate to bypass suspension. |
 | 403 plan/origin errors | Resolve access policy or use the approved backend flow. |
+| 403 `feature_not_enabled` | This account lacks upgrade admission. Stop using new capabilities; existing eligible legacy captured reads remain available. Reconnecting is not an activation method. |
+| Consent 404 `feature_disabled` | Enabling original-media consent is unavailable while upgrade admission is off. No enable mutation occurred. |
 | 404 `group_unavailable` | The group/record is not currently accessible. Foreign and inactive access must not leak data. |
 | 410 `cursor_expired` | Restart within the current window, or renew a media ticket with a fresh fully authorized request and unchanged asset checks. |
 | 410 `snapshot_changed` | Restart a fresh bounded snapshot. Do not silently skip the failed page. |

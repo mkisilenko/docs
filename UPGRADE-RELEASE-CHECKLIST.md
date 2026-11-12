@@ -36,6 +36,8 @@ The backend's new admission control is ANYX_MCP_UPGRADE_MODE, default off, with 
 
 Operational rollback stops new admission while keeping current suspension/revocation guards and Notes attribution capabilities. Source3c996267 is not security-equivalent to the upgraded source because it lacks newer in-flight authorization rechecks. Do not label it a compatible source rollback. A recovery artifact must retain current guards, current Notes profiles/checkpoints and required schema, receive exact-source review and hosted verification, then obtain Michael's approval.
 
+Admission flags are process environment, not an instant live toggle. Vercel environment changes need a separately approved deployment. First create and verify an admission-OFF deployment of the same merged upgrade commit, preserving all new authentication, ingestion/callback guards and current Notes behavior. A separately approved cohort deployment uses that same SHA. Its verified OFF artifact can be a proposed rollback target, with approval and schema/private-asset preservation. Before that artifact exists and passes provider/runtime checks, rollback readiness is unverified. Neither old3c nor f877 is a security-equivalent recovery guarantee.
+
 Do not drop media/snapshot records or alter pinned Notes jobs as an automatic rollback. A feature flag change, source rollback and schema rollback are different actions.
 
 ## Release gates
@@ -52,6 +54,6 @@ Do not drop media/snapshot records or alter pinned Notes jobs as an automatic ro
 
 Local tests use only fictional datasets. They do not prove native-client compatibility, production performance, authoritative live-source equality, retained historical media or a customer's CRM receipt. The complete original Claude debugging report was not located in this thread/scoped evidence; the current explicit requirements and handoff findings are the traceable coverage source. Do not silently relabel that as a full report audit.
 
-Current local evidence: 23 Node tests pass, generator drift checks pass, and both released/candidate OpenAPI pass installed Mintlify CLI 4.0.786 validation. Mintlify's broken-links command reports 30 old assistant-route links in 21 files on both untouched f9 and the draft, with byte-identical output logs. The files exist; this does not establish that hosted links are broken. Candidate link checks pass locally. Full Mintlify rendering, public `.md`/LLM exports, hosted CI and native clients remain unrun.
+Initial candidate7654340 passed 23 Node tests. The corrected candidate adds backend-shaped SDK response-schema fixtures and admission-off checks, for 30 passing local tests. Generator drift checks pass. Released/candidate OpenAPI were validated with installed Mintlify CLI 4.0.786; recheck the exact corrected JSON before release. Mintlify's broken-links command reports 30 old assistant-route links in 21 files on both untouched f9 and the draft, with byte-identical output logs. The files exist; this does not establish that hosted links are broken. Candidate link checks pass locally. Full Mintlify rendering, public `.md`/LLM exports, hosted CI and native clients remain unrun.
 
 MICHAEL: nothing.

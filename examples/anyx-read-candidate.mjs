@@ -7,7 +7,7 @@ const uuid = /^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$/i;
 const hex = /^[a-f0-9]{64}$/;
 const codes = new Set(['invalid_request', 'invalid_cursor', 'invalid_token', 'plan_not_eligible', 'plan_unknown',
   'origin_forbidden', 'group_unavailable', 'method_not_allowed', 'cursor_expired', 'rate_limited', 'unavailable',
-  'snapshot_changed', 'snapshot_too_large', 'snapshot_capacity', 'snapshot_busy', 'response_too_large']);
+  'snapshot_changed', 'snapshot_too_large', 'snapshot_capacity', 'snapshot_busy', 'response_too_large', 'feature_not_enabled']);
 const fail = message => { throw new Error(message); };
 const check = (condition, message) => { if (!condition) fail(message); };
 const id = value => check(typeof value === 'string' && uuid.test(value), 'Use an authorized UUID from Anyx.');

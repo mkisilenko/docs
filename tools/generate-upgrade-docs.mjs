@@ -7,6 +7,7 @@ const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const contract = JSON.parse(fs.readFileSync(path.join(root, 'contracts/mcp-upgrade.json'), 'utf8'));
 const baseline = JSON.parse(fs.readFileSync(path.join(root, 'openapi/whatsapp-v1.json'), 'utf8'));
 const api = structuredClone(baseline);
+const limits = contract.limits;
 api.info.version = contract.revision;
 api.info.title = 'Anyx captured-context API upgrade candidate';
 api.info.description = 'UNRELEASED candidate. Do not assume production availability. Captured eligible live messages only, not complete WhatsApp history. New options require a corresponding verified backend release. Existing arguments retain the released legacy contract. Original media requires explicit consent and an authoritative asset linkage; unavailable historical assets stay unavailable. Account-data operations are GET-only. The separate owner-session consent control requires explicit authorization and confirmation.';
@@ -16,6 +17,14 @@ api.servers = [{ url: 'https://unreleased.invalid', description: 'UNRELEASED pla
 api['x-release-status'] = 'unreleased';
 api['x-released-contract'] = './whatsapp-v1.json';
 api['x-contract-source-sha256'] = createHash('sha256').update(JSON.stringify(contract)).digest('hex');
+api['x-response-limits'] = { account_data_json_max_bytes: limits.max_json_response_bytes,
+  mcp_jsonrpc_max_bytes: limits.max_json_response_bytes, native_client_limits_verified: false };
+api['x-source-default-rate-limits'] = { owner_per_minute: limits.owner_per_minute, owner_per_hour: limits.owner_per_hour,
+  ip_per_minute: limits.ip_per_minute, rest_bulk_per_owner_per_minute: limits.rest_bulk_per_owner_per_minute,
+  shared_with_mcp: true, deployment_overrides_possible: true };
+api['x-pagination-lifetimes'] = { legacy_message_cursor_seconds: limits.legacy_message_cursor_seconds,
+  frozen_message_cursor_seconds: limits.frozen_snapshot_seconds, frozen_search_cursor_seconds: limits.frozen_snapshot_seconds,
+  message_content_reference_seconds: limits.frozen_snapshot_seconds, media_ticket_seconds: 60 };
 const timestamp = { type: 'string', format: 'date-time' };
 const nullableTimestamp = { type: ['string', 'null'], format: 'date-time' };
 const nullableId = { type: ['string', 'null'], format: 'uuid' };
@@ -26,11 +35,18 @@ groups.parameters.push(parameter('activity', { type: 'boolean' }, 'Optional capt
   parameter('active_since', timestamp, 'Inclusive captured-event lower bound, clamped to the plan window. Implies activity discovery.'));
 const messages = api.paths['/api/v1/whatsapp/messages'].get;
 messages.description = 'UNRELEASED additive candidate. New options select frozen membership with integrity checks. Bounds inclusive; timestamp and record UUID order deterministic. Existing calls keep their legacy path. Cursors bind account/group/credential/filter/order/plan context. No complete-history or exactly-once guarantee.';
+const messageCursor = messages.parameters.find(x => x.name === 'cursor');
+messageCursor.description = 'Unmodified query-bound cursor. Legacy message cursors expire after 24 hours; frozen message/search cursors expire with their 15-minute snapshot. Never edit or transfer across credentials/groups/filters.';
+messageCursor['x-ttl-seconds-by-mode'] = { legacy: limits.legacy_message_cursor_seconds, frozen: limits.frozen_snapshot_seconds };
 messages.parameters.push(parameter('until', timestamp, 'Inclusive upper timestamp bound, not in the future.'),
   parameter('order', { type: 'string', enum: ['asc', 'desc'] }, 'Frozen chronological ordering. Reverse both timestamp and record-ID tie-breaker for desc.'),
   parameter('snapshot_mode', { type: 'string', const: 'frozen' }, 'Bound membership and integrity for 15 minutes; no more than 10,000 records.'),
   parameter('include_media', { type: 'boolean' }, 'Attach existing labeled extraction and authorized media state, never trigger new extraction.'),
-  parameter('query', { type: 'string', maxLength: 200 }, 'Optional bounded literal case-insensitive original-text query. Repeat the same query on each search page.'),
+  parameter('query', { type: 'string', maxLength: 200,
+    'x-normalization': limits.query.normalization, 'x-normalized-utf8-min-bytes': limits.query.normalized_utf8_min_bytes,
+    'x-normalized-utf8-max-bytes': limits.query.normalized_utf8_max_bytes,
+    'x-raw-utf16-min-units': limits.query.raw_utf16_min_units, 'x-raw-utf16-max-units': limits.query.raw_utf16_max_units },
+  'Literal case-insensitive original-text query. Raw input has 2..200 UTF-16 units; normalize NFC then trim and require 2..200 UTF-8 bytes. Character counts alone are insufficient. Repeat query on every search page.'),
   parameter('content_mode', { type: 'string', enum: ['full', 'references'] }, 'Reference mode keeps fields up to 16,384 UTF-8 bytes inline and replaces larger original/extraction fields with authorized references. Defaults remain full.'));
 const s = api.components.schemas;
 Object.assign(s.Group.properties, {
@@ -43,7 +59,7 @@ Object.assign(s.GroupsPage.properties, {
   activity_window_start: timestamp, activity_snapshot_cutoff: timestamp, activity_observed_at: timestamp,
   activity_consistency: { type: 'string', const: 'event_time_cutoff' },
   whatsapp_activity: { type: 'string', const: 'unknown' }, capture_arrival_time: { type: 'string', const: 'unknown' },
-  capture_timestamp_basis: { type: 'string', const: 'stored_message_event_time' },
+  capture_timestamp_basis: { type: 'string', const: 'stored_record_created_at' },
 });
 Object.assign(s.Message.properties, {
   sender_id: { type: ['string', 'null'], description: 'Account-scoped pseudonymous identity, not a raw phone number or proof of display-name ownership.' },
@@ -86,8 +102,11 @@ for (const [status, code, text] of [
   messages.responses[status] ??= { description: text, content: { 'application/json': { schema: { $ref: '#/components/schemas/Error' } } } };
   messages.responses[status].description += ` ${code}: ${text}`;
 }
-const newErrors = ['snapshot_changed', 'snapshot_too_large', 'snapshot_capacity', 'snapshot_busy', 'response_too_large'];
+const newErrors = ['snapshot_changed', 'snapshot_too_large', 'snapshot_capacity', 'snapshot_busy', 'response_too_large', 'feature_not_enabled'];
 s.Error.properties.error.enum.push(...newErrors);
+messages.responses['403'].description += ' feature_not_enabled: upgrade admission is off for this account; legacy captured reads remain available.';
+s.MessagesPage.properties.next_cursor.description = 'Opaque query-bound cursor. Legacy scans last up to 24 hours; frozen message/search scans expire with the 15-minute snapshot. Follow unchanged until null.';
+s.MessagesPage.properties.next_cursor['x-ttl-seconds-by-mode'] = { legacy: limits.legacy_message_cursor_seconds, frozen: limits.frozen_snapshot_seconds };
 s.TextReference = { type: 'object', additionalProperties: false,
   required: ['reference', 'field', 'total_utf8_bytes', 'sha256', 'expires_at', 'tool'], properties: {
     reference: { type: 'string', maxLength: 1024 }, field: { enum: ['content', 'media_extraction'] },
@@ -153,6 +172,12 @@ api.paths['/api/v1/whatsapp/search'] = { get: structuredClone(messages) };
 api.paths['/api/v1/whatsapp/search'].get.operationId = 'searchCandidateWhatsAppMessages';
 api.paths['/api/v1/whatsapp/search'].get.summary = 'UNRELEASED: bounded literal original-text search';
 api.paths['/api/v1/whatsapp/search'].get.parameters.find(x => x.name === 'query').required = true;
+api.paths['/api/v1/whatsapp/search'].get.parameters.find(x => x.name === 'cursor').description = 'Unmodified frozen-search cursor, valid only until its 15-minute snapshot expires. Repeat the same query on every page.';
+api.paths['/api/v1/whatsapp/search'].get.parameters.find(x => x.name === 'cursor')['x-ttl-seconds'] = limits.frozen_snapshot_seconds;
+s.FrozenMessagesPage = structuredClone(s.MessagesPage);
+s.FrozenMessagesPage.required.push('snapshot_id', 'snapshot_created_at', 'snapshot_expires_at', 'snapshot_consistency', 'order',
+  'include_media', 'total_snapshot_records', 'scan_complete', 'capture_coverage');
+api.paths['/api/v1/whatsapp/search'].get.responses['200'].content['application/json'].schema = ref('FrozenMessagesPage');
 api.paths['/api/v1/whatsapp/summary'] = { get: baseOperation('summarizeCandidateCapturedActivity', 'captured counts and UTC date bins',
   [groupParam, ...messages.parameters.filter(x => ['since', 'until', 'query'].includes(x.name))], 'CaptureSummary') };
 api.paths['/api/v1/whatsapp/message-content'] = { get: baseOperation('readCandidateMessageContent', 'authorized text-reference chunk', [groupParam, recordParam,
@@ -181,6 +206,9 @@ api.paths['/api/v1/whatsapp/media'] = { get: baseOperation('readCandidateOrigina
   parameter('offset', { type: 'integer', minimum: 0, maximum: 20971519, default: 0 }, 'Saved byte offset. Renew expired tickets only after current authorization.'),
   parameter('limit', { type: 'integer', minimum: 1, maximum: 65536, default: 65536 }, 'Maximum decoded bytes per chunk.'),
   { name: 'X-Anyx-Media-Ticket', in: 'header', required: false, schema: { type: 'string', maxLength: 4096 }, description: 'Short-lived same-credential/consent/asset-version ticket. Never place it in a query or URL. Normal Authorization remains required.' }], 'MediaChunk') };
+for (const operation of Object.values(api.paths).flatMap(item => Object.values(item))) {
+  operation['x-response-max-bytes'] = limits.max_json_response_bytes;
+}
 api.components.securitySchemes.ownerSession = { type: 'http', scheme: 'bearer', description: 'Verified signed-in Anyx owner session only. A personal MCP key or MCP OAuth token cannot grant media permission.' };
 const credentialTarget = { credential_kind: { enum: ['key', 'oauth'] }, credential_id: id };
 s.MediaCredentialState = { type: 'object', required: ['credential_kind', 'credential_id', 'label', 'media_enabled'], properties: {
@@ -189,7 +217,7 @@ s.MediaCredentialState = { type: 'object', required: ['credential_kind', 'creden
 s.MediaConsentListing = { oneOf: [
   { type: 'object', required: ['available'], properties: { available: { const: false } } },
   { type: 'object', required: ['available', 'confirmation', 'credentials', 'notice'], properties: {
-    available: { const: true }, confirmation: { const: 'ALLOW_ORIGINAL_MEDIA' }, notice: { type: 'string' },
+    available: { const: true }, media_delivery_enabled: { type: 'boolean' }, confirmation: { const: 'ALLOW_ORIGINAL_MEDIA' }, notice: { type: 'string' },
     credentials: { type: 'array', items: ref('MediaCredentialState') },
   } },
 ] };
@@ -209,7 +237,8 @@ api.paths['/api/user/mcp-media-access'] = {
   post: { ...baseOperation('changeCandidateMediaConsent', 'explicit owner-session media permission for one credential', [], 'MediaConsentResult'),
     security: [{ ownerSession: [] }], requestBody: { required: true, content: { 'application/json': { schema: ref('MediaConsentChange') } } } },
 };
-s.Error.properties.error.enum.push('credential_unavailable', 'body_too_large');
+s.Error.properties.error.enum.push('credential_unavailable', 'body_too_large', 'feature_disabled');
+api.paths['/api/user/mcp-media-access'].post.responses['404'].description = 'feature_disabled: upgrade admission is off; no enable mutation occurred. credential_unavailable: the target credential is unavailable to this owner.';
 api['x-mcp-contract'] = contract.mcp;
 const agent = `# Anyx upgrade candidate for agents\n\nUNRELEASED. This generated brief does not establish production availability.\n\nContract revision: ${contract.revision}\nReleased contract: /openapi/whatsapp-v1.json\nCandidate OpenAPI: /openapi/whatsapp-v1-candidate.json\n\n${contract.rules.map(x => '- ' + x).join('\n')}\n\n## MCP operations\n\n${contract.mcp.tools.map(x => `- ${x.name}: ${x.description}`).join('\n')}\n\n## Recovery\n\n${contract.recovery.map(x => '- ' + x).join('\n')}\n\nNever fabricate unavailable history or media. No customer sends, CRM writes or new model extraction are authorized by a read.\n`;
 const outputs = new Map([

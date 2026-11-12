@@ -217,7 +217,8 @@
             }
           }
         },
-        "x-read-only": true
+        "x-read-only": true,
+        "x-response-max-bytes": 2097152
       }
     },
     "/api/v1/whatsapp/messages": {
@@ -265,11 +266,15 @@
             "name": "cursor",
             "in": "query",
             "required": false,
-            "description": "Unmodified next_cursor from the preceding page of this resource/query. Expires 24 hours after scan starts. Do not decode, edit or reuse for another account/group.",
+            "description": "Unmodified query-bound cursor. Legacy message cursors expire after 24 hours; frozen message/search cursors expire with their 15-minute snapshot. Never edit or transfer across credentials/groups/filters.",
             "schema": {
               "type": "string",
               "maxLength": 1024,
               "pattern": "^[A-Za-z0-9_-]+\\.[A-Za-z0-9_-]+$"
+            },
+            "x-ttl-seconds-by-mode": {
+              "legacy": 86400,
+              "frozen": 900
             }
           },
           {
@@ -320,9 +325,17 @@
             "required": false,
             "schema": {
               "type": "string",
-              "maxLength": 200
+              "maxLength": 200,
+              "x-normalization": [
+                "NFC",
+                "trim"
+              ],
+              "x-normalized-utf8-min-bytes": 2,
+              "x-normalized-utf8-max-bytes": 200,
+              "x-raw-utf16-min-units": 2,
+              "x-raw-utf16-max-units": 200
             },
-            "description": "Optional bounded literal case-insensitive original-text query. Repeat the same query on each search page."
+            "description": "Literal case-insensitive original-text query. Raw input has 2..200 UTF-16 units; normalize NFC then trim and require 2..200 UTF-8 bytes. Character counts alone are insufficient. Repeat query on every search page."
           },
           {
             "name": "content_mode",
@@ -403,7 +416,7 @@
             }
           },
           "403": {
-            "description": "Ineligible/unknown plan or forbidden Origin header. Backend requests only.",
+            "description": "Ineligible/unknown plan or forbidden Origin header. Backend requests only. feature_not_enabled: upgrade admission is off for this account; legacy captured reads remain available.",
             "content": {
               "application/json": {
                 "schema": {
@@ -508,7 +521,8 @@
             }
           }
         },
-        "x-read-only": true
+        "x-read-only": true,
+        "x-response-max-bytes": 2097152
       }
     },
     "/api/v1/whatsapp/search": {
@@ -556,12 +570,17 @@
             "name": "cursor",
             "in": "query",
             "required": false,
-            "description": "Unmodified next_cursor from the preceding page of this resource/query. Expires 24 hours after scan starts. Do not decode, edit or reuse for another account/group.",
+            "description": "Unmodified frozen-search cursor, valid only until its 15-minute snapshot expires. Repeat the same query on every page.",
             "schema": {
               "type": "string",
               "maxLength": 1024,
               "pattern": "^[A-Za-z0-9_-]+\\.[A-Za-z0-9_-]+$"
-            }
+            },
+            "x-ttl-seconds-by-mode": {
+              "legacy": 86400,
+              "frozen": 900
+            },
+            "x-ttl-seconds": 900
           },
           {
             "name": "until",
@@ -611,9 +630,17 @@
             "required": true,
             "schema": {
               "type": "string",
-              "maxLength": 200
+              "maxLength": 200,
+              "x-normalization": [
+                "NFC",
+                "trim"
+              ],
+              "x-normalized-utf8-min-bytes": 2,
+              "x-normalized-utf8-max-bytes": 200,
+              "x-raw-utf16-min-units": 2,
+              "x-raw-utf16-max-units": 200
             },
-            "description": "Optional bounded literal case-insensitive original-text query. Repeat the same query on each search page."
+            "description": "Literal case-insensitive original-text query. Raw input has 2..200 UTF-16 units; normalize NFC then trim and require 2..200 UTF-8 bytes. Character counts alone are insufficient. Repeat query on every search page."
           },
           {
             "name": "content_mode",
@@ -635,7 +662,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/MessagesPage"
+                  "$ref": "#/components/schemas/FrozenMessagesPage"
                 },
                 "example": {
                   "group_id": "11111111-1111-4111-8111-111111111111",
@@ -694,7 +721,7 @@
             }
           },
           "403": {
-            "description": "Ineligible/unknown plan or forbidden Origin header. Backend requests only.",
+            "description": "Ineligible/unknown plan or forbidden Origin header. Backend requests only. feature_not_enabled: upgrade admission is off for this account; legacy captured reads remain available.",
             "content": {
               "application/json": {
                 "schema": {
@@ -799,7 +826,8 @@
             }
           }
         },
-        "x-read-only": true
+        "x-read-only": true,
+        "x-response-max-bytes": 2097152
       }
     },
     "/api/v1/whatsapp/summary": {
@@ -846,9 +874,17 @@
             "required": false,
             "schema": {
               "type": "string",
-              "maxLength": 200
+              "maxLength": 200,
+              "x-normalization": [
+                "NFC",
+                "trim"
+              ],
+              "x-normalized-utf8-min-bytes": 2,
+              "x-normalized-utf8-max-bytes": 200,
+              "x-raw-utf16-min-units": 2,
+              "x-raw-utf16-max-units": 200
             },
-            "description": "Optional bounded literal case-insensitive original-text query. Repeat the same query on each search page."
+            "description": "Literal case-insensitive original-text query. Raw input has 2..200 UTF-16 units; normalize NFC then trim and require 2..200 UTF-8 bytes. Character counts alone are insufficient. Repeat query on every search page."
           }
         ],
         "responses": {
@@ -897,7 +933,7 @@
             }
           },
           "403": {
-            "description": "Ineligible/unknown plan or forbidden Origin header. Backend requests only.",
+            "description": "Ineligible/unknown plan or forbidden Origin header. Backend requests only. feature_not_enabled: upgrade admission is off for this account; legacy captured reads remain available.",
             "content": {
               "application/json": {
                 "schema": {
@@ -1001,7 +1037,8 @@
               }
             }
           }
-        }
+        },
+        "x-response-max-bytes": 2097152
       }
     },
     "/api/v1/whatsapp/message-content": {
@@ -1113,7 +1150,7 @@
             }
           },
           "403": {
-            "description": "Ineligible/unknown plan or forbidden Origin header. Backend requests only.",
+            "description": "Ineligible/unknown plan or forbidden Origin header. Backend requests only. feature_not_enabled: upgrade admission is off for this account; legacy captured reads remain available.",
             "content": {
               "application/json": {
                 "schema": {
@@ -1217,7 +1254,8 @@
               }
             }
           }
-        }
+        },
+        "x-response-max-bytes": 2097152
       }
     },
     "/api/v1/whatsapp/status": {
@@ -1274,7 +1312,7 @@
             }
           },
           "403": {
-            "description": "Ineligible/unknown plan or forbidden Origin header. Backend requests only.",
+            "description": "Ineligible/unknown plan or forbidden Origin header. Backend requests only. feature_not_enabled: upgrade admission is off for this account; legacy captured reads remain available.",
             "content": {
               "application/json": {
                 "schema": {
@@ -1378,7 +1416,8 @@
               }
             }
           }
-        }
+        },
+        "x-response-max-bytes": 2097152
       }
     },
     "/api/v1/whatsapp/media": {
@@ -1490,7 +1529,7 @@
             }
           },
           "403": {
-            "description": "Ineligible/unknown plan or forbidden Origin header. Backend requests only.",
+            "description": "Ineligible/unknown plan or forbidden Origin header. Backend requests only. feature_not_enabled: upgrade admission is off for this account; legacy captured reads remain available.",
             "content": {
               "application/json": {
                 "schema": {
@@ -1594,7 +1633,8 @@
               }
             }
           }
-        }
+        },
+        "x-response-max-bytes": 2097152
       }
     },
     "/api/user/mcp-media-access": {
@@ -1651,7 +1691,7 @@
             }
           },
           "403": {
-            "description": "Ineligible/unknown plan or forbidden Origin header. Backend requests only.",
+            "description": "Ineligible/unknown plan or forbidden Origin header. Backend requests only. feature_not_enabled: upgrade admission is off for this account; legacy captured reads remain available.",
             "content": {
               "application/json": {
                 "schema": {
@@ -1815,7 +1855,7 @@
             }
           },
           "403": {
-            "description": "Ineligible/unknown plan or forbidden Origin header. Backend requests only.",
+            "description": "Ineligible/unknown plan or forbidden Origin header. Backend requests only. feature_not_enabled: upgrade admission is off for this account; legacy captured reads remain available.",
             "content": {
               "application/json": {
                 "schema": {
@@ -1828,7 +1868,7 @@
             }
           },
           "404": {
-            "description": "Group is not currently active and owned by this account. Re-list eligible groups.",
+            "description": "feature_disabled: upgrade admission is off; no enable mutation occurred. credential_unavailable: the target credential is unavailable to this owner.",
             "content": {
               "application/json": {
                 "schema": {
@@ -2080,7 +2120,7 @@
           },
           "capture_timestamp_basis": {
             "type": "string",
-            "const": "stored_message_event_time"
+            "const": "stored_record_created_at"
           }
         }
       },
@@ -2125,7 +2165,11 @@
               "string",
               "null"
             ],
-            "description": "Opaque query-bound cursor. Follow unchanged until null."
+            "description": "Opaque query-bound cursor. Legacy scans last up to 24 hours; frozen message/search scans expire with the 15-minute snapshot. Follow unchanged until null.",
+            "x-ttl-seconds-by-mode": {
+              "legacy": 86400,
+              "frozen": 900
+            }
           },
           "read_only": {
             "type": "boolean",
@@ -2249,8 +2293,10 @@
               "snapshot_capacity",
               "snapshot_busy",
               "response_too_large",
+              "feature_not_enabled",
               "credential_unavailable",
-              "body_too_large"
+              "body_too_large",
+              "feature_disabled"
             ]
           }
         }
@@ -2852,6 +2898,159 @@
           }
         }
       },
+      "FrozenMessagesPage": {
+        "type": "object",
+        "required": [
+          "group_id",
+          "message_history_days",
+          "window_start",
+          "snapshot_end",
+          "messages",
+          "next_cursor",
+          "read_only",
+          "data_notice",
+          "snapshot_id",
+          "snapshot_created_at",
+          "snapshot_expires_at",
+          "snapshot_consistency",
+          "order",
+          "include_media",
+          "total_snapshot_records",
+          "scan_complete",
+          "capture_coverage"
+        ],
+        "properties": {
+          "group_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "message_history_days": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "window_start": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "snapshot_end": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Fixed upper timestamp bound. Does not freeze insertion state or prevent late capture."
+          },
+          "messages": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Message"
+            }
+          },
+          "next_cursor": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Opaque query-bound cursor. Legacy scans last up to 24 hours; frozen message/search scans expire with the 15-minute snapshot. Follow unchanged until null.",
+            "x-ttl-seconds-by-mode": {
+              "legacy": 86400,
+              "frozen": 900
+            }
+          },
+          "read_only": {
+            "type": "boolean",
+            "const": true
+          },
+          "data_notice": {
+            "type": "string"
+          },
+          "title": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "snapshot_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "snapshot_created_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "snapshot_expires_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "snapshot_consistency": {
+            "type": "string",
+            "const": "frozen_membership_with_integrity_checks"
+          },
+          "order": {
+            "type": "string",
+            "enum": [
+              "asc",
+              "desc"
+            ]
+          },
+          "include_media": {
+            "type": "boolean"
+          },
+          "total_snapshot_records": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 10000
+          },
+          "scan_complete": {
+            "type": "boolean"
+          },
+          "capture_coverage": {
+            "type": "string",
+            "const": "eligible_live_sources_only"
+          },
+          "timing_ms": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "snapshot_prepare": {
+                "type": "number",
+                "minimum": 0
+              },
+              "snapshot_read": {
+                "type": "number",
+                "minimum": 0
+              },
+              "total": {
+                "type": "number",
+                "minimum": 0
+              }
+            }
+          },
+          "content_mode": {
+            "const": "references"
+          },
+          "content_recovery_tool": {
+            "const": "get_message_content"
+          },
+          "search": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "mode",
+              "scope",
+              "query_required_on_continuation"
+            ],
+            "properties": {
+              "mode": {
+                "const": "literal_case_insensitive"
+              },
+              "scope": {
+                "const": "original_text_only"
+              },
+              "query_required_on_continuation": {
+                "const": true
+              }
+            }
+          }
+        }
+      },
       "MediaChunk": {
         "oneOf": [
           {
@@ -3062,6 +3261,9 @@
               "available": {
                 "const": true
               },
+              "media_delivery_enabled": {
+                "type": "boolean"
+              },
               "confirmation": {
                 "const": "ALLOW_ORIGINAL_MEDIA"
               },
@@ -3169,7 +3371,27 @@
   "x-reviewed-backend-revision": "d5c933de",
   "x-release-status": "unreleased",
   "x-released-contract": "./whatsapp-v1.json",
-  "x-contract-source-sha256": "652f5dea691155904741b145e9a8d2ec0362903c34300c042c7cb2e52798164c",
+  "x-contract-source-sha256": "25884207273017b022255920f7bcab1ce539b0b47735f2dccc6d40ddf973f391",
+  "x-response-limits": {
+    "account_data_json_max_bytes": 2097152,
+    "mcp_jsonrpc_max_bytes": 2097152,
+    "native_client_limits_verified": false
+  },
+  "x-source-default-rate-limits": {
+    "owner_per_minute": 60,
+    "owner_per_hour": 1200,
+    "ip_per_minute": 120,
+    "rest_bulk_per_owner_per_minute": 30,
+    "shared_with_mcp": true,
+    "deployment_overrides_possible": true
+  },
+  "x-pagination-lifetimes": {
+    "legacy_message_cursor_seconds": 86400,
+    "frozen_message_cursor_seconds": 900,
+    "frozen_search_cursor_seconds": 900,
+    "message_content_reference_seconds": 900,
+    "media_ticket_seconds": 60
+  },
   "x-mcp-contract": {
     "transport": "Streamable HTTP",
     "default_response": "text_and_structured",

@@ -18,5 +18,9 @@ jobs:
           node-version: '22'
       - name: Candidate documentation is reproducible
         run: node tools/generate-upgrade-docs.mjs --check
+      - name: Isolated schema validator (same MCP SDK version as backend fixture)
+        run: npm install --prefix "$RUNNER_TEMP/docs-schema-validator" --no-save --ignore-scripts --package-lock=false @modelcontextprotocol/sdk@1.32.2
       - name: Released and candidate reader contracts (synthetic only)
-        run: node --test examples/anyx-read.test.mjs examples/anyx-read-candidate.test.mjs tools/upgrade-contract.test.mjs
+        env:
+          DOCS_SCHEMA_VALIDATOR_ROOT: ${{ runner.temp }}/docs-schema-validator
+        run: node --test examples/anyx-read.test.mjs examples/anyx-read-candidate.test.mjs tools/upgrade-contract.test.mjs tools/upgrade-response-schema.test.mjs

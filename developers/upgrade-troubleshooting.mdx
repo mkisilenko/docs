@@ -13,6 +13,8 @@ Start with the candidate's status and tool listing. Compare advertised capabilit
 | Failure | Safe recovery |
 | --- | --- |
 | `invalid_token` | Stop and reconnect with the current credential. Do not retry a revoked key or reuse an OAuth token on REST. |
+| `feature_not_enabled` | New upgrade capabilities are not admitted for this account. Stop those calls and use only its advertised, eligible legacy operations. Do not rotate credentials to bypass admission. |
+| Consent `feature_disabled` | Original-media consent cannot be enabled while new admission is off. This is separate from a revoked credential or suspended account. |
 | Account blocked or suspended | Stop access and resolve account policy with the owner. Reconnecting or rotating credentials is not a bypass. |
 | `group_unavailable` | Refresh group discovery. Removed, transferred, foreign and inactive groups must not expose their data. |
 | `invalid_cursor` | Start a new bounded read. Do not alter the cursor or move it across credentials, groups, filters or ordering. |

@@ -49,6 +49,8 @@ Use `record_id` for stored-record upserts, not a title or the native `message_id
 
 Uses the message-read arguments, with `query` required on every page. Search is literal and case-insensitive over original stored message text only. It does not search extraction, perform semantic ranking, parse database expressions or generate a summary. The query is bounded and normalized; keep its value unchanged through a scan.
 
+Raw query input must contain 2 to 200 UTF-16 code units. After NFC normalization and trimming, its UTF-8 encoding must contain 2 to 200 bytes. A 200-character limit alone is not enough for Unicode input.
+
 ## get_group_activity_summary
 
 Input: required `group_id`, optional `since`, `until` and `query`.

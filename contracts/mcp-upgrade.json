@@ -1,6 +1,22 @@
 {
   "revision": "2026-11-12-candidate",
   "release_status": "unreleased",
+  "limits": {
+    "frozen_snapshot_seconds": 900,
+    "legacy_message_cursor_seconds": 86400,
+    "max_json_response_bytes": 2097152,
+    "owner_per_minute": 60,
+    "owner_per_hour": 1200,
+    "ip_per_minute": 120,
+    "rest_bulk_per_owner_per_minute": 30,
+    "query": {
+      "normalization": ["NFC", "trim"],
+      "normalized_utf8_min_bytes": 2,
+      "normalized_utf8_max_bytes": 200,
+      "raw_utf16_min_units": 2,
+      "raw_utf16_max_units": 200
+    }
+  },
   "rules": [
     "Do not send candidate arguments to production until the backend release and exact capability are verified.",
     "New tools are admission-gated. A compiled server can serve only legacy tools while new admission is off; inspect the actual status and tool list.",
