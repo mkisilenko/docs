@@ -1,0 +1,102 @@
+---
+title: "Unreleased REST API reference"
+sidebarTitle: "Candidate API"
+description: "Proposed active-group, snapshot, literal search, statistics, text-chunk and original-media routes. Includes separate owner-session media consent."
+---
+
+<Warning>
+Unreleased review contract. The [released REST reference](/developers/api-reference) and [released OpenAPI](/openapi/whatsapp-v1.json) remain unchanged. New routes require a verified backend release and actual upgrade admission. The [candidate OpenAPI](/openapi/whatsapp-v1-candidate.json) deliberately uses `https://unreleased.invalid` as a nonfunctional placeholder; do not send a key there or to the docs service.
+</Warning>
+
+## Authentication and request rules
+
+Account-data routes use the owner's existing personal MCP key in the `Authorization: Bearer` header, from a trusted backend. They do not accept MCP OAuth tokens, browser cookies or owner-session tokens in place of that key. Normal account, group, plan and credential authorization applies to every request and is rechecked before results are sent.
+
+Use GET without a browser Origin header. Unknown or duplicate query keys are rejected. Credentials and media tickets never belong in URLs. The owner-session consent route below is a separate API and security audience.
+
+## GET /api/v1/whatsapp/groups
+
+Existing parameters: `limit` from 1 to 100, default 100, and `cursor`.
+
+Candidate additions: `activity=true|false`, and optional `active_since` as an ISO instant with timezone. Activity mode adds captured-event metadata, cutoff, observation time and coverage notices. `active_since` implies activity discovery. Neither a null capture timestamp nor an empty filtered page proves a group had no WhatsApp activity.
+
+Page until `next_cursor:null`, including after empty filtered pages. Group membership and ownership remain live authorization conditions.
+
+## GET /api/v1/whatsapp/messages
+
+| Parameter | Contract |
+| --- | --- |
+| `group_id` | Required authorized group UUID. |
+| `since` | Optional inclusive lower instant, clamped to the current plan window. |
+| `until` | Candidate inclusive ending instant. Future values are rejected. |
+| `order` | Candidate `asc` or `desc`. Both timestamp and record-ID tie-breaker follow that order. |
+| `snapshot_mode` | Candidate `frozen`. |
+| `include_media` | Candidate `true` or `false`, with existing AI-labeled extraction and safe file lookup metadata. |
+| `query` | Candidate literal case-insensitive original-text filter. Repeat it on every search continuation. |
+| `content_mode` | Candidate `full` or `references`. Fields at most 16,384 UTF-8 bytes stay inline in reference mode. |
+| `limit` | Integer string from 1 to 25. Default 25, including the frozen path. |
+| `cursor` | Exact continuation for this account, credential, group, bounds, order and filters. |
+
+Existing requests retain their old defaults and cursor path. A new frozen option or frozen cursor selects the candidate path. Do not mix a legacy cursor with new options.
+
+Candidate results preserve message `record_id`, native `message_id`, stored timestamp, sender/direction and full post-redaction text by default. New fields identify the frozen snapshot, expiry, effective bounds, total selected records, source coverage and `scan_complete`. Follow its cursor until complete; a short page is not enough.
+
+Original and generated fields remain distinct. Reference mode only omits large text: use `content_reference` for omitted original text and `text_reference` for omitted stored extraction. Small values remain inline. The media `access` metadata is a lookup instruction, not proof that an original file is available.
+
+## GET /api/v1/whatsapp/search
+
+Uses the message parameters, but `query` is required on every request. It creates bounded frozen literal search over original stored text, not semantic search or extraction search. Its returned search metadata states `original_text_only` and requires the same query on continuation.
+
+## GET /api/v1/whatsapp/summary
+
+Parameters: required `group_id`, optional `since`, `until` and `query`.
+
+Returns deterministic captured statistics and UTC date bins with `ai_generated:false` and `semantic_summary_available:false`. The result includes its bounded snapshot/window and coverage. It does not run a summary model or count uncaptured WhatsApp activity. See the [tool reference](/developers/upgrade-mcp-tools) for statistics fields.
+
+## GET /api/v1/whatsapp/message-content
+
+Required: `group_id`, `record_id` and opaque `reference` from a references-mode page.
+
+Optional: `offset` as a UTF-8 byte position, default zero, and `limit` from 4 to 65,536 bytes, default 65,536.
+
+Returns text for the referenced `field`, its `ai_generated` label, byte offset/continuation, completion state, total UTF-8 byte count, full-field SHA256 and reference expiry. Use only returned byte boundaries. All chunks must be verified before treating the field as complete. Normal current authorization and the same access context remain required; a reference alone is not a bearer credential.
+
+## GET /api/v1/whatsapp/media
+
+Required: `group_id` and original `record_id`. Optional: `offset`, default zero, and `limit` from 1 to 65,536 bytes, default 65,536.
+
+On continuation, send the short-lived ticket only in `X-Anyx-Media-Ticket`, alongside normal Authorization. A `ticket` query parameter is not accepted. The response can be a successful HTTP response with `status:"permission_required"` or `status:"unavailable"`; neither includes file bytes. Only `status:"available"` carries a bounded base64 chunk, hashes and continuation metadata.
+
+Consent, expiry, asset identity, renewal, size limits and privacy are specified in the [media reference](/developers/upgrade-media). Never treat a returned extraction or storage URL in a chat as an authorized original file.
+
+## GET /api/v1/whatsapp/status
+
+No query parameters. Inspect current access, history window, actual advertised tools, capabilities, response formats and configured limits. These do not reserve future access. A blocked account or revoked credential can be rejected before this route succeeds.
+
+## Owner-session media consent
+
+`GET /api/user/mcp-media-access` lists that signed-in owner's credential IDs, labels and original-media permission states.
+
+`POST /api/user/mcp-media-access` changes one exact credential using `credential_kind`, `credential_id` and `enabled`. Enabling also requires `confirmation:"ALLOW_ORIGINAL_MEDIA"`; disabling does not. These calls require a verified signed-in owner session, not the personal key or an MCP OAuth token. Consent is API-only in this candidate; no frontend control is claimed.
+
+The key cannot grant itself broader file access. New and existing text credentials default to no original-media consent. See [the consent contract](/developers/upgrade-media).
+
+## Errors, limits and timing
+
+| Result | Meaning and recovery |
+| --- | --- |
+| 400 `invalid_request` | Fix strict parameters/types, duplicate query keys, timestamps or byte offsets. |
+| 400 `invalid_cursor` | Restart a correctly bound scan/reference. Do not edit or transfer cursors. |
+| 401 `invalid_token` | Stop and resolve the credential/account state. Do not rotate to bypass suspension. |
+| 403 plan/origin errors | Resolve access policy or use the approved backend flow. |
+| 404 `group_unavailable` | The group/record is not currently accessible. Foreign and inactive access must not leak data. |
+| 410 `cursor_expired` | Restart within the current window, or renew a media ticket with a fresh fully authorized request and unchanged asset checks. |
+| 410 `snapshot_changed` | Restart a fresh bounded snapshot. Do not silently skip the failed page. |
+| 413 `snapshot_too_large` | Narrow the time window. No complete partial result is implied. |
+| 413 `response_too_large` | Use a narrower window or selective text references. Never silently truncate. |
+| 429 rate/capacity/busy errors | Honor `Retry-After`, retain the last committed checkpoint and use bounded backoff. |
+| 503 `unavailable` | Retry within a bounded policy and report incomplete evidence. |
+
+The candidate caps REST JSON responses at 2 MiB. Soft page targets and native-client limits are separate. Account and IP quotas are shared with MCP; REST also has 30 bulk requests per account per minute. Querying another route or key does not create a fresh allowance.
+
+When present, `Server-Timing` supplies `auth`, accumulated store-operation `store`, and `tool` elapsed durations. They can overlap and include store round trips. They are not interchangeable with pure SQL CPU time, total network latency or native-client rendering time. Measure each layer separately without logging keys, tickets or private content.

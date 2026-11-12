@@ -23,3 +23,11 @@ Open `http://localhost:3000`. Run `mint broken-links` before opening a pull requ
 ## Publishing
 
 Merging to `main` deploys to production automatically through the Mintlify GitHub app. Open a pull request first.
+
+## Unreleased MCP upgrade review
+
+The `developers/upgrade-*` pages, `contracts/mcp-upgrade.json`, candidate OpenAPI and generated agent brief are local review artifacts. They are excluded from normal navigation and do not change the released MCP/REST contract. Do not publish them or describe new functions as live before the backend and public-docs release approvals.
+
+The [coordinated release checklist](UPGRADE-RELEASE-CHECKLIST.md) records the promotion, admission and security-preserving rollback requirements. Candidate OpenAPI uses a reserved `.invalid` server placeholder, never the documentation host or production backend. The GET-only candidate reader requires an explicitly approved candidate target and performs no network calls on import.
+
+Regenerate candidate artifacts with `node tools/generate-upgrade-docs.mjs`. CI uses `--check` to reject drift and runs the released/candidate reader and contract tests with fictional responses only. No dependency install, credentials, hosted traffic or model calls are required for those checks.

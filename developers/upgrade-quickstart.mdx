@@ -1,0 +1,61 @@
+---
+title: "Test the unreleased upgrade with your AI client"
+sidebarTitle: "Candidate quickstart"
+description: "Use an approved candidate environment to discover captured activity, read a bounded group, recover large text and check media permission without exposing credentials."
+---
+
+<Warning>
+Unreleased review flow. Use only an explicitly approved candidate endpoint. The production endpoint must keep the [released quickstart](/developers/mcp-quickstart) until rollout verification is complete. SDK success does not prove a particular native AI app has been tested.
+</Warning>
+
+## 1. Connect safely
+
+Use the account's existing approved authentication flow. Keep personal keys in the running client's environment or trusted backend secret storage. Never paste a key, OAuth token or media ticket into an AI prompt, support message, screenshot or shared configuration.
+
+For a header-capable client that supports text-only tool results, the optional candidate header is `X-Anyx-MCP-Response-Format: text`. Leave it out to retain the compatible text-plus-structured default. Do not set a browser Origin workaround or forward credentials through redirects.
+
+## 2. Inspect actual access and tools
+
+Call `get_status` with `{}`. Inspect account access, the current history window, available tools, `read_capabilities`, response formats and limits. A listed tool does not reserve future account/group access. The server must authorize every request again.
+
+Use the endpoint's advertised tools rather than sending candidate arguments to an older server. A custom MCP integration should check HTTP status and `isError`, then parse either `structuredContent` or its JSON text fallback. Do not concatenate both representations.
+
+## 3. Find a group with relevant capture
+
+Call `list_groups` with `activity:true` and an appropriate `active_since`. Follow every cursor, including after an empty filtered page. Choose a returned `group_id` and explain that the timestamps describe eligible Anyx capture, not complete WhatsApp activity.
+
+Prompt for a compatible connected client:
+
+> Use only the connected Anyx candidate. Check my access and tools, then find groups with captured messages in my requested time window. Do not read every group's history. State the capture window and any groups you could not check.
+
+For a local-day question, compute the date's actual timezone boundaries first. Do not hardcode a timezone offset.
+
+## 4. Read or search one bounded group
+
+Call `get_group_messages` with the selected `group_id`, explicit `since` and `until`, `order:"desc"`, `snapshot_mode:"frozen"`, and a small `limit`. Set `include_media:true` only when you need existing extraction or file metadata. Complete the scan through its cursor before claiming complete results within that snapshot.
+
+For literal original-text search, use `search_group_messages` with the same bounds and a `query`. Repeat that exact query on every page. This is not semantic search and does not search the AI-generated extraction text.
+
+For counts and UTC date bins, use `get_group_activity_summary`. For a semantic explanation, your client should read the relevant messages and cite stable record IDs. The statistics tool does not run a paid summary model.
+
+## 5. Recover large text
+
+On `response_too_large`, retry the same bounded query with `content_mode:"references"`. Fields up to 16,384 UTF-8 bytes remain inline. For an omitted original field, use its `content_reference.reference` with `get_message_content`, the original `group_id` and `record_id`.
+
+For omitted extraction, use its separate `text_reference.reference`; small extraction text stays inline. The returned chunk identifies `field` and `ai_generated`; keep original text and AI extraction labeled separately.
+
+Start at offset zero and follow `next_offset` until it is `null` and `complete` is true. Offsets and limits are UTF-8 bytes, not JavaScript string positions. Each text chunk is at most 65,536 bytes and ends on a valid character boundary. Verify the final UTF-8 byte count and SHA256 supplied by the reference before storing a complete value. Never guess missing chunks.
+
+References expire with the frozen snapshot and require the same currently authorized credential. Restart a bounded scan if the reference expires or the source changes. An account/key/grant change cannot be bypassed by keeping an old reference.
+
+## 6. Keep original-media permission separate
+
+Stored AI extraction can be available while the original file is unavailable. Original-file access needs its own explicit per-credential consent and an authoritative retained asset. The candidate's consent control is API-only; this draft does not claim a Settings switch exists.
+
+Do not ask the assistant to reuse a storage URL found in a message. Use only the candidate's authorized media operation and its short-lived access state. The [media reference](/developers/upgrade-media) specifies permission, expiry, base64 chunks and unavailable cases.
+
+## 7. Verify your actual client
+
+Use fictional data to test a short response, multiple pages, a long Unicode record, text-reference chunks, stored extraction, denied original-media permission, permitted media chunks and revoked access. Record client name/version, status, byte sizes and server/client timings without tokens or message contents.
+
+Treat ChatGPT, Claude, Claude Code, Gemini, Cursor and other AI clients as separate compatibility tests. A connected transport, tool listing or Node SDK parse is narrower than a successful native-client workflow. Keep support claims limited to the exact client and flow actually verified.

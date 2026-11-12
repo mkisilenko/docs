@@ -1,0 +1,94 @@
+---
+title: "Unreleased MCP tool reference"
+sidebarTitle: "Candidate tools"
+description: "Proposed arguments, output representations, timestamp semantics and bounded recovery for the Anyx MCP upgrade."
+---
+
+<Warning>
+Unreleased candidate. Inspect the actual `get_status` result and tool listing. New tools can be withheld while upgrade admission is off. The [released tool reference](/developers/mcp-tools) remains authoritative for existing production.
+</Warning>
+
+MCP uses Streamable HTTP and JSON-RPC tool calls. Check HTTP errors, protocol errors and `isError`. A JSON-RPC success envelope does not prove that a data tool succeeded.
+
+## get_status
+
+Input: an empty object.
+
+Reports current access, plan history window, active-group count, actual tools, read capabilities, response formats, configured limits and timestamp basis. Capability support does not reserve authorization or guarantee that an original file is retained. A blocked/revoked credential can be refused before the tool runs.
+
+## list_groups
+
+| Input | Candidate contract |
+| --- | --- |
+| `limit` | Integer 1 to 100. Default 100. |
+| `cursor` | Unmodified listing cursor. |
+| `activity` | Optional Boolean. `true` adds captured-activity metadata. |
+| `active_since` | Optional ISO instant with timezone. Adds bounded captured-activity discovery. |
+
+Group results identify eligible active groups, with activity metadata when requested. Follow `next_cursor` through empty filtered pages until it is null. Captured event time, observation cutoff and unknown WhatsApp/arrival activity are separate concepts.
+
+## get_group_messages
+
+| Input | Candidate contract |
+| --- | --- |
+| `group_id` | Required authorized group UUID. |
+| `since`, `until` | Inclusive ISO instants with timezone, up to six fractional digits. Plan clamp and future-ending rejection apply. |
+| `order` | Optional `asc` or `desc`. |
+| `snapshot_mode` | Optional `frozen`. |
+| `include_media` | Optional Boolean, attaches existing labeled extraction and safe media lookup state. |
+| `query` | Optional bounded literal original-text filter. Repeat it on each search continuation. |
+| `content_mode` | Optional `full` or `references`. Full text remains default; reference mode keeps fields up to 16,384 UTF-8 bytes inline. |
+| `limit` | 1 to 100. Frozen reads default 25; unchanged legacy reads keep their existing default. |
+| `cursor` | Unmodified read cursor for this account, credential, group and filters. |
+
+The new options select bounded frozen membership and integrity checks. A frozen cursor continues that path. Existing calls without new options retain their legacy behavior.
+
+Use `record_id` for stored-record upserts, not a title or the native `message_id` alone. Results identify snapshot state and source coverage. Complete a scan only after its final cursor and `scan_complete` agree. See [bounded snapshots and recovery](/developers/upgrade-candidate).
+
+## search_group_messages
+
+Uses the message-read arguments, with `query` required on every page. Search is literal and case-insensitive over original stored message text only. It does not search extraction, perform semantic ranking, parse database expressions or generate a summary. The query is bounded and normalized; keep its value unchanged through a scan.
+
+## get_group_activity_summary
+
+Input: required `group_id`, optional `since`, `until` and `query`.
+
+Returns `summary_type:"deterministic_capture_statistics"`, `ai_generated:false`, `semantic_summary_available:false`, snapshot/window metadata and `statistics`:
+
+- `captured_records`, `inbound_records` and `outbound_records`.
+- `records_with_linked_extraction`.
+- `first_captured_at` and `last_captured_at`, or null for an empty set.
+- `days`, containing `date_utc` and `captured_records`.
+
+These count the bounded eligible source set. They do not measure all WhatsApp activity or prove extraction quality. The client can read/cite original records to produce its own semantic explanation. UTC bins do not automatically represent a user's local day.
+
+## get_message_content
+
+| Input | Candidate contract |
+| --- | --- |
+| `group_id`, `record_id` | Required authorized UUIDs from the original read. |
+| `reference` | Required opaque value from `content_reference` or extraction `text_reference`. |
+| `offset` | Optional UTF-8 byte position. Default zero. Use the returned next offset. |
+| `limit` | Optional 4 to 65,536 bytes. Default 65,536. |
+
+Result fields include `field`, `ai_generated`, `encoding:"utf-8"`, `text`, `offset`, `next_offset`, `complete`, `total_utf8_bytes`, full-field `sha256` and `reference_expires_at`. A chunk never ends inside a UTF-8 character. The hash covers the complete returned field after sensitive-link redaction, not an unrelated original media file.
+
+Keep original text (`field:"content"`) separate from generated extraction (`field:"media_extraction"`). Verify all chunks before accepting a complete value. References expire with the snapshot and require the same currently authorized credential and unchanged source.
+
+## get_group_media
+
+Input: required `group_id` and `record_id`, optional byte `offset`, 1 to 65,536-byte `limit`, and opaque `ticket`.
+
+Returns `permission_required`, `unavailable` or one authorized `available` base64 chunk. An existing extraction is not permission to retrieve an original file. Tickets expire after 60 seconds and need normal authorization on every call. Read the full [original-media reference](/developers/upgrade-media) before implementing a downloader.
+
+## Response representation and size
+
+The compatible default returns JSON text in `content` and the object in `structuredContent`. A client should use one representation. The optional header `X-Anyx-MCP-Response-Format: text` omits the structured copy for clients that explicitly support text-only results. Do not infer double token billing from duplicate bytes.
+
+The candidate applies a 2 MiB JSON-RPC response guard. Large responses fail explicitly with `response_too_large`; use a narrower window or authorized text references. Native-client limits remain separate measurements. Do not silently truncate or invent the rest of a message.
+
+## Timing and retry
+
+When present, `Server-Timing` exposes `auth`, `store` and `tool` durations. Store timing is accumulated store-operation elapsed time, including its round trips; it is not pure SQL execution time and can overlap other measures. Snapshot `timing_ms` covers its own preparation/read/handler scopes. Do not add overlapping durations as though they were independent stages.
+
+Measure the client's network and rendering time separately. Use the actual retry header or tool `retry_after` on 429. A rejected or unavailable read is not an empty successful dataset. See [candidate troubleshooting](/developers/upgrade-troubleshooting).

@@ -1,0 +1,22 @@
+name: Documentation contracts
+on:
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  contracts:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Candidate documentation is reproducible
+        run: node tools/generate-upgrade-docs.mjs --check
+      - name: Released and candidate reader contracts (synthetic only)
+        run: node --test examples/anyx-read.test.mjs examples/anyx-read-candidate.test.mjs tools/upgrade-contract.test.mjs

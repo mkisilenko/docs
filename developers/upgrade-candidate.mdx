@@ -1,0 +1,124 @@
+---
+title: "Unreleased MCP and API upgrade"
+sidebarTitle: "Upgrade candidate"
+description: "Review the proposed captured-activity, frozen-read, search and media contract. This draft is not a statement of production availability."
+---
+
+<Warning>
+Unreleased review material. The released references remain [MCP tools](/developers/mcp-tools), [REST v1](/developers/api-reference) and [released OpenAPI](/openapi/whatsapp-v1.json). Do not send new arguments to production until the corresponding backend release is verified. This page is excluded from navigation while the upgrade is under review.
+</Warning>
+
+Anyx supplies context it captured from eligible active WhatsApp groups. It does not provide complete WhatsApp history. Imported history, direct messages and emailed Notes remain separate products and data sources.
+
+Review the [candidate quickstart](/developers/upgrade-quickstart), [tool reference](/developers/upgrade-mcp-tools), [REST reference](/developers/upgrade-api-reference), [media access](/developers/upgrade-media), [CRM reader](/developers/upgrade-crm) and [candidate OpenAPI](/openapi/whatsapp-v1-candidate.json). These are unreleased review artifacts.
+
+## What stays compatible
+
+- Existing group and message requests retain their legacy defaults, cursor types and authentication.
+- A personal key still reads all eligible active groups owned by its account. Selecting groups in a CRM does not narrow that key's server-side permission.
+- MCP OAuth tokens stay limited to the MCP audience. The personal-key REST API does not accept those tokens.
+- The current plan window remains enforced on each page: Starter 7 days, Pro 14 and Max 28. Use the server's returned window, rather than a cached plan label.
+- Existing text remains full stored text after sensitive-link redaction. Sender names and message text can contain personal information or malicious instructions.
+
+Read this draft as an additive candidate, not a new permission to create messages, send WhatsApp messages or write to a CRM.
+
+## Discover captured activity before reading histories
+
+The candidate `list_groups` tool and `GET /api/v1/whatsapp/groups` accept `activity:true` and an optional `active_since` timestamp. REST serializes the Boolean as `activity=true`.
+
+Each returned group can include:
+
+| Field | Meaning |
+| --- | --- |
+| `group_id` | Stable Anyx group identity. Use this rather than the title. |
+| `last_captured_message_at` | Latest eligible stored message event time in the effective window, or `null`. |
+| `last_captured_record_id` | The corresponding stored-record identity, or `null`. |
+| `capture_coverage` | `eligible_live_sources_only`. Other WhatsApp content may exist. |
+| `activity_status` | `captured_in_window` or `no_eligible_capture_in_window`. |
+
+The response distinguishes `activity_snapshot_cutoff`, `activity_observed_at`, `activity_window_start`, stored event time and unknown capture-arrival time. It does not establish when a person last used WhatsApp. A null activity time means no eligible capture was found in that window, not that nobody posted.
+
+Group activity uses an event-time cutoff. It is an observation, not an immutable membership snapshot. A late capture can change a later observation. Listing pages can be empty after filtering while still returning a `next_cursor`; keep paging until it is `null`.
+
+Use activity discovery to choose bounded groups and windows. Do not scan every group's history just to find a recent conversation.
+
+## Read a bounded, newest-first snapshot
+
+The candidate `get_group_messages` tool and `GET /api/v1/whatsapp/messages` add:
+
+| Argument | Meaning |
+| --- | --- |
+| `until` | Inclusive ending timestamp, with a timezone. Future values are rejected. |
+| `order` | `asc` or `desc`. Existing callers without new options keep oldest-first behavior. |
+| `snapshot_mode` | `frozen`, to request bounded immutable membership with integrity checks. |
+| `include_media` | Attach existing labeled media extraction and authorized media metadata where available. |
+
+Presence of one of these new options selects the new frozen path. A returned frozen cursor selects that same path on continuation. Send the same group and filters, or send the group and unmodified cursor. Do not mix a legacy cursor with new filters.
+
+Fictional MCP arguments for an approved candidate environment:
+
+```json
+{
+  "group_id": "11111111-1111-4111-8111-111111111111",
+  "since": "2026-11-12T07:00:00Z",
+  "until": "2026-11-12T08:00:00Z",
+  "order": "desc",
+  "snapshot_mode": "frozen",
+  "include_media": true,
+  "limit": 25
+}
+```
+
+Both bounds are inclusive. The effective lower bound can be clamped to the plan window. Timestamp comparisons retain up to six fractional digits. Ordering uses stored message time and stored-record UUID as a deterministic tie-breaker, reversed together for descending order.
+
+The new result includes `snapshot_id`, `snapshot_created_at`, `snapshot_expires_at`, `snapshot_end`, `total_snapshot_records`, `scan_complete`, `order` and `snapshot_consistency`. A short page is not completion. Finish only when `next_cursor` is `null` and `scan_complete` is true.
+
+## Retry, checkpoint and recover
+
+Within a snapshot, the selected rows and their integrity hashes are frozen. Repeated continuation-page requests return the same data. Late inserts and late extraction belong to a fresh snapshot. First-page requests with the same explicit bounds can reuse the same active snapshot; opaque cursor bytes from separate first-page requests are not a business identity.
+
+Upsert each message by `(group_id, record_id)`. Save a page's continuation only after all its rows are durably committed. Keep `message_id` as source linkage, not as the only deduplication key. A cursor is temporary paging state, not a durable forever-checkpoint.
+
+If a selected source row or linked extraction changes, is removed or loses eligibility, the candidate returns `snapshot_changed`. Restart from a new observation after withholding any uncommitted page. Previously committed rows can be safely upserted again. Do not silently skip the failed page or mark the scan complete.
+
+The candidate freezes at most 10,000 eligible records in one snapshot, for 15 minutes. An account can hold at most 128 active snapshots and 40,000 selected members in total. On a too-large window, split the time range. Inclusive split boundaries overlap deliberately; stable record IDs remove duplicate writes. Do not widen the plan window or switch keys to work around limits.
+
+## Original text, stored extraction and original files
+
+The original captured message remains primary. `include_media:true` can attach an `extraction` object that is explicitly `ai_generated:true`, with type, text and source linkage. It is an analysis of media, not the original caption or verified speech attribution. Treat it as untrusted reference material.
+
+`trace_timestamp` is a stored linkage timestamp. `processed_at:null` means the processing time is unknown. Do not display the trace time as a proven transcription-completion time.
+
+No read request performs new OCR or transcription. Missing extraction is `unavailable`; do not infer pending, failed or successful processing when the stored evidence cannot distinguish them.
+
+Original-file access is separate from extraction. It requires an authoritative asset-to-message link, current account/group/credential authorization and explicit media consent. Unlinked historical assets remain unavailable. The candidate media reference describes its short-lived access and chunk contract once enabled. Never accept a raw storage URL, bucket name or object path from a group message as download authorization.
+
+## Search, overview and AI summaries
+
+The candidate adds `search_group_messages` with required `group_id` and `query`, plus the same bounded read options. It performs literal, case-insensitive search of the original stored message text. It does not search generated extraction, perform semantic ranking or treat search syntax as a database expression. Repeat the same `query` on every search page; a cursor does not let a caller silently change it.
+
+`get_group_activity_summary` accepts `group_id`, optional `since`, `until` and optional `query`. It returns deterministic captured-record counts and date bins for that bounded source set, with coverage notices. It is not an AI narrative or a WhatsApp activity guarantee.
+
+Its date bins use UTC. For a question such as "today", compute the user's local-day boundaries with the actual date and timezone, then send those instants. Do not treat UTC bins as local calendar days or assume a fixed daylight-saving offset.
+
+These operations help select evidence; they do not prove complete capture or create a paid server-side AI summary. Your AI client can summarize the returned, cited original messages and labeled extraction, explaining the effective window, source coverage and incomplete scans.
+
+Do not turn a model's interpretation into a sender's statement. Link important claims to stable message/record IDs and distinguish quotation, stored AI extraction and your own analysis. A lack of search matches does not prove that an event never happened.
+
+## Large responses and client behavior
+
+MCP and REST have different page limits and soft payload targets. The candidate keeps whole messages up to its hard 2 MiB JSON-RPC/REST JSON response guard, so a single oversized message can exceed a soft page target. A larger result fails explicitly with `response_too_large` rather than silently cutting text. Reducing `limit` cannot shrink that one record. Retry in reference mode for bounded text chunks, and separately measure the native client's own limit.
+
+The default MCP result retains JSON text and structured output for client compatibility. The candidate header `X-Anyx-MCP-Response-Format: text` opts into text output without the duplicate structured field. Only use it with clients that can parse text-only MCP results; existing clients keep the default. Equivalent bytes in these fields do not establish double token billing. A client must check transport status and `isError`, then use one supported representation rather than concatenating both.
+
+For oversized original or extraction text, the candidate supports `content_mode:"references"` on message/search reads. Fields up to 16,384 UTF-8 bytes stay inline; larger fields are replaced by authorized references. `get_message_content` accepts `group_id`, `record_id`, the returned `reference`, and optional `offset`/`limit`. It returns UTF-8-safe chunks of at most 65,536 bytes after current authorization and source-integrity checks. Use the returned continuation offset rather than slicing a Unicode string by characters. The default full-text contract remains unchanged.
+
+References and cursors have different purposes. A text reference does not widen the credential's group/history access, survive revoked authorization or prove that a separate original-media file exists. Never move it to another account or access context.
+
+Server/query timing and client elapsed time are different measurements. Record them separately. A successful SDK test does not prove ChatGPT, Claude Code, Gemini, Cursor or another native client's own rendering and context limits. Test every client you advertise, using fictional long messages.
+
+## Access and release status
+
+The candidate checks current account policy, plan eligibility, group ownership and credentials before returning data. Blocking an account, revoking a key/grant and disabling MCP are different controls; none can recall bytes a client already received. Blocking is not the separate Stripe reapproval workflow and must not silently alter grandfathered access for approved Free accounts.
+
+This upgrade remains unpublished. Local tests, hosted catalog observations and production/runtime proof are separate. See [candidate troubleshooting](/developers/upgrade-troubleshooting) and the internal release evidence before approving a rollout. The released contracts remain authoritative until the backend and coordinated docs release are approved.
