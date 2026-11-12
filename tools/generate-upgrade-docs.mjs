@@ -17,6 +17,7 @@ api.servers = [{ url: 'https://unreleased.invalid', description: 'UNRELEASED pla
 api['x-release-status'] = 'unreleased';
 api['x-released-contract'] = './whatsapp-v1.json';
 api['x-contract-source-sha256'] = createHash('sha256').update(JSON.stringify(contract)).digest('hex');
+api['x-synchronization-guarantees'] = contract.synchronization;
 api['x-response-limits'] = { account_data_json_max_bytes: limits.max_json_response_bytes,
   mcp_jsonrpc_max_bytes: limits.max_json_response_bytes, native_client_limits_verified: false };
 api['x-source-default-rate-limits'] = { owner_per_minute: limits.owner_per_minute, owner_per_hour: limits.owner_per_hour,

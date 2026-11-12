@@ -79,6 +79,8 @@ Within a snapshot, the selected rows and their integrity hashes are frozen. Repe
 
 Upsert each message by `(group_id, record_id)`. Save a page's continuation only after all its rows are durably committed. Keep `message_id` as source linkage, not as the only deduplication key. A cursor is temporary paging state, not a durable forever-checkpoint.
 
+Fresh observations must upsert known IDs too: extraction can change behind a message-time checkpoint without advancing captured-activity discovery. Use overlap and periodic eligible-window reconciliation before access expires. This snapshot reader does not emit a guaranteed stream of every late change or deletion. See the [CRM synchronization limits](/developers/upgrade-crm#commit-a-page-safely).
+
 If a selected source row or linked extraction changes, is removed or loses eligibility, the candidate returns `snapshot_changed`. Restart from a new observation after withholding any uncommitted page. Previously committed rows can be safely upserted again. Do not silently skip the failed page or mark the scan complete.
 
 The candidate freezes at most 10,000 eligible records in one snapshot, for 15 minutes. An account can hold at most 128 active snapshots and 40,000 selected members in total. On a too-large window, split the time range. Inclusive split boundaries overlap deliberately; stable record IDs remove duplicate writes. Do not widen the plan window or switch keys to work around limits.

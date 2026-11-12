@@ -23,10 +23,14 @@ Agent brief:
 1. Check `GET /api/v1/whatsapp/status` on the approved candidate and inspect actual access, tools and limits.
 2. Page `GET /api/v1/whatsapp/groups?activity=true` with an appropriate `active_since`.
 3. Intersect the returned group IDs with the account owner's selected synchronization list.
-4. Schedule bounded reads only for relevant captured windows. A quiet observation can be revisited later for late capture.
+4. Use activity to prioritize bounded reads, and separately schedule periodic window reconciliation even when activity is unchanged.
 5. Maintain independent per-account/per-group checkpoints and respect shared quotas across all readers using that account.
 
+Use an unfiltered group listing to confirm the eligible-group inventory. Activity-filtered results are a priority subset, not the complete permission list. A group missing from recent activity can still be eligible and must remain in its selected periodic reconciliation schedule.
+
 Activity timestamps describe stored eligible events, not complete WhatsApp participation or capture-arrival order. A newly observed group can contain earlier event timestamps. Do not drop it only because a global forward-only timestamp advanced.
+
+An extraction-only update can be backdated behind a message-time checkpoint without advancing group activity. This listing is not an update feed. A quiet activity result must not permanently suppress reconciliation of an eligible selected group.
 
 ## Commit a page safely
 
@@ -36,7 +40,11 @@ Advance a completed-window checkpoint only after `next_cursor:null` and `scan_co
 
 The cursor expires after 15 minutes and binds the credential and filters. It is not a durable business checkpoint. For very busy groups, choose smaller time windows so the read can finish inside its snapshot and quota budget. A 10,000-record ceiling is not a promise that every maximum-size scan finishes within every client's quota and network conditions.
 
-To capture late messages or media extraction, periodically revisit the eligible history window. A monotonically advancing parent timestamp alone can miss later extraction for a previously processed record. Store the new labeled extraction on the same primary message record, rather than inserting it as another customer message.
+This API is a bounded snapshot reader, not a durable changefeed. A monotonically advancing parent-message timestamp can miss late capture or extraction attached to a known record. Use bounded overlapping observations plus periodic reconciliation of the eligible window before access expires. A fresh cutoff or an expired/restarted snapshot is needed for a new observation; repeating identical active bounds can intentionally reuse the old snapshot.
+
+UPSERT values for every returned `record_id` across fresh observations, including IDs you already know. Do not permanently discard known IDs as duplicates: their original or extracted fields can change. Reset any per-snapshot duplicate-suppression state after a 410 and when starting a fresh snapshot. The stable storage key stays the same, while values can be replaced by the newly authorized observation.
+
+These scans do not guarantee that every late change or deletion is emitted. A record absent from a later result can reflect changed access, source eligibility or the history window; it is not an explicit deletion event. No deletion-tombstone or durable ingestion-time checkpoint contract is supplied. A durable changefeed is deferred until ingestion time, backfill, updates, deletions and retention/checkpoint behavior have a coordinated contract.
 
 ## Recover oversized text selectively
 
@@ -51,6 +59,8 @@ The local example `examples/anyx-read-candidate.mjs` defaults to full text and p
 Use existing stored extraction for ordinary AI analysis. If an approved workflow needs the retained original, obtain explicit per-credential owner consent, then use `/api/v1/whatsapp/media` with normal authorization and the short-lived ticket header. The key cannot grant its own consent.
 
 The example checks every chunk hash and the final file hash, and refuses an asset identity/version change. It can renew an expired ticket at a saved offset only after a fresh authorized response proves the same asset identity/hash/size. Its returned bytes are untrusted data for an approved private sink; it does not execute or open the file.
+
+Access revocation, expiry or an unavailable response does not prove physical deletion of a retained storage object. Physical-object cleanup and its verification are a separate lifecycle requirement.
 
 Media and text reads share account quotas. A maximum 20 MiB original needs 320 calls at 64 KiB each. Plan for minutes, retry waits and ticket renewal. Never claim a file is complete after only metadata, extraction or the first chunk. See [media access](/developers/upgrade-media).
 

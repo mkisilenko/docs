@@ -3391,7 +3391,15 @@
   "x-reviewed-backend-revision": "d5c933de",
   "x-release-status": "unreleased",
   "x-released-contract": "./whatsapp-v1.json",
-  "x-contract-source-sha256": "25884207273017b022255920f7bcab1ce539b0b47735f2dccc6d40ddf973f391",
+  "x-contract-source-sha256": "bec42a6dd6eb5d23fd48e31c65dab30eddb61291a295a2772c7f2558082bac87",
+  "x-synchronization-guarantees": {
+    "reader_type": "bounded_snapshots",
+    "durable_changefeed": false,
+    "activity_is_update_feed": false,
+    "all_late_changes_or_deletions_emitted": false,
+    "known_record_ids_must_be_upserted_across_observations": true,
+    "physical_media_cleanup_verified": false
+  },
   "x-response-limits": {
     "account_data_json_max_bytes": 2097152,
     "mcp_jsonrpc_max_bytes": 2097152,

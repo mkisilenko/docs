@@ -1,6 +1,14 @@
 {
   "revision": "2026-11-12-candidate",
   "release_status": "unreleased",
+  "synchronization": {
+    "reader_type": "bounded_snapshots",
+    "durable_changefeed": false,
+    "activity_is_update_feed": false,
+    "all_late_changes_or_deletions_emitted": false,
+    "known_record_ids_must_be_upserted_across_observations": true,
+    "physical_media_cleanup_verified": false
+  },
   "limits": {
     "frozen_snapshot_seconds": 900,
     "legacy_message_cursor_seconds": 86400,
@@ -26,6 +34,7 @@
     "Captured activity and messages do not establish complete WhatsApp history. Imported history, direct messages and emailed Notes remain excluded.",
     "Respect the current 7/14/28-day plan window, bounded pages, snapshots and shared quota/retry responses.",
     "Upsert by group_id and record_id, commit rows before a continuation checkpoint, and use overlapping fresh windows for late capture or extraction.",
+    "This is a bounded snapshot reader, not a durable changefeed. Backdated extraction can change behind message-time checkpoints without changing activity discovery. Upsert known IDs across fresh observations; periodically reconcile the eligible window before access expires. Not every late change or deletion is guaranteed to be emitted.",
     "Stored extraction is AI-generated reference material, not original message text or verified attribution. A read must not run new extraction.",
     "Original-media access requires explicit credential-scoped consent, an authoritative message-to-asset link, normal current authorization and a short-lived access ticket. No raw storage URLs.",
     "Do not infer double token billing from equivalent JSON text and structured output. Parse one supported representation and inspect isError.",
@@ -50,6 +59,7 @@
     "Follow next_cursor until null and scan_complete. An empty or short page can still have another page.",
     "Frozen snapshots expire after 15 minutes, cap membership at 10,000 records, and share account capacity of 128 active snapshots and 40,000 members.",
     "On snapshot_changed or expired/invalid cursor, restart a fresh bounded scan and idempotently upsert; do not silently skip rows.",
+    "Reset per-snapshot duplicate suppression after 410 and for fresh observations; never permanently ignore known record IDs. Identical active bounds can reuse an old snapshot, so use a fresh cutoff or wait for expiry when reconciling changes.",
     "On snapshot_too_large, split the time range. Inclusive split boundaries overlap and must be deduplicated by stable identity.",
     "Honor Retry-After or retry_after with bounded backoff. Never switch credentials/transports to evade quotas.",
     "Stop on revoked credentials, account suspension or disabled access. Previously delivered bytes cannot be recalled.",

@@ -82,6 +82,8 @@ export function createCandidateReader({ origin, key, candidateConfirmed = false,
     check(typeof since === 'string' && typeof until === 'string' && Number.isFinite(Date.parse(since))
       && Date.parse(since) <= Date.parse(until), 'Use explicit inclusive since/until instants.');
     check(['full', 'references'].includes(contentMode), 'Choose full text or explicit reference mode.');
+    // Cursor-cycle protection belongs to this one scan. Never keep a global set of known record
+    // IDs: fresh observations must UPSERT them again to receive changed/backdated extraction.
     let cursor, snapshot; const seen = new Set();
     for (let pageNumber = 0; pageNumber < 512; pageNumber++) {
       // Keep query on every search continuation. Use references only for bounded recovery windows.
@@ -94,7 +96,7 @@ export function createCandidateReader({ origin, key, candidateConfirmed = false,
       const next = page.next_cursor;
       check(next === null || (typeof next === 'string' && next.length > 0), 'Invalid message cursor.');
       check(page.scan_complete === (next === null), 'Incomplete or contradictory scan state.');
-      yield page; // Persist every record and referenced value before checkpointing this cursor.
+      yield page; // UPSERT all returned IDs, including known IDs, before checkpointing this cursor.
       if (next === null) return;
       check(!seen.has(next), 'Repeated message cursor. Stop and inspect.');
       seen.add(next); cursor = next;

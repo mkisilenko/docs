@@ -165,3 +165,31 @@ test('upgrade admission-off is a visible nonretryable failure, not a credential 
     && error.status === 403 && !error.message.includes(options.key));
   assert.equal(count, 1);
 });
+
+test('a fresh observation after a410 re-yields a known record with backdated extraction for UPSERT', async () => {
+  let observation = 0;
+  const eventTime = '2026-11-12T07:15:00Z', stored = new Map(), calls = [];
+  const reader = createCandidateReader({ ...options, fetchImpl: async url => {
+    const cursor = url.searchParams.get('cursor'); calls.push({ observation, cursor, until: url.searchParams.get('until') });
+    if (observation === 0 && cursor) return reply({ error: 'cursor_expired' }, 410);
+    const message = { record_id: record, message_id: 'fictional-stable-native-id', sent_at: eventTime, content: 'Original caption',
+      media: { extraction: observation === 0 ? { status: 'unavailable', reason: 'no_stored_extraction' }
+        : { status: 'available', ai_generated: true, text: 'Later extraction for the same old message' } } };
+    return reply({ group_id: group, snapshot_id: observation === 0 ? snapshot : asset,
+      snapshot_consistency: 'frozen_membership_with_integrity_checks', messages: [message],
+      next_cursor: observation === 0 ? 'fictional-old-snapshot-next' : null, scan_complete: observation !== 0 });
+  } });
+  await assert.rejects(async () => {
+    for await (const page of reader.messages(bounds)) for (const message of page.messages) stored.set(message.record_id, message);
+  }, error => error.status === 410 && error.code === 'cursor_expired');
+  assert.equal(stored.get(record).media.extraction.status, 'unavailable');
+  observation = 1;
+  for await (const page of reader.messages({ ...bounds, until: '2026-11-12T09:00:00Z' })) {
+    for (const message of page.messages) stored.set(message.record_id, message); // Update existing IDs, never an insert-only seen-ID filter.
+  }
+  assert.equal(stored.size, 1);
+  assert.equal(stored.get(record).sent_at, eventTime);
+  assert.equal(stored.get(record).media.extraction.text, 'Later extraction for the same old message');
+  assert.equal(calls[2].cursor, null);
+  assert.equal(calls[2].until, '2026-11-12T09:00:00Z');
+});
