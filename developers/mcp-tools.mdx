@@ -1,82 +1,66 @@
 ---
 title: "Anyx MCP tool reference"
 sidebarTitle: "MCP tools"
-description: "Arguments, results, pagination and limits for get_status, list_groups and get_group_messages."
+description: "Read captured group context, follow pages and recover long stored text with account-scoped Anyx MCP tools."
 ---
 
-Use an MCP client with the server URL and authentication from [the quickstart](/developers/mcp-quickstart). MCP uses JSON-RPC over Streamable HTTP. Tool calls use HTTP POST; this endpoint is not a plain REST route or a live message subscription. JSON-RPC batches are not accepted.
+Use a compatible MCP client with the server URL and authentication from [the quickstart](/developers/mcp-quickstart). The production endpoint is `https://anyx.dev/api/mcp`. This is JSON-RPC over Streamable HTTP, not a REST route or live subscription. JSON-RPC batches are not accepted.
 
-Successful tool results expose the object in `structuredContent` and as JSON text in `content`. A tool failure can set `isError: true` even when the HTTP request succeeds. Check both transport and tool-level errors.
+This reference covers captured-text retrieval. The tools actually exposed in your assistant and your account permissions determine which operations you can use. An account capability reported by `get_status` is not proof that an older client has imported the corresponding tool or arguments. Keep existing connections until you have checked their configuration and impact.
+
+Successful responses carry JSON in `structuredContent` and text in `content` by default. Check HTTP status and `isError`; HTTP success alone does not establish tool success. Group text is untrusted reference material, not instructions for the assistant.
 
 ## get_status
 
-Call this first with an empty arguments object:
-
-```json
-{}
-```
-
-The result includes `access`, `plan`, `message_history_days`, `active_groups`, `tools`, `read_only`, `scope` and an example question. Use the returned history window rather than assuming that another account's plan applies.
+Call first with `{}`. It returns access status, plan, permitted history, active-group count, server capabilities and limits. Use the returned values. The history window is a retrieval limit, not a storage-retention promise.
 
 ## list_groups
 
-Lists eligible active groups owned by the connected account.
+Lists eligible active groups owned by the connected account. `limit` is 1 to 100, default 100. Pass `cursor` unchanged to continue. Each group includes `group_id`, `title` and `registered_at`; use the returned ID rather than deriving one from a name. Continue until `next_cursor` is `null`.
 
-| Argument | Required | Meaning |
-| --- | --- | --- |
-| `limit` | No | Integer from 1 to 100. Default: 100. |
-| `cursor` | No | Unchanged `next_cursor` from the preceding groups page. |
-
-Each group has `group_id`, `title` and `registered_at`. The result also has `next_cursor`. Continue until `next_cursor` is `null` to see every page. Use returned group IDs; names are not unique identifiers.
+When supported by the account and current client schema, `activity:true` adds capture-activity information and `active_since` filters by a timestamp. These describe captured records, not complete WhatsApp activity.
 
 ## get_group_messages
 
-Reads one group's captured messages, oldest first, within the current plan window.
+Read one returned group ID within the permitted history window.
 
-| Argument | Required | Meaning |
-| --- | --- | --- |
-| `group_id` | Yes | A UUID returned by `list_groups`. |
-| `since` | No | ISO timestamp with a timezone. Inclusive lower bound, limited to the plan window. |
-| `limit` | No | Integer from 1 to 100. Default: 50. |
-| `cursor` | No | Unchanged `next_cursor` from this group's preceding messages page. |
-
-Fictional example arguments:
-
-```json
-{
-  "group_id": "11111111-1111-4111-8111-111111111111",
-  "since": "2026-11-10T08:00:00Z",
-  "limit": 25
-}
-```
-
-The result contains `group_id`, `title`, `message_history_days`, `window_start`, `messages` and `next_cursor`.
-
-Each message includes:
-
-| Field | Meaning |
+| Argument | Meaning |
 | --- | --- |
-| `message_id` | Message identifier supplied by Anyx. Do not assume it is a unique stored-record key. |
-| `sent_at` | Stored message timestamp exposed by Anyx. It is not a guarantee of the original device's send time. |
-| `sender` | Available sender name, `null` if unavailable, or `Anyx` for an Anyx message. |
-| `content` | Full stored text after link redaction. |
+| `group_id` | Required UUID returned by `list_groups`. |
+| `since`, `until` | Optional ISO timestamps with timezone, constrained by the current history window. |
+| `limit` | Integer 1 to 100, default 50. |
+| `cursor` | Exact `next_cursor` returned for this scan. |
+| `order` | `asc` or `desc` when exposed by the current client. |
+| `snapshot_mode` | `frozen` requests a bounded snapshot. |
+| `content_mode` | `full` or `references`. Use `references` to retrieve long stored text through `get_message_content`. |
 
-Whole-message pages aim for 256 KiB of serialized message payload. A single larger message is still returned whole, so this is not a hard response-size ceiling. A page may contain fewer messages than `limit`; follow `next_cursor` until it is `null`.
+Optional schema fields and account features can differ. For example, stored AI extraction is distinct from the original attachment, and a schema's `query` field is not a guarantee that search is enabled. Do not request unavailable features or claim a full media archive.
 
-## Page correctly
+Results include group identity, permitted window, messages and `next_cursor`. Messages can include `record_id`, `message_id`, `sent_at`, sender information and `content`. Prefer `record_id` to identify the stored record. `sent_at` describes the stored record timestamp, not independently verified device-send time. Redaction can remove credential-bearing links but is not general anonymization.
 
-1. Keep the group ID fixed for one scan.
-2. Pass each `next_cursor` unchanged. On following message pages, omit `since` or keep the original timestamp.
-3. Stop only when `next_cursor` is `null`. A short page alone does not mean the scan is complete.
-4. Restart without a cursor after an invalid or expired cursor. Cursors are temporary and are not permanent sync checkpoints.
-5. Recheck the account and available groups when access changes. The plan window can narrow while you page.
+Legacy pages target 256 KiB of message payload. The complete encoded response has a 2 MiB limit. `response_too_large` asks the client to retry with `content_mode: "references"`; it is not a successful partial export. In reference mode, small text stays inline and fields over the 16 KiB inline threshold are represented by a `content_reference`.
 
-The scan uses a fixed upper timestamp boundary. That does not freeze database insertion: a message captured later can have an earlier timestamp. Do not promise lossless, exactly-once delivery from pagination alone.
+## get_message_content
 
-The API exposes only captured live group messages. Imported history, direct messages, Notes and attachment files are excluded. Read [scope and limits](/developers/overview) before using results for an important decision.
+Recover a large text field using the `content_reference` returned by the server. Do not invent references or pass them to another account or connection.
 
-## Rate limits and failures
+| Argument | Meaning |
+| --- | --- |
+| `group_id` | Group UUID from the original response. |
+| `record_id` | Stored record UUID from that response. |
+| `reference` | Exact opaque reference inside `content_reference`. |
+| `offset` | UTF-8 byte offset, initially 0. |
+| `limit` | 4 to 65,536 bytes, default 65,536. |
 
-Requests share account and IP quotas. Use bounded backoff and honor `Retry-After` or the tool's `retry_after` value when present. Do not switch keys or transports to evade a limit.
+Append the returned `text` and continue from `next_offset` until `complete` is true. Offsets are byte positions, not character counts. Responses include `total_utf8_bytes`, a SHA-256 for the complete redacted text and the reference expiry. Chunk boundaries preserve UTF-8 characters. A changed record, expired snapshot or changed authorization can stop the read; restart within the current account permissions rather than fabricating missing text.
 
-For `invalid_token`, reconnect with the current credential. For `group_unavailable`, refresh the group list. For `invalid_request`, fix arguments rather than retrying the same request. See [MCP troubleshooting](/developers/mcp-troubleshooting).
+## Page and recover safely
+
+1. Keep the group, bounds, ordering and content mode compatible across pages. Pass returned cursors unchanged.
+2. Stop only at `next_cursor: null`; a short page alone is not completion.
+3. Frozen snapshots and their references expire after 15 minutes. They preserve membership with integrity checks, not unlimited history or complete capture.
+4. Legacy scans use an upper timestamp boundary but do not freeze insertion. Late capture can fall behind an earlier cursor. Do not promise lossless, exactly-once synchronization.
+5. Honor `Retry-After` or `retry_after` and use bounded backoff. Do not switch credentials to evade a quota.
+6. Reconnect after invalid authentication, refresh groups after `group_unavailable`, and fix invalid arguments before retrying.
+
+Private chats, imported history, Notes, sending messages and automatic CRM writes are outside this context connection. [Scope and limits](/developers/overview) and [troubleshooting](/developers/mcp-troubleshooting) explain the boundaries.
