@@ -24,16 +24,16 @@ Start with the [MCP quickstart](/developers/mcp-quickstart), then use the [tool 
 
 The history window looks back from each request. Starter includes 7 days, Pro 14 days and Max 28 days. Free and the legacy Builder plan are not included by default. Account access and the current plan are checked on the server. Use `get_status` to check your account.
 
-Messages include full stored text after link redaction. Pages may contain fewer messages than the requested limit to keep responses manageable. This is still not a complete WhatsApp archive.
+Messages expose stored text after link redaction. Large text may require reference mode and repeated `get_message_content` calls in a client that exposes that tool. Pages may be shorter than the requested limit; follow returned cursors. This is not a complete WhatsApp archive.
 
 Credential-bearing links and Anyx private access links can be redacted. This is not general removal of personal information. Anyx may not have captured every message.
 
 ## What is outside this connection
 
 - Direct messages, emailed Notes and imported or backfilled history.
-- Attachment files and a complete WhatsApp archive.
+- A complete media or WhatsApp archive. Separately enabled asset permissions are outside this captured-text guide.
 - Sending WhatsApp messages, changing a group or writing to your CRM.
-- A separate server-side search or summary tool. Your AI app analyzes the messages it retrieves.
+- A guarantee that every account has optional search, statistics or media features. Your AI app can interpret the captured text it retrieves.
 
 An assistant's other tools may still be able to take actions. Review that assistant's permissions separately and require approval for changes you do not want it to make automatically.
 

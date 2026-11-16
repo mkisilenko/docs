@@ -10,6 +10,18 @@ You need an eligible Anyx account, at least one active connected WhatsApp group 
   The connection covers all eligible active groups owned by your account. A group choice in a prompt or client is a usage filter, not a restriction on the key.
 </Warning>
 
+## Connect with Anyx sign-in
+
+For a host that supports Anyx OAuth, use its connection flow with `https://anyx.dev/api/mcp`, sign in to your Anyx account and review the read-only scope before approving. Check that the intended account is shown. No personal API key belongs in the assistant conversation or a public configuration file.
+
+After connecting, ask which groups are available, choose a returned group and ask a bounded question. For example: "What did this group decide about Friday's visit, and who is following up?" Check the captured messages supporting the answer. Available actions depend on the account and the tools imported by that host.
+
+A private connection is not a public marketplace listing. Use a host's public install link only when it has actually been published. To stop access, disconnect the app in Anyx Settings under Connect your AI (MCP); information already returned to the assistant follows that provider's controls.
+
+## Personal-key clients
+
+The following steps are for clients that use a personal key rather than the OAuth flow.
+
 ## 1. Enable access
 
 Open [Anyx](https://anyx.app), then **Settings > Connect your AI (MCP)**. Turn on MCP access if available. For a personal-key client, create a key and copy it while it is displayed. Copy the server URL from the same page.
