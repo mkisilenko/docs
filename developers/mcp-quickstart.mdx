@@ -105,6 +105,12 @@ Call get_status first, then list_groups. Show the available groups and history w
 
 Then ask a bounded question, such as "What did the team decide about Friday's schedule?" Check important conclusions against the source conversation. Messages include full stored text after link redaction, but Anyx may not have captured every message.
 
+## Read an available attachment
+
+Start with a returned group and source record. If your client exposes the file tools, ask about the attachment and its source message. Saved AI extraction and original bytes are different. The same MCP key or connected app can access eligible originals. Review this scope when connecting in Anyx. It covers eligible registered originals across your active groups within the history window.
+
+Only compatible clients can assemble the returned base64 chunks and read the file format. A missing file, unavailable tool or permission denial must be reported truthfully. See [the original-file contract](/developers/mcp-tools#get_group_media) before implementing a reader.
+
 ## 5. Review and revoke
 
 Check which account and groups the client can access. In Anyx Settings, revoke a key you no longer need, replace one that may have leaked, or disconnect the relevant OAuth app. Replacing a shared personal key requires updating every client that used it.
