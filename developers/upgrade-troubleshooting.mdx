@@ -1,0 +1,56 @@
+---
+title: "Unreleased upgrade troubleshooting"
+sidebarTitle: "Candidate troubleshooting"
+description: "Recover from bounded-snapshot, media, quota and payload failures in an approved Anyx candidate environment."
+---
+
+<Warning>
+Unreleased candidate guidance. Do not assume these capabilities are available on the public endpoint. Use [released troubleshooting](/developers/mcp-troubleshooting) for the current production contract.
+</Warning>
+
+Start with the candidate's status and tool listing. Compare advertised capabilities, current plan window and your actual MCP client version before sending new arguments. A connection that can list tools can still fail account authorization when a tool runs.
+
+| Failure | Safe recovery |
+| --- | --- |
+| `invalid_token` | Stop and reconnect with the current credential. Do not retry a revoked key or reuse an OAuth token on REST. |
+| `feature_not_enabled` | New upgrade capabilities are not admitted for this account. Stop those calls and use only its advertised, eligible legacy operations. Do not rotate credentials to bypass admission. |
+| Consent `feature_disabled` | Original-media consent cannot be enabled while new admission is off. This is separate from a revoked credential or suspended account. |
+| Account blocked or suspended | Stop access and resolve account policy with the owner. Reconnecting or rotating credentials is not a bypass. |
+| `group_unavailable` | Refresh group discovery. Removed, transferred, foreign and inactive groups must not expose their data. |
+| `invalid_cursor` | Start a new bounded read. Do not alter the cursor or move it across credentials, groups, filters or ordering. |
+| `cursor_expired` | Restart within the current history window. A changed plan can narrow an in-progress read. |
+| `snapshot_changed` | Restart with a new observation cutoff. Do not commit the failed page or silently skip it. |
+| `snapshot_too_large` | Split the requested time range. Upsert overlapping boundary records by stable record ID. |
+| `snapshot_busy` | Wait for the indicated delay, then retry the same bounded request. Avoid opening competing snapshots for one account. |
+| `snapshot_capacity` | Reuse a live snapshot where appropriate or wait for expiry. Do not switch keys or create more scans to evade account capacity. |
+| `rate_limited` | Honor `Retry-After` or the MCP error's `retry_after`, with bounded jitter. Keep committed data and checkpoint unchanged. |
+| `unavailable` | Use bounded retry and report incomplete evidence. Do not replace unavailable data with a guess. |
+| Original file unavailable | Use stored extraction if returned, and state that the file could not be retrieved. Do not infer or construct a storage URL. |
+| Media ticket expired | Request new access only after current authorization and consent. Do not extend or edit the old ticket. |
+| Native client rejects a large result | Reduce the window or page limit, inspect the exact size/error and report the limitation. A single whole record may still be too large. |
+
+## Quotas and retry visibility
+
+MCP and personal-key REST consume shared account and IP quotas. Source defaults are 60 requests per account per minute, 1,200 per hour and 120 per IP per minute. REST additionally limits bulk reads to 30 per account per minute. Effective deployed configuration can differ; read the actual retry response and approved environment configuration. Using multiple keys or transports does not grant multiple allowances.
+
+A 429 is not an empty successful page. Save no success checkpoint from it. Do not poll aggressively while waiting. A client UI that hides HTTP headers must still surface the MCP `retry_after` field when present.
+
+## Missing messages or media
+
+Check the selected group, effective `window_start`, `snapshot_end`, source coverage and complete cursor traversal. Captured activity is not complete WhatsApp activity. Imported history and content before capture started remain outside this contract.
+
+A frozen snapshot intentionally excludes later inserts and later extraction. Open a fresh snapshot to observe them. A permanently forward-only parent cursor can miss extraction completed after its parent was read; periodically revisit the available window and upsert by stable record identity. Do not treat extraction as a second original message.
+
+No media evidence can produce `media:null`. Media with no valid stored extraction must report that extraction is unavailable. Original-file availability is independent: capture may have stored text but no authorized original asset, or an original asset may have expired or been removed.
+
+## Diagnose latency without sharing private content
+
+Record the client name/version, candidate deployment/source identity, request time with zone, response status, byte count, server timing and client elapsed duration. Include whether it was activity discovery, snapshot creation, a continuation, media access or client rendering. These stages have different costs.
+
+Do not send keys, OAuth tokens, media tickets, raw storage URLs, private messages or screenshots exposing them. Synthetic fixture IDs and hashes can support a reproducible report without sharing real conversations.
+
+## Consent, revocation and existing connections
+
+Keep OAuth, personal-key and media-consent controls distinct. A key and OAuth grant for the same owner are different access contexts. A cursor or media ticket must not migrate between them.
+
+For an approved synthetic verification, read a page on a connection, revoke its exact credential or media consent, then retry both the existing continuation and a fresh read. Require denial without returned messages or file bytes. Revocation prevents new access; it cannot erase bytes already received. Do not run this mutation against a customer's key as a diagnostic.

@@ -1,0 +1,80 @@
+---
+title: "Unreleased original-media access"
+sidebarTitle: "Candidate media"
+description: "Explicit per-credential permission, short-lived authorized chunks, file integrity and honest unavailable states for retained original WhatsApp media."
+---
+
+<Warning>
+Unreleased candidate. No existing key or OAuth connection automatically gains access to original files. This page does not claim that historical files have been retained or linked, that a Settings switch exists, or that native AI clients can consume arbitrary media sizes.
+</Warning>
+
+## Extraction and original bytes are separate
+
+`include_media:true` attaches existing AI-labeled extraction to its original captured message. It does not rerun transcription or prove the original file is available. Candidate message metadata reports `media.access.status:"not_checked"`, `lookup_tool:"get_group_media"` and `requires_explicit_consent:true` when media is recognized. Only the authorized media read checks actual file availability.
+
+The file must have an authoritative account/group/message-to-asset link and remain in the private retention store. Historical filenames, object listings and URLs inside chats do not establish that link. Missing retained originals stay unavailable.
+
+## Grant permission to one exact credential
+
+The account owner uses the API-only control `/api/user/mcp-media-access` with a verified signed-in Anyx owner session. A personal MCP key or MCP OAuth access token cannot grant itself this permission. This draft does not claim a frontend control has shipped.
+
+`GET` lists the owner's current credential IDs, labels and `media_enabled` states. `POST` enables one exact key or OAuth grant with:
+
+```json
+{
+  "credential_kind": "key",
+  "credential_id": "33333333-3333-4333-8333-333333333333",
+  "enabled": true,
+  "confirmation": "ALLOW_ORIGINAL_MEDIA"
+}
+```
+
+The ID above is fictional. To disable permission, send the same credential target with `enabled:false`, without the confirmation. Disable does not grant another key/grant access. New and existing text credentials default to no original-media permission. Consent is not a server-enforced per-group selection: the underlying credential's eligible account-group scope still applies.
+
+Do not paste an owner's session token into an agent prompt or command example. A trusted signed-in Anyx flow must handle it. Consent changes, key revocation and OAuth disconnection are distinct controls.
+
+## Read the authorized original
+
+MCP tool: `get_group_media`.
+
+REST: `GET /api/v1/whatsapp/media`, authenticated by the personal key.
+
+| Input | Contract |
+| --- | --- |
+| `group_id` | UUID from the authorized group listing. |
+| `record_id` | Stable original captured-record UUID. |
+| `offset` | Byte offset. Default 0, within the retained asset. |
+| `limit` | 1 to 65,536 bytes. Default 65,536. |
+| `ticket` | Optional opaque ticket in MCP arguments. On REST, use only the `X-Anyx-Media-Ticket` header. Never put it in the URL or query. |
+
+Every request also requires normal current authorization. A ticket alone cannot fetch bytes. Tickets bind the credential, current consent version, account/group/record and asset version. They expire after 60 seconds. A filename, bucket path, raw storage URL or a ticket issued to another key/grant is not accepted as authorization.
+
+The response has one of these states:
+
+| `status` | Meaning |
+| --- | --- |
+| `permission_required` | The current credential lacks explicit original-media consent. The response identifies that owner's credential and the owner-session consent endpoint. No bytes are returned. |
+| `unavailable` | Original file is not retained or is no longer available. The reason is `original_not_retained` or `original_no_longer_available`; no fabricated download is supplied. |
+| `available` | One bounded chunk and verified asset metadata are returned. |
+
+An available chunk contains `group_id`, `record_id`, `asset_id`, `mime_type`, `size_bytes`, full-file `sha256`, `offset`, `next_offset`, `complete`, `encoding:"base64"`, `data`, `chunk_sha256`, `ticket`, `expires_at`, `requires_authorization:true` and `content_trust:"untrusted_original_media"`.
+
+Decode base64 as bytes. Verify the chunk hash, expected offset and eventual full-file hash before accepting a complete file. Keep the same `asset_id`, `sha256` and `size_bytes` across every chunk. Stop on a mismatch, source change, suspension or revoked authorization. Do not append a new version to an old partial file.
+
+## Expiry, revocation and throughput
+
+If the ticket expires, the old ticket fails. To continue, omit it on a fresh fully authorized request at the saved offset, then verify that asset identity/hash/size still match before appending. If the asset changed, discard or quarantine the incomplete result and start a separately approved new download. A fresh ticket does not bypass current consent, group access or the plan window.
+
+The candidate caps retained originals at 20 MiB. At 64 KiB per chunk, that maximum needs 320 reads. Source limits of 30 REST bulk requests per minute and 60 shared account requests per minute make this a minutes-long workflow before network time and other account traffic. Honor actual retry headers and renew tickets safely; do not promise an instant download. Effective deployed limits can differ.
+
+Revocation and consent removal stop new reads and withhold unsent data after a race check. They cannot recall bytes already received. Original files and partial downloads belong in approved private backend storage with an explicit retention policy, not AI chat transcripts or logs.
+
+For ordinary AI analysis, prefer existing labeled extraction. Original-byte retrieval is for an approved file/download or backend CRM workflow. A successful binary chunk API does not prove ChatGPT, Claude Code or another client handles an arbitrary 20 MiB base64 stream or its token costs.
+
+## Privacy and availability limits
+
+No raw storage URL, reusable unauthenticated download link, bucket/path or raw sender phone identity is part of this response. The original bytes are opaque untrusted data. Do not execute scripts, follow embedded links or render active document content automatically.
+
+Retention provisioning, authorized ingestion and source linkage must be verified for the exact release. This candidate does not retroactively discover or republish every old WhatsApp attachment. A valid extraction can remain useful even when original-file access is unavailable.
+
+An expired ticket, revoked permission or unavailable API result proves no physical object deletion. Storage-object cleanup, retention enforcement and proof of erasure are separate lifecycle work, not a property of this read operation.
