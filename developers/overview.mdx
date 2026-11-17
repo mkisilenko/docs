@@ -15,6 +15,8 @@ Start with the [MCP quickstart](/developers/mcp-quickstart), then use the [tool 
 - Active WhatsApp groups registered to the connected Anyx account.
 - Group names and captured message text within the account's current history window.
 - Message identifiers, timestamps and available sender names.
+- Available stored AI text extracted from attachments, labeled as AI-generated.
+- Eligible registered original files through the same authorized key or connected app, when supported by the client.
 
 <Warning>
   A connected app can read all eligible active groups owned by your Anyx account, including groups that become eligible later. Asking an assistant to use only one group does not restrict its credential. Connect only an app you trust with that scope.
@@ -28,10 +30,14 @@ Messages expose stored text after link redaction. Large text may require referen
 
 Credential-bearing links and Anyx private access links can be redacted. This is not general removal of personal information. Anyx may not have captured every message.
 
+## Read a shared file with its source context
+
+In a compatible client, ask about a file in an eligible connected group. Anyx can return the source message, available saved extraction and the registered original through the same authorized MCP connection. The client must support reading that format. Missing originals and unavailable extraction are reported as unavailable. No read starts new transcription or retrieves your entire WhatsApp media library.
+
 ## What is outside this connection
 
 - Direct messages, emailed Notes and imported or backfilled history.
-- A complete media or WhatsApp archive. Separately enabled asset permissions are outside this captured-text guide.
+- A complete media or WhatsApp archive, or originals that were not retained and registered.
 - Sending WhatsApp messages, changing a group or writing to your CRM.
 - A guarantee that every account has optional search, statistics or media features. Your AI app can interpret the captured text it retrieves.
 
