@@ -1,6 +1,6 @@
 ---
 title: "FAQ"
-description: "Short answers about Anyx: what it is, what it can see, how AI Notes work, languages, pricing, the free trial and how to stop it."
+description: "Short answers about Anyx: what it is, what it can see, how AI Notes work, MCP access to captured group messages and files, pricing and how to stop it."
 ---
 
 ## About Anyx
@@ -63,14 +63,29 @@ description: "Short answers about Anyx: what it is, what it can see, how AI Note
   </Accordion>
 </AccordionGroup>
 
-## Using notes with other AI assistants
+## Using Anyx with other AI assistants
 
 <AccordionGroup>
   <Accordion title="Can I use my notes with ChatGPT, Claude, Gemini or another assistant?">
     Yes, through the email Anyx already sends. Connect the mailbox that receives your notes to the assistant, or paste a note into it. There are guides for ChatGPT and Codex, Claude and Claude Code, Gemini, Grok and Grok Bot, Instinct, Meta Muse, OpenClaw, NanoClaw and Hermes Agent. Not every assistant can read a mailbox or run on a schedule, and features, plans, regions and permissions vary. The guides follow each vendor's own documentation and are not end-to-end tests of your account. See [Use your Notes with an AI assistant](/ai-notes/assistants/overview).
   </Accordion>
   <Accordion title="Does my AI assistant get access to my WhatsApp groups?">
-    No. This email workflow does not give an assistant live access to your groups. Anyx captures the group conversation and emails you the notes, and your assistant reads the permitted email, or you paste a note.
+    It depends on how you connect. The email workflow shares delivered Notes, not direct access to group messages. With a separate Anyx MCP connection, a compatible assistant can read messages Anyx captured from eligible active groups owned by your account. It is not a live WhatsApp feed or a complete archive. See [Connect an AI app with MCP](/developers/mcp-quickstart).
+  </Accordion>
+  <Accordion title="What is MCP, and how do I connect it?">
+    MCP (Model Context Protocol) is a way for a compatible AI app to read context from Anyx. Open **Settings > Connect your AI (MCP)** in Anyx and follow the setup for your client. Use Anyx sign-in where that client supports it, or a personal key stored in the client's secure configuration. Never paste the key into an AI conversation. Access depends on your account and the client's authentication and tool support, not just whether the app says it supports MCP. See the [MCP quickstart](/developers/mcp-quickstart).
+  </Accordion>
+  <Accordion title="Can my AI assistant read files shared in my groups?">
+    Through MCP, a compatible client can read eligible original files retained by Anyx, together with their captured source messages. The same authorized key or connected app is used for messages and eligible files; a second media toggle is not required. Saved AI extraction is different from the original file. The client must expose the file tools and be able to read the returned format. Files that were not retained, fall outside your account's history window or are no longer authorized can be unavailable. This is not access to your entire WhatsApp media library. See [Read an available attachment](/developers/mcp-quickstart#read-an-available-attachment).
+  </Accordion>
+  <Accordion title="Can I limit an MCP key to just one group?">
+    No. The connection covers all eligible active groups owned by your account, including groups that become eligible later, and eligible original files within the permitted history window. Naming one group in a prompt only tells the assistant what to use; it does not restrict the key or connected app. Connect only an app you trust with that scope. See [Scope and limits](/developers/overview).
+  </Accordion>
+  <Accordion title="Can MCP send messages or read my private chats and Notes?">
+    No. This MCP connection is read-only and does not send WhatsApp messages or write to your CRM. Private chats, emailed Notes and imported history are outside its scope. Use the email workflow above for Notes. Your assistant may have other tools with their own permissions, which you should review separately.
+  </Accordion>
+  <Accordion title="How do I stop an assistant's MCP access?">
+    Open **Settings > Connect your AI (MCP)** to revoke a personal key, disconnect the relevant app or turn off MCP access. Disconnecting an app and revoking a personal key are separate controls. Revocation stops future authorized reads; it cannot erase information the assistant already received. See [MCP troubleshooting](/developers/mcp-troubleshooting).
   </Accordion>
   <Accordion title="Who sees my notes if I connect an assistant?">
     Email recipients can see the whole note, and an assistant that reads that mailbox can too. Share only notes you are allowed to share with that assistant. See [Privacy and security](/security).
